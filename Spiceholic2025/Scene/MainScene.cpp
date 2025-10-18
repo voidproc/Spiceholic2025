@@ -7,14 +7,62 @@ namespace Spiceholic
 {
 	namespace
 	{
-		void UpdateActorPos(Actor& actor)
+		bool IsColliding(Actor& actor, const Array<std::unique_ptr<Block>>& blocks)
 		{
-			actor.applyMoveX(1.0);
-			actor.applyMoveY(1.0);
+			for (const auto& block : blocks)
+			{
+				if (actor.isCollidingWith(*block))
+				{
+					return true;
+				}
+			}
 
-			actor.confirmPosition();
+			return false;
 		}
 
+		void UpdateActorPos(Actor& actor, const Array<std::unique_ptr<Block>>& blocks)
+		{
+			constexpr int N = 4;
+
+			// まずX位置を調整
+			for (int iN = N; iN >= 1; --iN)
+			{
+				const double ratio = 1.0 * iN / N;
+				actor.applyMoveX(ratio);
+
+				// アクターとブロックとの衝突確認
+				// もし衝突していたらX位置を戻す
+				if (IsColliding(actor, blocks))
+				{
+					actor.revertMoveX();
+				}
+				else
+				{
+					break;
+				}
+			}
+
+			// Y位置を反映
+			for (int iN = N; iN >= 1; --iN)
+			{
+				const double ratio = 1.0 * iN / N;
+				actor.applyMoveY(ratio);
+
+				// アクターとブロックとの衝突確認
+				// もし衝突していたらX位置を戻す
+				if (IsColliding(actor, blocks))
+				{
+					actor.revertMoveY();
+				}
+				else
+				{
+					break;
+				}
+			}
+
+			// アクターの位置を確定
+			actor.confirmPosition();
+		}
 	}
 
 	MainScene::MainScene(const InitData& init)
@@ -80,7 +128,7 @@ namespace Spiceholic
 		}
 
 		// アクターの位置を更新
-		UpdateActorPos(player);
+		UpdateActorPos(player, getData().blocks);
 
 	}
 
@@ -89,14 +137,14 @@ namespace Spiceholic
 		// BG
 		SceneRect.draw(Palette::Darkolivegreen.lerp(Palette::Cyan, 0.5));//
 
-		// プレイヤー
-		getData().player->draw();
-
 		// ブロック
 		for (const auto& block : getData().blocks)
 		{
 			block->draw();
 		}
+
+		// プレイヤー
+		getData().player->draw();
 
 		// HUD
 		{

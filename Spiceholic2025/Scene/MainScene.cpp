@@ -149,8 +149,8 @@ namespace Spiceholic
 		// HUD
 		{
 			// BG (0, 0), (0, 176)
-			Rect{ 0, 0, Size{ SceneSize.x, 16 } }.draw(ColorF{ 0, 0.5 });
-			Rect{ 0, 176, Size{ SceneSize.x, 16 } }.draw(ColorF{ 0, 0.5 });
+			Rect{ 0, 0, Size{ SceneSize.x, 16 } }.draw(ColorF{ 0.1 });
+			Rect{ 0, 176, Size{ SceneSize.x, 16 } }.draw(ColorF{ 0.1 });
 
 			// ゲージ枠、ゲージ
 			const Vec2 gaugePos{ 60, 174 };

@@ -1,7 +1,12 @@
 ﻿# include <Siv3D.hpp> // Siv3D v0.6.16
 
+//#include "GameContext/GameData.h"
+#include "Scene/Scenes.h"
+
 namespace
 {
+	constexpr ColorF DefaultBgColor{ Palette::Black };
+
 	void InitSivSystem()
 	{
 		Scene::SetBackground(ColorF{ 0.6, 0.8, 0.7 });
@@ -23,6 +28,8 @@ namespace
 
 void Main()
 {
+	using namespace Spiceholic;
+
 	InitSivSystem();
 
 	// アセット読み込み
@@ -30,14 +37,25 @@ void Main()
 	//LoadFont();
 	//LoadAudio();
 
+	// ゲームデータ
+	auto gameData = std::make_shared<GameData>();
+
 	// TODO: 低解像度シーン
 	//...
 
-	// TODO: シーン登録
-	//...
+	// シーン初期化
+	App app{ gameData };
+	RegisterScenes<MainScene>(app);
+	app.setFadeColor(DefaultBgColor);
+	app.init(MainScene::Name, 0s);
 
 	while (System::Update())
 	{
-		TextureAsset(U"Chara").draw();
+		if (not app.updateScene())
+		{
+			break;
+		}
+
+		app.drawScene();
 	}
 }

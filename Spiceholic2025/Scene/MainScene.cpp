@@ -1,5 +1,6 @@
 ﻿#include "MainScene.h"
 #include "Actor/Block.h"
+#include "Actor/Item.h"
 #include "Actor/Player.h"
 #include "Config/GameConfig.h"
 
@@ -20,6 +21,7 @@ namespace Spiceholic
 			return false;
 		}
 
+		// アクターの位置がブロックに重ならないよう調整
 		void UpdateActorPos(Actor& actor, const Array<std::unique_ptr<Block>>& blocks)
 		{
 			constexpr int N = 4;
@@ -63,6 +65,41 @@ namespace Spiceholic
 			// アクターの位置を確定
 			actor.confirmPosition();
 		}
+
+		// プレイヤーと、アイテムや敵との当たり判定
+		void CheckCollision(Player& player, Array<std::unique_ptr<Actor>>& actors)
+		{
+			// プレイヤーとその他
+			for (auto& actor : actors)
+			{
+				if (not IsCollidable(player, *actor)) continue;
+
+				if (player.isCollidingWith(*actor))
+				{
+					player.onCollide(actor.get());
+					actor->onCollide(&player);
+				}
+			}
+
+			// その他どうし
+			for (auto i = 0; i < actors.size(); ++i)
+			{
+				for (auto j = i + 1; j < actors.size(); ++j)
+				{
+					auto& ai = actors[i];
+					auto& aj = actors[j];
+
+					if (not IsCollidable(*ai, *aj)) continue;
+
+					if (ai->isCollidingWith(*aj))
+					{
+						ai->onCollide(aj.get());
+						aj->onCollide(ai.get());
+					}
+				}
+			}
+		}
+
 	}
 
 	MainScene::MainScene(const InitData& init)
@@ -72,7 +109,7 @@ namespace Spiceholic
 		// プレイヤーを初期化
 		getData().player = std::make_unique<Player>(SceneCenter);
 
-		// ブロックを適用に生成
+		// ブロックを適当に生成
 		const Grid<int> stageMap = {
 			{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
 			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
@@ -108,6 +145,9 @@ namespace Spiceholic
 				}
 			}
 		}
+
+		// アイテムを適当に生成
+		getData().actors.push_back(std::make_unique<Item>(Vec2{ 7.5, 8.5 } * 16, ActorType::ItemChilipepper));
 	}
 
 	MainScene::~MainScene()
@@ -127,9 +167,21 @@ namespace Spiceholic
 			block->update();
 		}
 
+		// その他アクターを更新
+		for (auto& actor : getData().actors)
+		{
+			actor->update();
+		}
+
 		// アクターの位置を更新
 		UpdateActorPos(player, getData().blocks);
 
+		// アクター同士の衝突判定
+		CheckCollision(player, getData().actors);
+
+		// アクターの破棄
+		getData().actors.remove_if([](const auto& a) { return not a->active(); });
+		getData().blocks.remove_if([](const auto& a) { return not a->active(); });
 	}
 
 	void MainScene::draw() const
@@ -141,6 +193,12 @@ namespace Spiceholic
 		for (const auto& block : getData().blocks)
 		{
 			block->draw();
+		}
+
+		// その他アクター
+		for (const auto& actor : getData().actors)
+		{
+			actor->draw();
 		}
 
 		// プレイヤー

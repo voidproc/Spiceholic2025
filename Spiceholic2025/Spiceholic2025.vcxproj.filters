@@ -201,6 +201,9 @@
     <ClCompile Include="Actor\Block.cpp">
       <Filter>Actor</Filter>
     </ClCompile>
+    <ClCompile Include="Actor\Item.cpp">
+      <Filter>Actor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">
@@ -915,6 +918,9 @@
       <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="Actor\Block.h">
+      <Filter>Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Actor\Item.h">
       <Filter>Actor</Filter>
     </ClInclude>
   </ItemGroup>

@@ -180,6 +180,21 @@
     <ClCompile Include="GameContext\GameData.cpp">
       <Filter>GameContext</Filter>
     </ClCompile>
+    <ClCompile Include="Actor\Player.cpp">
+      <Filter>Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="Actor\ICollidable.cpp">
+      <Filter>Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="Actor\Actor.cpp">
+      <Filter>Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Collision.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Position.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">
@@ -868,6 +883,27 @@
     </ClInclude>
     <ClInclude Include="Setting\AppSetting.h">
       <Filter>Setting</Filter>
+    </ClInclude>
+    <ClInclude Include="Actor\Player.h">
+      <Filter>Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Actor\ActorType.h">
+      <Filter>Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Actor\ICollidable.h">
+      <Filter>Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Actor\Actor.h">
+      <Filter>Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Actor\ActorTag.h">
+      <Filter>Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Position.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Collision.h">
+      <Filter>Core</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,0 +1,67 @@
+﻿#include "Player.h"
+#include "Config/GameConfig.h"
+
+namespace Spiceholic
+{
+	namespace
+	{
+	}
+
+	Player::Player(const Vec2& pos)
+		:
+		Actor{ pos },
+		collision_{}
+	{
+	}
+
+	Player::~Player()
+	{
+	}
+
+	void Player::update()
+	{
+		constexpr double MoveSpeed = 1.2 * 60;
+		const Vec2 playerMoveAmount{
+			(KeyRight.pressed() - KeyLeft.pressed()) * MoveSpeed,
+			(KeyDown.pressed() - KeyUp.pressed()) * MoveSpeed
+		};
+
+		setMoveAmount(playerMoveAmount.limitLength(MoveSpeed) * Scene::DeltaTime());
+	}
+
+	void Player::draw() const
+	{
+		if (getMoveAmount().length() > 1e-6)
+		{
+			// 歩きモーション
+			const int charaAnimFrame = 0 + Clamp<int>(4 * Periodic::Sawtooth0_1(0.8s), 0, 3);
+			TextureAsset(U"Chara")(charaAnimFrame * 48, 0, 48).drawAt(position());
+		}
+		else
+		{
+			// 立ちモーション
+			const int charaAnimFrame = 4 + Periodic::Square0_1(0.9s);
+			TextureAsset(U"Chara")(charaAnimFrame * 48, 0, 48).drawAt(position());
+		}
+	}
+
+	void Player::onCollide(Actor* other)
+	{
+		// TODO: 敵に触れると...
+		if (other->tag() == ActorTag::Enemy)
+		{
+			//...
+		}
+	}
+
+	const Vec2& Player::getCollisionPos() const
+	{
+		return position().proposedPos();
+	}
+
+	const Collision& Player::getCollision() const
+	{
+		return collision_;
+	}
+
+}

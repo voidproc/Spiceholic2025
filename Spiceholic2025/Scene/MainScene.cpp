@@ -1,12 +1,27 @@
 ﻿#include "MainScene.h"
+#include "Actor/Player.h"
 #include "Config/GameConfig.h"
 
 namespace Spiceholic
 {
+	namespace
+	{
+		void UpdateActorPos(Actor& actor)
+		{
+			actor.applyMoveX(1.0);
+			actor.applyMoveY(1.0);
+
+			actor.confirmPosition();
+		}
+
+	}
+
 	MainScene::MainScene(const InitData& init)
 		:
 		CustomScene{ init }
 	{
+		// プレイヤーを初期化
+		getData().player = std::make_unique<Player>(SceneCenter);
 	}
 
 	MainScene::~MainScene()
@@ -15,6 +30,14 @@ namespace Spiceholic
 
 	void MainScene::update()
 	{
+		auto& player = *getData().player;
+
+		// プレイヤーを更新
+		player.update();
+
+		// アクターの位置を更新
+		UpdateActorPos(player);
+
 	}
 
 	void MainScene::draw() const
@@ -23,8 +46,7 @@ namespace Spiceholic
 		SceneRect.draw(Palette::Darkolivegreen.lerp(Palette::Cyan, 0.5));//
 
 		// プレイヤー
-		int charaAnimFrame = 4 + Periodic::Square0_1(0.9s);
-		TextureAsset(U"Chara")(charaAnimFrame * 48, 0, 48).drawAt(SceneCenter);
+		getData().player->draw();
 
 		// HUD
 		{

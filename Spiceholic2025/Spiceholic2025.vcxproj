@@ -117,7 +117,12 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Actor\Actor.cpp" />
+    <ClCompile Include="Actor\ICollidable.cpp" />
+    <ClCompile Include="Actor\Player.cpp" />
+    <ClCompile Include="Core\Collision.cpp" />
     <ClCompile Include="Core\LowResolution.cpp" />
+    <ClCompile Include="Core\Position.cpp" />
     <ClCompile Include="GameContext\GameData.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Scene\MainScene.cpp" />
@@ -331,9 +336,16 @@
     <Xml Include="App\example\xml\test.xml" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Actor\Actor.h" />
+    <ClInclude Include="Actor\ActorTag.h" />
+    <ClInclude Include="Actor\ActorType.h" />
+    <ClInclude Include="Actor\ICollidable.h" />
+    <ClInclude Include="Actor\Player.h" />
     <ClInclude Include="App.h" />
     <ClInclude Include="Config\GameConfig.h" />
+    <ClInclude Include="Core\Collision.h" />
     <ClInclude Include="Core\LowResolution.h" />
+    <ClInclude Include="Core\Position.h" />
     <ClInclude Include="GameContext\GameData.h" />
     <ClInclude Include="Scene\CustomScene.h" />
     <ClInclude Include="Scene\MainScene.h" />

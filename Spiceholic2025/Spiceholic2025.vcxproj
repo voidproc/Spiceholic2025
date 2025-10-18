@@ -122,6 +122,7 @@
     <ClCompile Include="Actor\Player.cpp" />
     <ClCompile Include="Core\Collision.cpp" />
     <ClCompile Include="Core\LowResolution.cpp" />
+    <ClCompile Include="Core\Periodic.cpp" />
     <ClCompile Include="Core\Position.cpp" />
     <ClCompile Include="GameContext\GameData.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -345,6 +346,7 @@
     <ClInclude Include="Config\GameConfig.h" />
     <ClInclude Include="Core\Collision.h" />
     <ClInclude Include="Core\LowResolution.h" />
+    <ClInclude Include="Core\Periodic.h" />
     <ClInclude Include="Core\Position.h" />
     <ClInclude Include="GameContext\GameData.h" />
     <ClInclude Include="Scene\CustomScene.h" />

@@ -56,7 +56,7 @@ namespace Spiceholic
 
 			// ゲージ枠、ゲージ
 			const Vec2 gaugePos{ 60, 174 };
-			TextureAsset(U"Gauge").draw(gaugePos + Vec2{ 21, 7 });
+			TextureAsset(U"Gauge").draw(gaugePos + Vec2{ 21, 7 }, ColorF{ 1 - 0.08 * Periodic::Sine0_1(0.3s)});
 			TextureAsset(U"GaugeFrame").draw(gaugePos);
 		}
 	}

@@ -1,10 +1,12 @@
 ﻿#include "Player.h"
 #include "Config/GameConfig.h"
+#include "Core/Periodic.h"
 
 namespace Spiceholic
 {
 	namespace
 	{
+		constexpr double DefaultPlayerMoveSpeed = 1.2 * 60;
 	}
 
 	Player::Player(const Vec2& pos)
@@ -20,7 +22,8 @@ namespace Spiceholic
 
 	void Player::update()
 	{
-		constexpr double MoveSpeed = 1.2 * 60;
+		const double MoveSpeed = DefaultPlayerMoveSpeed;
+
 		const Vec2 playerMoveAmount{
 			(KeyRight.pressed() - KeyLeft.pressed()) * MoveSpeed,
 			(KeyDown.pressed() - KeyUp.pressed()) * MoveSpeed
@@ -34,13 +37,13 @@ namespace Spiceholic
 		if (getMoveAmount().length() > 1e-6)
 		{
 			// 歩きモーション
-			const int charaAnimFrame = 0 + Clamp<int>(4 * Periodic::Sawtooth0_1(0.8s), 0, 3);
+			const int charaAnimFrame = PeriodicStair(0.8s, 0, 3);
 			TextureAsset(U"Chara")(charaAnimFrame * 48, 0, 48).drawAt(position());
 		}
 		else
 		{
 			// 立ちモーション
-			const int charaAnimFrame = 4 + Periodic::Square0_1(0.9s);
+			const int charaAnimFrame = PeriodicStair(0.9s, 4, 5);
 			TextureAsset(U"Chara")(charaAnimFrame * 48, 0, 48).drawAt(position());
 		}
 	}

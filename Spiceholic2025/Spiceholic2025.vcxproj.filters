@@ -195,6 +195,9 @@
     <ClCompile Include="Core\Position.cpp">
       <Filter>Core</Filter>
     </ClCompile>
+    <ClCompile Include="Core\Periodic.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">
@@ -903,6 +906,9 @@
       <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="Core\Collision.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Periodic.h">
       <Filter>Core</Filter>
     </ClInclude>
   </ItemGroup>

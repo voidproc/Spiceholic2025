@@ -127,6 +127,7 @@ Resource(engine/texture/box-shadow/8.png)
 //
 //////////////////////////////////////////////////////
 
+Resource(setting/setting.json)
 Resource(image/block.png)
 Resource(image/chara.png)
 Resource(image/gauge.png)

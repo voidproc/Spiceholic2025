@@ -3,14 +3,19 @@
 #include "Config/GameConfig.h"
 #include "Core/LowResolution.h"
 #include "Scene/Scenes.h"
+#include "Setting/AppSetting.h"
 
 namespace
 {
+	using namespace Spiceholic;
+
 	constexpr ColorF DefaultBgColor{ Palette::Black };
 
-	void InitSivSystem()
+	void InitSivSystem(const AppSetting& appSetting)
 	{
 		Scene::SetBackground(ColorF{ 0.6, 0.8, 0.7 });
+
+		Window::SetTitle(Format(appSetting.get().title, U" - v"), appSetting.get().version);
 
 		// TODO: アプリ終了条件
 		//...
@@ -31,15 +36,16 @@ void Main()
 {
 	using namespace Spiceholic;
 
-	InitSivSystem();
+	// ゲームデータ
+	auto gameData = std::make_shared<GameData>();
+	gameData->appSetting->load();
+
+	InitSivSystem(*gameData->appSetting);
 
 	// アセット読み込み
 	LoadImage();
 	//LoadFont();
 	//LoadAudio();
-
-	// ゲームデータ
-	auto gameData = std::make_shared<GameData>();
 
 	// 低解像度シーン
 	constexpr double DefaultWindowScale = 3;  // TODO: 設定ファイルからの読込

@@ -5,25 +5,22 @@
 
 namespace Spiceholic
 {
-	class Player : public Actor
+	class Block : public Actor
 	{
 	public:
-		static constexpr ActorTag Tag = ActorTag::Player;
-		static constexpr ActorType Type = ActorType::PlayerA;
+		static constexpr ActorTag Tag = ActorTag::Block;
 
 	public:
-		Player(const Vec2& pos);
+		Block(const Vec2& pos, ActorType type);
 
-		~Player() override;
+		~Block() override;
 
 		void update() override;
 
 		void draw() const override;
 
-		void onCollide(Actor* other) override;
-
 		ActorTag tag() const override { return Tag; }
-		ActorType type() const override { return Type; }
+		ActorType type() const override { return type_; }
 
 		// ICollidable
 		const Vec2& getCollisionPos() const override;
@@ -32,6 +29,7 @@ namespace Spiceholic
 		const Collision& getCollision() const override;
 
 	private:
+		ActorType type_;
 		Collision collision_;
 	};
 }

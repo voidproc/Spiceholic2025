@@ -14,6 +14,7 @@ namespace Spiceholic
 		Actor{ pos },
 		collision_{}
 	{
+		collision_.set(RectF{ Arg::center = Vec2{}, 16 - 2 });
 	}
 
 	Player::~Player()

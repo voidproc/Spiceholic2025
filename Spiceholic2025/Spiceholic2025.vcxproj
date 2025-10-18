@@ -118,6 +118,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Actor\Actor.cpp" />
+    <ClCompile Include="Actor\Block.cpp" />
     <ClCompile Include="Actor\ICollidable.cpp" />
     <ClCompile Include="Actor\Player.cpp" />
     <ClCompile Include="Core\Collision.cpp" />
@@ -340,6 +341,7 @@
     <ClInclude Include="Actor\Actor.h" />
     <ClInclude Include="Actor\ActorTag.h" />
     <ClInclude Include="Actor\ActorType.h" />
+    <ClInclude Include="Actor\Block.h" />
     <ClInclude Include="Actor\ICollidable.h" />
     <ClInclude Include="Actor\Player.h" />
     <ClInclude Include="App.h" />

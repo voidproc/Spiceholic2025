@@ -4,7 +4,7 @@ namespace Spiceholic
 {
 	class AppSetting;
 	class Player;
-	//class Block;
+	class Block;
 	class Actor;
 
 	struct GameData
@@ -16,7 +16,7 @@ namespace Spiceholic
 		std::unique_ptr<Player> player;
 
 		// ブロック
-		//Array<std::unique_ptr<Block>> blocks;
+		Array<std::unique_ptr<Block>> blocks;
 
 		// その他（敵・アイテムなど）
 		Array<std::unique_ptr<Actor>> actors;

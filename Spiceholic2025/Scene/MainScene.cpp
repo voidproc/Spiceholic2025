@@ -1,4 +1,5 @@
 ﻿#include "MainScene.h"
+#include "Actor/Block.h"
 #include "Actor/Player.h"
 #include "Config/GameConfig.h"
 
@@ -22,6 +23,43 @@ namespace Spiceholic
 	{
 		// プレイヤーを初期化
 		getData().player = std::make_unique<Player>(SceneCenter);
+
+		// ブロックを適用に生成
+		const Grid<int> stageMap = {
+			{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+			{ 1, 0, 0, 1, 2, 1, 0, 0, 0, 1, 2, 1, 0, 0, 1 },
+			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+			{ 1, 0, 0, 1, 2, 1, 0, 0, 0, 1, 2, 1, 0, 0, 1 },
+			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+			{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+		};
+
+		for (int32 iY = 0; iY < stageMap.height(); ++iY)
+		{
+			for (int32 iX = 0; iX < stageMap.width(); ++iX)
+			{
+				ActorType type = ActorType::None;
+				if (const int num = stageMap[iY][iX];
+					num == 1)
+				{
+					type = ActorType::BlockSteel;
+				}
+				else if (num == 2)
+				{
+					type = ActorType::BlockCanBreak;
+				}
+
+				if (type != ActorType::None)
+				{
+					const Vec2 pos = Vec2{ 0.5 + iX, 1.5 + iY } * 16;
+					getData().blocks.push_back(std::make_unique<Block>(pos, type));
+				}
+			}
+		}
 	}
 
 	MainScene::~MainScene()
@@ -35,6 +73,12 @@ namespace Spiceholic
 		// プレイヤーを更新
 		player.update();
 
+		// ブロックを更新
+		for (auto& block : getData().blocks)
+		{
+			block->update();
+		}
+
 		// アクターの位置を更新
 		UpdateActorPos(player);
 
@@ -47,6 +91,12 @@ namespace Spiceholic
 
 		// プレイヤー
 		getData().player->draw();
+
+		// ブロック
+		for (const auto& block : getData().blocks)
+		{
+			block->draw();
+		}
 
 		// HUD
 		{

@@ -10,8 +10,8 @@ namespace Spiceholic
 	class Actor : public ICollidable
 	{
 	public:
-		inline static constexpr ActorTag Tag = ActorTag::None;
-		inline static constexpr ActorType Type = ActorType::None;
+		static constexpr ActorTag Tag = ActorTag::None;
+		static constexpr ActorType Type = ActorType::None;
 
 	public:
 		Actor(const Vec2& pos);

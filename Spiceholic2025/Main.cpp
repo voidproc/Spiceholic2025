@@ -1,6 +1,7 @@
 ﻿# include <Siv3D.hpp> // Siv3D v0.6.16
 
-//#include "GameContext/GameData.h"
+#include "Config/GameConfig.h"
+#include "Core/LowResolution.h"
 #include "Scene/Scenes.h"
 
 namespace
@@ -40,8 +41,9 @@ void Main()
 	// ゲームデータ
 	auto gameData = std::make_shared<GameData>();
 
-	// TODO: 低解像度シーン
-	//...
+	// 低解像度シーン
+	constexpr double DefaultWindowScale = 3;  // TODO: 設定ファイルからの読込
+	LowResolution lowres{ SceneSize, DefaultWindowScale };
 
 	// シーン初期化
 	App app{ gameData };
@@ -56,6 +58,14 @@ void Main()
 			break;
 		}
 
-		app.drawScene();
+		{
+			const auto target = lowres.scopedRenderTarget();
+			app.drawScene();
+		}
+
+		lowres.draw();
+
+		// TODO: ウィンドウスケール設定変更時に反映
+		//...
 	}
 }

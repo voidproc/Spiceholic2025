@@ -1,5 +1,6 @@
 ﻿#include "Item.h"
-#include "Actor/Player.h"
+#include "Effect.h"
+#include "Player.h"
 #include "Config/GameConfig.h"
 
 namespace Spiceholic
@@ -9,17 +10,28 @@ namespace Spiceholic
 		constexpr double DefaultItemCollisionSize = 16;
 	}
 
-	Item::Item(const Vec2& pos, ActorType itemType)
+	Item::Item(const Vec2& pos, ActorType itemType, GameData& gameData)
 		:
 		Actor{ pos },
+		gameData_{ gameData },
 		collision_{},
-		type_{ itemType }
+		type_{ itemType },
+		timerMakeFx_{ 1.1s, StartImmediately::Yes }
 	{
 		collision_.set(RectF{ Arg::center = Vec2{}, DefaultItemCollisionSize });
 	}
 
 	Item::~Item()
 	{
+	}
+
+	void Item::update()
+	{
+		if (timerMakeFx_.reachedZero())
+		{
+			timerMakeFx_.restart(Duration{ Random(0.8, 1.3) });
+			gameData_.actors.push_back(std::make_unique<FxTwinkle>(position().currentPos() + Circular{ Random(10.0, 12.0), Random(Math::TwoPi) }));
+		}
 	}
 
 	void Item::draw() const

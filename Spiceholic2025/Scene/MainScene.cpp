@@ -28,7 +28,7 @@ namespace Spiceholic
 
 			case ActorType::ItemChilipepper:
 			case ActorType::ItemKey:
-				gameData.actors.push_back(std::make_unique<Item>(spawn.position, spawn.type));
+				gameData.actors.push_back(std::make_unique<Item>(spawn.position, spawn.type, gameData));
 				break;
 
 			default:
@@ -238,7 +238,7 @@ namespace Spiceholic
 		// ゲージ自動回復
 		if (timerGaugeRecovery_.reachedZero())
 		{
-			gauge_ += 0.008;
+			gauge_ = Saturate(gauge_ + 0.008);
 			timerGaugeRecovery_.restart();
 		}
 	}

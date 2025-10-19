@@ -69,7 +69,7 @@ namespace Spiceholic
 		// ライフが0以下になったら非アクティブ（破棄待ちの状態）になる
 		void setDamage(double value);
 
-		virtual const Vec2& shadowOffset() const
+		virtual Vec2 shadowOffset() const
 		{
 			return Vec2{ 0, 8 };
 		}

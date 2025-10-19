@@ -80,4 +80,30 @@ namespace Spiceholic
 			Circle{ position(), r }.drawFrame(1.0, ColorF{ 1.0, alpha });
 		}
 	}
+
+	FxTwinkle::FxTwinkle(const Vec2& pos)
+		:
+		Fx{ pos },
+		timer_{ 0.2s, StartImmediately::Yes },
+		angle_{ Random(1, 2) * 45_deg }
+	{
+	}
+
+	FxTwinkle::~FxTwinkle()
+	{
+	}
+
+	void FxTwinkle::update()
+	{
+		if (timer_.reachedZero())
+		{
+			setInactive();
+		}
+	}
+
+	void FxTwinkle::draw() const
+	{
+		const double scale = 0.1 + 0.9 * Periodic::Jump0_1(0.2s, timer_.progress0_1() * 0.2);
+		Shape2D::NStar(4, 5 * scale, 2 * scale, position().currentPos().asPoint() + Vec2{.5,.5}, angle_).draw();
+	}
 }

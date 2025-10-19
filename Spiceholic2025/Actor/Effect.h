@@ -53,4 +53,24 @@ namespace Spiceholic
 		Timer timer2_;
 	};
 
+	class FxTwinkle : public Fx
+	{
+	public:
+		inline static constexpr ActorTag Tag = ActorTag::Effect;
+		inline static constexpr ActorType Type = ActorType::None;
+
+	public:
+		FxTwinkle(const Vec2& pos);
+
+		~FxTwinkle() override;
+
+		void update() override;
+
+		void draw() const override;
+
+	private:
+		Timer timer_;
+		double angle_;
+	};
+
 }

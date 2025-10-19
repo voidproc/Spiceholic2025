@@ -25,6 +25,12 @@ namespace Spiceholic
 			case ActorType::BlockGiftbox:
 				gameData.blocks.push_back(std::make_unique<Block>(spawn.position, spawn.type));
 				break;
+
+			case ActorType::ItemChilipepper:
+			case ActorType::ItemKey:
+				gameData.actors.push_back(std::make_unique<Item>(spawn.position, spawn.type));
+				break;
+
 			default:
 				break;
 			}
@@ -158,48 +164,6 @@ namespace Spiceholic
 
 		// アクターの初期配置
 		SpawnActors(0, stageData_, getData());
-
-		/*
-		// ブロックを適当に生成
-		const Grid<int> stageMap = {
-			{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-			{ 1, 0, 0, 1, 2, 1, 0, 0, 0, 1, 2, 1, 0, 0, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-			{ 1, 0, 0, 1, 2, 1, 0, 0, 0, 1, 2, 1, 0, 0, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-			{ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
-			{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
-		};
-
-		for (int32 iY = 0; iY < stageMap.height(); ++iY)
-		{
-			for (int32 iX = 0; iX < stageMap.width(); ++iX)
-			{
-				ActorType type = ActorType::None;
-				if (const int num = stageMap[iY][iX];
-					num == 1)
-				{
-					type = ActorType::BlockSteel;
-				}
-				else if (num == 2)
-				{
-					type = ActorType::BlockCanBreak;
-				}
-
-				if (type != ActorType::None)
-				{
-					const Vec2 pos = Vec2{ 0.5 + iX, 1.5 + iY } * TileSize;
-					getData().blocks.push_back(std::make_unique<Block>(pos, type));
-				}
-			}
-		}
-
-		// アイテムを適当に生成
-		getData().actors.push_back(std::make_unique<Item>(Vec2{ 7.5, 8.5 } * TileSize, ActorType::ItemChilipepper));
-		*/
 	}
 
 	MainScene::~MainScene()

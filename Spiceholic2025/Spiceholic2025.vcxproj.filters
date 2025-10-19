@@ -213,6 +213,9 @@
     <ClCompile Include="Stage\Stage.cpp">
       <Filter>Stage</Filter>
     </ClCompile>
+    <ClCompile Include="Stage\ActorTypeFromTileID.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">
@@ -936,6 +939,9 @@
       <Filter>Scene</Filter>
     </ClInclude>
     <ClInclude Include="Stage\Stage.h">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage\ActorTypeFromTileID.h">
       <Filter>Stage</Filter>
     </ClInclude>
   </ItemGroup>

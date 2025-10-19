@@ -1,84 +1,11 @@
 ﻿#include "Stage.h"
+#include "ActorTypeFromTileID.h"
 #include "Config/GameConfig.h"
 
 namespace Spiceholic
 {
 	namespace
 	{
-		constexpr std::array<ActorType, 65> TileID_ActorType_Map =
-		{
-			ActorType::None,
-			ActorType::PlayerA,
-			ActorType::BlockSteel,
-			ActorType::BlockCanBreak,
-			ActorType::None,
-			ActorType::None,
-			ActorType::None,
-			ActorType::None,
-			ActorType::None,
-			ActorType::None,
-			ActorType::None,
-			ActorType::None,
-			ActorType::None,
-			ActorType::None,
-			ActorType::None,
-			ActorType::None,
-			ActorType::None,
-			ActorType::None,
-			ActorType::None,
-			ActorType::None,
-			ActorType::None,
-			ActorType::None,
-			ActorType::None,
-			ActorType::None,
-			ActorType::None,
-			ActorType::None,
-			ActorType::None,
-			ActorType::None,
-			ActorType::None,
-			ActorType::None,
-			ActorType::None,
-			ActorType::None,
-			ActorType::None,
-			ActorType::None,
-			ActorType::None,
-			ActorType::None,
-			ActorType::None,
-			ActorType::None,
-			ActorType::None,
-			ActorType::None,
-			ActorType::None,
-			ActorType::None,
-			ActorType::None,
-			ActorType::None,
-			ActorType::None,
-			ActorType::None,
-			ActorType::None,
-			ActorType::None,
-			ActorType::None,
-			ActorType::None,
-			ActorType::None,
-			ActorType::None,
-			ActorType::None,
-			ActorType::None,
-			ActorType::None,
-			ActorType::None,
-			ActorType::None,
-			ActorType::None,
-			ActorType::None,
-			ActorType::None,
-			ActorType::None,
-			ActorType::None,
-			ActorType::None,
-			ActorType::None,
-			ActorType::None,
-		};
-
-		ActorType GetActorTypeFromTileID(int tileID)
-		{
-			return TileID_ActorType_Map[tileID];
-		}
-
 		void MakeSpawnsFromTileLayer(const JSON& tileLayer, Array<ActorSpawnInfo>& spawns)
 		{
 			const int w = tileLayer[U"width"].get<int>();

@@ -21,5 +21,12 @@ namespace Spiceholic
 	private:
 		StageData stageData_;
 		Stopwatch time_;
+
+		// 炎ゲージ
+		double gauge_;
+		Timer timerGaugeRecovery_;
+
+		// アクターの影
+		Array<Vec2> shadowPosList_;
 	};
 }

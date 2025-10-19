@@ -31,6 +31,7 @@ namespace
 		TextureAsset::Register(U"BurningStart1", Resource(U"image/burning_start_1.png"));
 		TextureAsset::Register(U"BurningLoop1", Resource(U"image/burning_loop_1.png"));
 		TextureAsset::Register(U"BurningEnd1", Resource(U"image/burning_end_1.png"));
+		TextureAsset::Register(U"Shadow", Resource(U"image/shadow.png"));
 
 		//Load
 		//...

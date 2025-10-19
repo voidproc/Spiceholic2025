@@ -167,10 +167,11 @@ namespace Spiceholic
 		:
 		CustomScene{ init },
 		stageData_{},
-		time_{ StartImmediately::Yes }
+		time_{ StartImmediately::Yes },
+		gauge_{ 0 },
+		timerGaugeRecovery_{ 0.8s, StartImmediately::Yes }
 	{
-		// TODO: ステージデータ読み込み
-		//...
+		// ステージデータ読み込み
 		LoadStage(U"1", stageData_);
 
 		// プレイヤーを初期化
@@ -221,6 +222,25 @@ namespace Spiceholic
 		// アクターの破棄
 		getData().actors.remove_if([](const auto& a) { return not a->active(); });
 		getData().blocks.remove_if([](const auto& a) { return not a->active(); });
+
+		// アクターの影のリストを作成
+		shadowPosList_.clear();
+		shadowPosList_.push_back(player.position().currentPos() + player.shadowOffset());
+		for (size_t i = 0; i < getData().actors.size(); ++i)
+		{
+			const auto& actor = getData().actors[i];
+			if (actor->tag() == ActorTag::Enemy || actor->tag() == ActorTag::Item)
+			{
+				shadowPosList_.push_back(actor->position().currentPos() + actor->shadowOffset());
+			}
+		}
+
+		// ゲージ自動回復
+		if (timerGaugeRecovery_.reachedZero())
+		{
+			gauge_ += 0.008;
+			timerGaugeRecovery_.restart();
+		}
 	}
 
 	void MainScene::draw() const
@@ -230,6 +250,12 @@ namespace Spiceholic
 
 			// BG
 			SceneRect.draw(Palette::Darkolivegreen.lerp(Palette::Cyan, 0.5));//
+
+			// アクターの影
+			for (const auto& shadowPos : shadowPosList_)
+			{
+				TextureAsset(U"Shadow").drawAt(shadowPos);
+			}
 
 			// ブロック
 			for (const auto& block : getData().blocks)
@@ -255,7 +281,8 @@ namespace Spiceholic
 
 			// ゲージ枠、ゲージ
 			const Vec2 gaugePos{ 60, 174 };
-			TextureAsset(U"Gauge").draw(gaugePos + Vec2{ 21, 7 }, ColorF{ 1 - 0.08 * Periodic::Sine0_1(0.3s)});
+			const double gaugeLength = 95 * gauge_;
+			TextureAsset(U"Gauge")(0, 0, gaugeLength, 6).draw(gaugePos + Vec2{ 21, 7 }, ColorF{ 1 - 0.08 * Periodic::Sine0_1(0.3s) });
 			TextureAsset(U"GaugeFrame").draw(gaugePos);
 		}
 	}

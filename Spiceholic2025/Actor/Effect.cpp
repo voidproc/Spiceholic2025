@@ -68,7 +68,7 @@ namespace Spiceholic
 		if (timer_.isRunning())
 		{
 			const double t = timer_.progress0_1();
-			const double r = 5 + 24 * EaseOutCubic(t);
+			const double r = 5 + 28 * EaseOutCubic(t);
 			const double alpha = 0.5 + 0.5 * Periodic::Square0_1(0.04s);
 			Circle{ position(), r }.drawFrame(8 - 7 * t, ColorF{ 1.0, alpha });
 		}

@@ -23,7 +23,7 @@ namespace Spiceholic
 		spriteMirror_{ false },
 		drawOffset_{}
 	{
-		collision_.set(RectF{ Arg::center = Vec2{}, SizeF{ 16 - 2, 20 - 2 } });
+		collision_.set(RectF{ Arg::center = Vec2{ 0, 4 }, SizeF{ 16 - 2, 16 - 2 } });
 	}
 
 	Player::~Player()
@@ -51,7 +51,7 @@ namespace Spiceholic
 			if (KeySpace.down())
 			{
 				const Circular fireDir{ 14, DirectionToAngle(moveDirection_) };
-				gameData_.actors.push_back(std::make_unique<WeaponFire>(position().currentPos() + fireDir, fireDir, 3, gameData_));
+				gameData_.actors.push_back(std::make_unique<WeaponFire>(position().currentPos() + Vec2{ 0, -1 } + fireDir, fireDir, 3, gameData_));
 
 				// 炎を吐いたタイマー: 動作中、プレイヤーは硬直する
 				timerFire_.restart(0.5s);

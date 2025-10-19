@@ -107,7 +107,7 @@ namespace Spiceholic
 		CustomScene{ init }
 	{
 		// プレイヤーを初期化
-		getData().player = std::make_unique<Player>(SceneCenter);
+		getData().player = std::make_unique<Player>(SceneCenter, getData());
 
 		// ブロックを適当に生成
 		const Grid<int> stageMap = {

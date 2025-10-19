@@ -1,6 +1,7 @@
 ﻿#include "Player.h"
 #include "Config/GameConfig.h"
 #include "Core/Periodic.h"
+#include "Setting/AppSetting.h"
 
 namespace Spiceholic
 {
@@ -9,10 +10,14 @@ namespace Spiceholic
 		constexpr double DefaultPlayerMoveSpeed = 1.2 * 60;
 	}
 
-	Player::Player(const Vec2& pos)
+	Player::Player(const Vec2& pos, GameData& gameData)
 		:
 		Actor{ pos },
-		collision_{}
+		gameData_{ gameData },
+		collision_{},
+		moveDirection_{ U"" },
+		spriteName_{ U"PlayerStand" },
+		spriteMirror_{ false }
 	{
 		collision_.set(RectF{ Arg::center = Vec2{}, SizeF{ 16 - 2, 20 - 2 } });
 	}
@@ -31,22 +36,19 @@ namespace Spiceholic
 		};
 
 		setMoveAmount(playerMoveAmount.limitLength(MoveSpeed) * Scene::DeltaTime());
+
+		// 移動方向によりスプライト名を決定
+		updateSpriteState_();
 	}
 
 	void Player::draw() const
 	{
-		if (getMoveAmount().length() > 1e-6)
-		{
-			// 歩きモーション
-			const int charaAnimFrame = PeriodicStair(0.8s, 0, 3);
-			TextureAsset(U"Chara")(charaAnimFrame * 48, 0, 48).drawAt(position());
-		}
-		else
-		{
-			// 立ちモーション
-			const int charaAnimFrame = PeriodicStair(0.9s, 4, 5);
-			TextureAsset(U"Chara")(charaAnimFrame * 48, 0, 48).drawAt(position());
-		}
+		const SpriteInfo& sprite = gameData_.appSetting->get().sprite[spriteName_];
+
+		const int animFrame = PeriodicStair(0.8s, 0, sprite.count - 1);
+		TextureAsset(sprite.textureName)(sprite.pos + Vec2{ animFrame * sprite.size, 0 }, sprite.size, sprite.size)
+			.mirrored(spriteMirror_)
+			.drawAt(position());
 	}
 
 	void Player::onCollide(Actor* other)
@@ -68,4 +70,29 @@ namespace Spiceholic
 		return collision_;
 	}
 
+	void Player::updateSpriteState_()
+	{
+		if (getMoveAmount().length() < 1e-6)
+		{
+			spriteName_ = U"PlayerStand{}"_fmt(moveDirection_);
+			return;
+		}
+
+		const auto angle = getMoveAmount().getAngle();
+		if (InRange(Abs(angle), 45_deg, 135_deg))
+		{
+			moveDirection_ = U"R";
+			spriteMirror_ = (angle < 0);
+		}
+		else if (Abs(angle) > 45_deg)
+		{
+			moveDirection_ = U"";
+		}
+		else if (Abs(angle) < 45_deg)
+		{
+			moveDirection_ = U"U";
+		}
+
+		spriteName_ = U"PlayerWalk{}"_fmt(moveDirection_);
+	}
 }

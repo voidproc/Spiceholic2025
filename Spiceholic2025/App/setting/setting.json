@@ -1,5 +1,42 @@
 ﻿{
   "Title": "Blazing Spiceholics",
   "Version": "1.0.0",
-  "Dummy": 42
+  "Sprite":{
+    "PlayerWalk": {
+      "Texture": "Chara",
+      "Count": 4,
+      "Size": 48,
+      "Pos": [0, 0]
+    },
+    "PlayerStand": {
+      "Texture": "Chara",
+      "Count": 2,
+      "Size": 48,
+      "Pos": [192, 0]
+    },
+    "PlayerWalkR": {
+      "Texture": "Chara",
+      "Count": 4,
+      "Size": 48,
+      "Pos": [288, 0]
+    },
+    "PlayerStandR": {
+      "Texture": "Chara",
+      "Count": 2,
+      "Size": 48,
+      "Pos": [480, 0]
+    },
+    "PlayerWalkU": {
+      "Texture": "Chara",
+      "Count": 4,
+      "Size": 48,
+      "Pos": [576, 0]
+    },
+    "PlayerStandU": {
+      "Texture": "Chara",
+      "Count": 2,
+      "Size": 48,
+      "Pos": [768, 0]
+    }
+  }
 }

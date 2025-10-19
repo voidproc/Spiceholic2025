@@ -14,7 +14,17 @@ namespace Spiceholic
 
 		settings_.title = json[U"Title"].getString();
 		settings_.version = json[U"Version"].getString();
-		settings_.dummy = json[U"Dummy"].getOr<int32>(0);
+
+		for (const auto& s : json[U"Sprite"])
+		{
+			SpriteInfo sprite;
+			sprite.textureName = s.value[U"Texture"].getString();
+			sprite.count = s.value[U"Count"].get<int>();
+			sprite.size = s.value[U"Size"].get<int>();
+			sprite.pos = Point{ s.value[U"Pos"][0].get<int>(), s.value[U"Pos"][1].get<int>() };
+
+			settings_.sprite[s.key] = sprite;
+		}
 	}
 
 	const AppSetting::Settings& AppSetting::get() const

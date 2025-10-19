@@ -2,6 +2,14 @@
 
 namespace Spiceholic
 {
+	struct SpriteInfo
+	{
+		String textureName;
+		int count;
+		int size;
+		Point pos;
+	};
+
 	class AppSetting
 	{
 	public:
@@ -9,7 +17,7 @@ namespace Spiceholic
 		{
 			String title;
 			String version;
-			int dummy;
+			HashTable<String, SpriteInfo> sprite;
 		};
 
 		AppSetting();
@@ -21,6 +29,7 @@ namespace Spiceholic
 		Settings& get();
 
 	private:
+
 		Settings settings_;
 	};
 }

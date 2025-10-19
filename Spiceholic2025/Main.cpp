@@ -49,7 +49,7 @@ void Main()
 	//LoadAudio();
 
 	// 低解像度シーン
-	constexpr double DefaultWindowScale = 3;  // TODO: 設定ファイルからの読込
+	constexpr double DefaultWindowScale = 4;  // TODO: 設定ファイルからの読込
 	LowResolution lowres{ SceneSize, DefaultWindowScale };
 
 	// シーン初期化

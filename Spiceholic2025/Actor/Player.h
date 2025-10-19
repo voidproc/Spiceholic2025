@@ -5,6 +5,8 @@
 
 namespace Spiceholic
 {
+	struct GameData;
+
 	class Player : public Actor
 	{
 	public:
@@ -12,7 +14,7 @@ namespace Spiceholic
 		static constexpr ActorType Type = ActorType::PlayerA;
 
 	public:
-		Player(const Vec2& pos);
+		Player(const Vec2& pos, GameData& gameData);
 
 		~Player() override;
 
@@ -31,7 +33,13 @@ namespace Spiceholic
 		// ICollidable
 		const Collision& getCollision() const override;
 
+		void updateSpriteState_();
+
 	private:
+		GameData& gameData_;
 		Collision collision_;
+		String moveDirection_;
+		String spriteName_;
+		bool spriteMirror_;
 	};
 }

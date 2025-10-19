@@ -3,11 +3,48 @@
 #include "Actor/Item.h"
 #include "Actor/Player.h"
 #include "Config/GameConfig.h"
+#include "Stage/Stage.h"
 
 namespace Spiceholic
 {
 	namespace
 	{
+		// だいたい a <= b かどうか
+		bool IsLessOrEqualApprox(double a, double b)
+		{
+			return a < b || AbsDiff(a, b) < 1e-6;
+		}
+
+		// ActorSpawnInfoをもとにアクターを生成する
+		void SpawnActor(const ActorSpawnInfo& spawn, GameData& gameData)
+		{
+			switch (spawn.type)
+			{
+			case ActorType::BlockSteel:
+			case ActorType::BlockCanBreak:
+			case ActorType::BlockGiftbox:
+				gameData.blocks.push_back(std::make_unique<Block>(spawn.position, spawn.type));
+				break;
+			default:
+				break;
+			}
+		}
+
+		// 指定した時刻で生成する必要のあるアクターを生成
+		void SpawnActors(double currentTime, StageData& stageData, GameData& gameData)
+		{
+			// 生成
+			for (const auto& spawn : stageData.actorSpawns)
+			{
+				if (not IsLessOrEqualApprox(spawn.time, currentTime)) continue;
+
+				SpawnActor(spawn, gameData);
+			}
+
+			// 生成済みのデータを削除しておく
+			stageData.actorSpawns.remove_if([&currentTime](const auto& spawn) { return IsLessOrEqualApprox(spawn.time, currentTime); });
+		}
+
 		bool IsColliding(Actor& actor, const Array<std::unique_ptr<Block>>& blocks)
 		{
 			for (const auto& block : blocks)
@@ -105,14 +142,24 @@ namespace Spiceholic
 	MainScene::MainScene(const InitData& init)
 		:
 		CustomScene{ init },
-		stageData_{}
+		stageData_{},
+		time_{ StartImmediately::Yes }
 	{
-		// プレイヤーを初期化
-		getData().player = std::make_unique<Player>(SceneCenter, getData());
-
 		// TODO: ステージデータ読み込み
 		//...
+		LoadStage(U"1", stageData_);
 
+		// プレイヤーを初期化
+		getData().player = std::make_unique<Player>(stageData_.playerStartPos, getData());
+
+		// アクターのリストを初期化
+		getData().blocks.clear();
+		getData().actors.clear();
+
+		// アクターの初期配置
+		SpawnActors(0, stageData_, getData());
+
+		/*
 		// ブロックを適当に生成
 		const Grid<int> stageMap = {
 			{ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
@@ -152,6 +199,7 @@ namespace Spiceholic
 
 		// アイテムを適当に生成
 		getData().actors.push_back(std::make_unique<Item>(Vec2{ 7.5, 8.5 } * TileSize, ActorType::ItemChilipepper));
+		*/
 	}
 
 	MainScene::~MainScene()
@@ -164,6 +212,9 @@ namespace Spiceholic
 
 		// プレイヤーを更新
 		player.update();
+
+		// アクター生成
+		SpawnActors(time_.sF(), stageData_, getData());
 
 		// ブロックを更新
 		for (auto& block : getData().blocks)
@@ -190,23 +241,27 @@ namespace Spiceholic
 
 	void MainScene::draw() const
 	{
-		// BG
-		SceneRect.draw(Palette::Darkolivegreen.lerp(Palette::Cyan, 0.5));//
-
-		// ブロック
-		for (const auto& block : getData().blocks)
 		{
-			block->draw();
-		}
+			const ScopedViewport2D viewport{ ActorsFieldViewportRect };
 
-		// その他アクター
-		for (const auto& actor : getData().actors)
-		{
-			actor->draw();
-		}
+			// BG
+			SceneRect.draw(Palette::Darkolivegreen.lerp(Palette::Cyan, 0.5));//
 
-		// プレイヤー
-		getData().player->draw();
+			// ブロック
+			for (const auto& block : getData().blocks)
+			{
+				block->draw();
+			}
+
+			// その他アクター
+			for (const auto& actor : getData().actors)
+			{
+				actor->draw();
+			}
+
+			// プレイヤー
+			getData().player->draw();
+		}
 
 		// HUD
 		{

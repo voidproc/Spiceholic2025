@@ -406,3 +406,7 @@ MigrationBackup/
 
 **/App/setting.ini
 **/App/input.ini
+
+# Stage
+
+**/App/stage/*.tiled-session

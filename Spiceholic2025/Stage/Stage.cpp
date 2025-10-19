@@ -9,8 +9,8 @@ namespace Spiceholic
 		{
 			ActorType::None,
 			ActorType::PlayerA,
-			ActorType::None,
-			ActorType::None,
+			ActorType::BlockSteel,
+			ActorType::BlockCanBreak,
 			ActorType::None,
 			ActorType::None,
 			ActorType::None,
@@ -152,7 +152,7 @@ namespace Spiceholic
 
 	void LoadStage(const String& stageID, StageData& stageData)
 	{
-		auto stageJson = JSON::Load(Resource(U"stage/stage_{}.json"_fmt(stageID)));
+		auto stageJson = JSON::Load(Resource(U"stage/stage_{}.tmj"_fmt(stageID)));
 
 		stageData.name = U"STAGE {}"_fmt(stageID);
 

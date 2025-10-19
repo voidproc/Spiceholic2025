@@ -20,5 +20,6 @@ namespace Spiceholic
 
 	private:
 		StageData stageData_;
+		Stopwatch time_;
 	};
 }

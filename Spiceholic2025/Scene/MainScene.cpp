@@ -104,10 +104,14 @@ namespace Spiceholic
 
 	MainScene::MainScene(const InitData& init)
 		:
-		CustomScene{ init }
+		CustomScene{ init },
+		stageData_{}
 	{
 		// プレイヤーを初期化
 		getData().player = std::make_unique<Player>(SceneCenter, getData());
+
+		// TODO: ステージデータ読み込み
+		//...
 
 		// ブロックを適当に生成
 		const Grid<int> stageMap = {
@@ -140,14 +144,14 @@ namespace Spiceholic
 
 				if (type != ActorType::None)
 				{
-					const Vec2 pos = Vec2{ 0.5 + iX, 1.5 + iY } * 16;
+					const Vec2 pos = Vec2{ 0.5 + iX, 1.5 + iY } * TileSize;
 					getData().blocks.push_back(std::make_unique<Block>(pos, type));
 				}
 			}
 		}
 
 		// アイテムを適当に生成
-		getData().actors.push_back(std::make_unique<Item>(Vec2{ 7.5, 8.5 } * 16, ActorType::ItemChilipepper));
+		getData().actors.push_back(std::make_unique<Item>(Vec2{ 7.5, 8.5 } * TileSize, ActorType::ItemChilipepper));
 	}
 
 	MainScene::~MainScene()
@@ -207,8 +211,8 @@ namespace Spiceholic
 		// HUD
 		{
 			// BG (0, 0), (0, 176)
-			Rect{ 0, 0, Size{ SceneSize.x, 16 } }.draw(ColorF{ 0.1 });
-			Rect{ 0, 176, Size{ SceneSize.x, 16 } }.draw(ColorF{ 0.1 });
+			Rect{ 0, 0, Size{ SceneSize.x, TileSize } }.draw(ColorF{ 0.1 });
+			Rect{ 0, 176, Size{ SceneSize.x, TileSize } }.draw(ColorF{ 0.1 });
 
 			// ゲージ枠、ゲージ
 			const Vec2 gaugePos{ 60, 174 };

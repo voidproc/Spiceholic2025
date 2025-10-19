@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "CustomScene.h"
+#include "Stage/Stage.h"
 
 namespace Spiceholic
 {
@@ -18,6 +19,6 @@ namespace Spiceholic
 		void draw() const override;
 
 	private:
-
+		StageData stageData_;
 	};
 }

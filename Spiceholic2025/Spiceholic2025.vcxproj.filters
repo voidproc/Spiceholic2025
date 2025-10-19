@@ -160,6 +160,9 @@
     <Filter Include="Audio">
       <UniqueIdentifier>{6ed0f7f6-50a9-4b39-8c48-82e567f2544f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Stage">
+      <UniqueIdentifier>{170753df-7c62-4d79-bfe8-aca6d68ee585}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -206,6 +209,9 @@
     </ClCompile>
     <ClCompile Include="Scene\TitleScene.cpp">
       <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Stage\Stage.cpp">
+      <Filter>Stage</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -928,6 +934,9 @@
     </ClInclude>
     <ClInclude Include="Scene\TitleScene.h">
       <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Stage\Stage.h">
+      <Filter>Stage</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

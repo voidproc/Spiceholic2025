@@ -204,6 +204,9 @@
     <ClCompile Include="Actor\Item.cpp">
       <Filter>Actor</Filter>
     </ClCompile>
+    <ClCompile Include="Scene\TitleScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">
@@ -922,6 +925,9 @@
     </ClInclude>
     <ClInclude Include="Actor\Item.h">
       <Filter>Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\TitleScene.h">
+      <Filter>Scene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

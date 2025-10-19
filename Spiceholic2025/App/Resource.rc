@@ -133,3 +133,6 @@ Resource(image/chara.png)
 Resource(image/gauge.png)
 Resource(image/gauge_frame.png)
 Resource(image/item.png)
+
+Resource(font/px7812.ttf)
+Resource(font/k8x12L.ttf)

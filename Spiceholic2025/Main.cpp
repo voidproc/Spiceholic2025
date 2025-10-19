@@ -29,7 +29,26 @@ namespace
 		TextureAsset::Register(U"GaugeFrame", Resource(U"image/gauge_frame.png"));
 		TextureAsset::Register(U"Item", Resource(U"image/item.png"));
 
-		//TextureAsset::Load();
+		//Load
+		//...
+	}
+
+	void LoadFont()
+	{
+		auto data_px7812 = std::make_unique<FontAssetData>();
+		data_px7812->font = Font{ 12, Resource(U"font/px7812.ttf"), FontStyle::Bitmap };
+
+		auto data_k8x12L = std::make_unique<FontAssetData>();
+		data_k8x12L->font = Font{ 12, Resource(U"font/k8x12L.ttf"), FontStyle::Bitmap };
+
+		// フォールバックフォントの設定
+		data_px7812->font.addFallback(data_k8x12L->font);
+
+		FontAsset::Register(U"px7812", std::move(data_px7812));
+		FontAsset::Register(U"k8x12L", std::move(data_k8x12L));
+
+		//Load
+		//...
 	}
 }
 
@@ -45,7 +64,7 @@ void Main()
 
 	// アセット読み込み
 	LoadImage();
-	//LoadFont();
+	LoadFont();
 	//LoadAudio();
 
 	// 低解像度シーン
@@ -54,9 +73,9 @@ void Main()
 
 	// シーン初期化
 	App app{ gameData };
-	RegisterScenes<MainScene>(app);
+	RegisterScenes<TitleScene, MainScene>(app);
 	app.setFadeColor(DefaultBgColor);
-	app.init(MainScene::Name, 0s);
+	app.init(TitleScene::Name, 0s);
 
 	while (System::Update())
 	{

@@ -2,5 +2,5 @@
 
 namespace Spiceholic
 {
-	int PeriodicStair(const Duration& period, int minVal, int maxVal);
+	int PeriodicStair(const Duration& period, int minVal, int maxVal, double time = Scene::Time());
 }

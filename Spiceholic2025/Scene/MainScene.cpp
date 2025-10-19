@@ -23,7 +23,7 @@ namespace Spiceholic
 			case ActorType::BlockSteel:
 			case ActorType::BlockCanBreak:
 			case ActorType::BlockGiftbox:
-				gameData.blocks.push_back(std::make_unique<Block>(spawn.position, spawn.type));
+				gameData.blocks.push_back(std::make_unique<Block>(spawn.position, spawn.type, gameData));
 				break;
 
 			case ActorType::ItemChilipepper:
@@ -110,7 +110,7 @@ namespace Spiceholic
 		}
 
 		// プレイヤーと、アイテムや敵との当たり判定
-		void CheckCollision(Player& player, Array<std::unique_ptr<Actor>>& actors)
+		void CheckCollision(Player& player, Array<std::unique_ptr<Actor>>& actors, Array<std::unique_ptr<Block>>& blocks)
 		{
 			// プレイヤーとその他
 			for (auto& actor : actors)
@@ -131,6 +131,24 @@ namespace Spiceholic
 				{
 					auto& ai = actors[i];
 					auto& aj = actors[j];
+
+					if (not IsCollidable(*ai, *aj)) continue;
+
+					if (ai->isCollidingWith(*aj))
+					{
+						ai->onCollide(aj.get());
+						aj->onCollide(ai.get());
+					}
+				}
+			}
+
+			// その他とブロック
+			for (auto i = 0; i < actors.size(); ++i)
+			{
+				for (auto j = i + 1; j < blocks.size(); ++j)
+				{
+					auto& ai = actors[i];
+					auto& aj = blocks[j];
 
 					if (not IsCollidable(*ai, *aj)) continue;
 
@@ -187,16 +205,18 @@ namespace Spiceholic
 		}
 
 		// その他アクターを更新
-		for (auto& actor : getData().actors)
+		//for (auto& actor : getData().actors)
+		for (size_t i = 0; i < getData().actors.size(); ++i)
 		{
-			actor->update();
+			getData().actors[i]->update();
 		}
 
 		// アクターの位置を更新
 		UpdateActorPos(player, getData().blocks);
 
 		// アクター同士の衝突判定
-		CheckCollision(player, getData().actors);
+		CheckCollision(player, getData().actors, getData().blocks);
+
 
 		// アクターの破棄
 		getData().actors.remove_if([](const auto& a) { return not a->active(); });

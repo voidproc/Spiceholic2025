@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "Actor.h"
+#include "Direction.h"
 #include "Core/Collision.h"
 
 namespace Spiceholic
@@ -38,8 +39,15 @@ namespace Spiceholic
 	private:
 		GameData& gameData_;
 		Collision collision_;
-		String moveDirection_;
+
+		// 炎を吐くアクション
+		Timer timerFire_;
+
+		// テクスチャ描画用
+		Direction moveDirection_;
+		String moveDirectionText_;
 		String spriteName_;
 		bool spriteMirror_;
+		Vec2 drawOffset_;
 	};
 }

@@ -113,7 +113,8 @@ namespace Spiceholic
 			return
 				((tagA == ActorTag::Player) && (tagB == ActorTag::Enemy)) ||
 				((tagA == ActorTag::Player) && (tagB == ActorTag::Item)) ||
-				((tagA == ActorTag::Weapon) && (tagB == ActorTag::Enemy))
+				((tagA == ActorTag::Weapon) && (tagB == ActorTag::Enemy)) ||
+				((tagA == ActorTag::Weapon) && (tagB == ActorTag::Block))
 				;
 			};
 

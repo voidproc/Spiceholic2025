@@ -216,6 +216,15 @@
     <ClCompile Include="Stage\ActorTypeFromTileID.cpp">
       <Filter>Stage</Filter>
     </ClCompile>
+    <ClCompile Include="Actor\Weapon.cpp">
+      <Filter>Actor</Filter>
+    </ClCompile>
+    <ClCompile Include="Actor\Direction.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Actor\Effect.cpp">
+      <Filter>Actor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">
@@ -943,6 +952,15 @@
     </ClInclude>
     <ClInclude Include="Stage\ActorTypeFromTileID.h">
       <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="Actor\Weapon.h">
+      <Filter>Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Actor\Direction.h">
+      <Filter>Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Actor\Effect.h">
+      <Filter>Actor</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

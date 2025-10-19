@@ -10,5 +10,6 @@ namespace Spiceholic
 		Item,
 		Weapon,
 		Block,
+		Effect,
 	};
 }

@@ -22,12 +22,16 @@ namespace Spiceholic
 
 		// Weapon:
 		WeaponFire,
+		WeaponExplode,
 		//...
 
 		// Block:
 		BlockSteel,
 		BlockCanBreak,
 		BlockGiftbox,
+		//...
+
+		// Effect:
 		//...
 	};
 }

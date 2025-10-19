@@ -11,13 +11,15 @@ namespace Spiceholic
 		static constexpr ActorTag Tag = ActorTag::Block;
 
 	public:
-		Block(const Vec2& pos, ActorType type);
+		Block(const Vec2& pos, ActorType type, GameData& gameData);
 
 		~Block() override;
 
 		void update() override;
 
 		void draw() const override;
+
+		void onCollide(Actor* other) override;
 
 		ActorTag tag() const override { return Tag; }
 		ActorType type() const override { return type_; }
@@ -30,6 +32,8 @@ namespace Spiceholic
 
 	private:
 		ActorType type_;
+		GameData& gameData_;
 		Collision collision_;
+		Timer timerDamaged_;
 	};
 }

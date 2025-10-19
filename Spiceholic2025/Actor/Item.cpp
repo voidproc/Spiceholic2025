@@ -7,18 +7,33 @@ namespace Spiceholic
 {
 	namespace
 	{
+		// あたり判定の大きさ
 		constexpr double DefaultItemCollisionSize = 16;
+
+		// 登場にかかる時間
+		constexpr double TimeAppearSec = 0.3;
+		constexpr Duration TimeAppear{ TimeAppearSec };
+
 	}
 
-	Item::Item(const Vec2& pos, ActorType itemType, GameData& gameData)
+	Item::Item(const Vec2& pos, ActorType itemType, GameData& gameData, bool appearJumping)
 		:
 		Actor{ pos },
 		gameData_{ gameData },
 		collision_{},
 		type_{ itemType },
+		timerJumping_{ 999s },
 		timerMakeFx_{ 1.1s, StartImmediately::Yes }
 	{
-		collision_.set(RectF{ Arg::center = Vec2{}, DefaultItemCollisionSize });
+		if (appearJumping)
+		{
+			timerJumping_.restart(TimeAppear);
+		}
+		else
+		{
+			initCollision_();
+			timerJumping_.reset();
+		}
 	}
 
 	Item::~Item()
@@ -27,6 +42,14 @@ namespace Spiceholic
 
 	void Item::update()
 	{
+		// 跳ねながら登場の場合
+		if (timerJumping_.reachedZero())
+		{
+			initCollision_();
+			timerJumping_.reset();
+		}
+
+		// きらきら
 		if (timerMakeFx_.reachedZero())
 		{
 			timerMakeFx_.restart(Duration{ Random(0.8, 1.3) });
@@ -36,7 +59,9 @@ namespace Spiceholic
 
 	void Item::draw() const
 	{
-		const Vec2 pos = position().currentPos() + Vec2{ 0, 1.0 * Periodic::Sine1_1(1.5s) };
+		const double jumpY = timerJumping_.isRunning() ? -4.0 * Periodic::Jump0_1(TimeAppear) : 0;
+
+		const Vec2 pos = position().currentPos() + Vec2{ 0, 1.0 * Periodic::Sine1_1(1.5s) } + Vec2{ 0, jumpY };
 		const ColorF color{ 1 };
 
 		if (type() == ActorType::ItemChilipepper)
@@ -81,5 +106,10 @@ namespace Spiceholic
 		}
 
 		return score;
+	}
+
+	void Item::initCollision_()
+	{
+		collision_.set(RectF{ Arg::center = Vec2{}, DefaultItemCollisionSize });
 	}
 }

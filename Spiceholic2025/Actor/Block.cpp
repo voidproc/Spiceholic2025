@@ -1,5 +1,6 @@
 ﻿#include "Block.h"
 #include "Effect.h"
+#include "Item.h"
 #include "Config/GameConfig.h"
 
 namespace Spiceholic
@@ -50,16 +51,24 @@ namespace Spiceholic
 
 		if (type() == ActorType::BlockCanBreak)
 		{
+			// 壊せるブロック
 			if (other->tag() == ActorTag::Weapon)
 			{
+				// プレイヤーの攻撃で破壊された
 				if (not timerDamaged_.isRunning())
 				{
 					timerDamaged_.restart();
+
+					// 1回あたりダメージ
 					setDamage(0.3);
 
+					// 破壊されたらエフェクト、アイテム放出
 					if (not active())
 					{
 						gameData_.actors.push_back(std::make_unique<FxBlockBreak>(position().currentPos()));
+
+						// 仮: アイテム放出
+						gameData_.actors.push_back(std::make_unique<Item>(position().currentPos(), ActorType::ItemChilipepper, gameData_));
 					}
 				}
 			}

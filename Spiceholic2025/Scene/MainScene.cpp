@@ -235,7 +235,7 @@ namespace Spiceholic
 			}
 		}
 
-		// ゲージ自動回復
+		// 炎ゲージ自動回復
 		if (timerGaugeRecovery_.reachedZero())
 		{
 			gauge_ = Saturate(gauge_ + 0.008);

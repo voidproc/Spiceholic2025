@@ -24,6 +24,7 @@ namespace Spiceholic
 
 		// 炎ゲージ
 		double gauge_;
+		// 炎ゲージ自動回復用タイマー
 		Timer timerGaugeRecovery_;
 
 		// アクターの影

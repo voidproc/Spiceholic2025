@@ -10,7 +10,7 @@ namespace Spiceholic
 		// あたり判定の大きさ
 		constexpr double DefaultItemCollisionSize = 16;
 
-		// 登場にかかる時間
+		// 出現にかかる時間
 		constexpr double TimeAppearSec = 0.3;
 		constexpr Duration TimeAppear{ TimeAppearSec };
 
@@ -42,7 +42,7 @@ namespace Spiceholic
 
 	void Item::update()
 	{
-		// 跳ねながら登場の場合
+		// 跳ねながら出現の場合
 		if (timerJumping_.reachedZero())
 		{
 			initCollision_();
@@ -59,9 +59,10 @@ namespace Spiceholic
 
 	void Item::draw() const
 	{
-		const double jumpY = timerJumping_.isRunning() ? -4.0 * Periodic::Jump0_1(TimeAppear) : 0;
+		// 跳ねる
+		const Vec2 jump{ 0, timerJumping_.isRunning() ? -4.0 * Periodic::Jump0_1(TimeAppear) : 0 };
 
-		const Vec2 pos = position().currentPos() + Vec2{ 0, 1.0 * Periodic::Sine1_1(1.5s) } + Vec2{ 0, jumpY };
+		const Vec2 pos = position().currentPos() + Vec2{ 0, 1.0 * Periodic::Sine1_1(1.5s) } + jump;
 		const ColorF color{ 1 };
 
 		if (type() == ActorType::ItemChilipepper)

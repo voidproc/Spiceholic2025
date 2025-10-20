@@ -81,7 +81,7 @@ namespace Spiceholic
 			// ノックバック中
 
 			// 少し後退
-			setMoveAmount(Circular{ 60.0, DirectionToAngle(moveDirection_) + 180_deg }.toVec2() * Scene::DeltaTime());
+			setMoveAmount(Circular{ 40.0, DirectionToAngle(moveDirection_) + 180_deg }.toVec2() * Scene::DeltaTime());
 		}
 
 	}

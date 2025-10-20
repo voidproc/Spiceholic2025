@@ -97,12 +97,6 @@ namespace Spiceholic
 			}
 		}
 
-		// メインシーン移行タイマー
-		if (KeyEnter.down() && not timerSceneChange_.isRunning())
-		{
-			timerSceneChange_.start();
-		}
-
 		if (timerSceneChange_.reachedZero())
 		{
 			changeScene(U"MainScene", 0);

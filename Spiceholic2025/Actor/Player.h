@@ -46,6 +46,10 @@ namespace Spiceholic
 		// アイテム取得
 		Timer timerGetItem_;
 
+		// 敵に当たった
+		Timer timerKnockback_;
+		Timer timerTr_;
+
 		// テクスチャ描画用
 		Direction moveDirection_;
 		String moveDirectionText_;

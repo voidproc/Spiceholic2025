@@ -19,6 +19,8 @@ namespace Spiceholic
 		collision_{},
 		timerFire_{ 1s, StartImmediately::No, Clock() },
 		timerGetItem_{ 0.3s, StartImmediately::No, Clock() },
+		timerKnockback_{ 0.4s, StartImmediately::No, Clock() },
+		timerTr_{ 1.8s, StartImmediately::No, Clock() },
 		moveDirection_{ Direction::S },
 		moveDirectionText_{ U"" },
 		spriteName_{ U"PlayerStand" },
@@ -34,9 +36,10 @@ namespace Spiceholic
 
 	void Player::update()
 	{
-		// 硬直していない
-		if (not timerFire_.isRunning())
+		if (not timerFire_.isRunning() && not timerKnockback_.isRunning())
 		{
+			// 硬直していない、かつノックバック中じゃない
+
 			// 移動
 			{
 				const double MoveSpeed = DefaultPlayerMoveSpeed;
@@ -64,7 +67,7 @@ namespace Spiceholic
 			// 移動方向によりスプライト名を決定
 			updateSpriteState_();
 		}
-		else
+		else if (timerFire_.isRunning())
 		{
 			// 硬直中
 
@@ -73,13 +76,29 @@ namespace Spiceholic
 
 			drawOffset_.x = Periodic::Sine1_1(0.08s) * 1.5;
 		}
+		else if (timerKnockback_.isRunning())
+		{
+			// ノックバック中
+
+			// 少し後退
+			setMoveAmount(Circular{ 60.0, DirectionToAngle(moveDirection_) + 180_deg }.toVec2() * Scene::DeltaTime());
+		}
+
 	}
 
 	void Player::draw() const
 	{
 		const SpriteInfo& sprite = gameData_.appSetting->get().sprite[spriteName_];
-
 		const int animFrame = PeriodicStair(0.8s, 0, sprite.count - 1, ClockTime());
+
+		// ノックバック中の描画オフセット
+		const Vec2 knockbackOffset = timerKnockback_.isRunning() ? Vec2{ 0, -8 * Periodic::Jump0_1(timerKnockback_.duration(), timerKnockback_.progress0_1() * timerKnockback_.duration().count()) } : Vec2{};
+
+		// 描画位置
+		const Vec2 pos = position().currentPos() + drawOffset_ + knockbackOffset;
+
+		// アルファ（無敵中は点滅）
+		const double alpha = (timerTr_.isRunning()) ? 0.2 + 0.7 * Periodic::Square0_1(0.08s, ClockTime()) : 1.0;
 
 		{
 			// アイテム取得時点滅
@@ -89,16 +108,21 @@ namespace Spiceholic
 
 			TextureAsset(sprite.textureName)(sprite.pos + Vec2{ animFrame * sprite.size, 0 }, sprite.size, sprite.size)
 				.mirrored(spriteMirror_)
-				.drawAt(position().currentPos() + drawOffset_);
+				.drawAt(pos, AlphaF(alpha));
 		}
 	}
 
 	void Player::onCollide(Actor* other)
 	{
 		// TODO: 敵に触れると...
-		if (other->tag() == ActorTag::Enemy)
+		if (other->tag() == ActorTag::Enemy && not timerTr_.isRunning())
 		{
-			//...
+			// ノックバック & 無敵
+			if (not timerKnockback_.isRunning())
+			{
+				timerKnockback_.restart();
+				timerTr_.restart();
+			}
 		}
 		else if (other->tag() == ActorTag::Item)
 		{

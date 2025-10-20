@@ -33,6 +33,7 @@ namespace
 		TextureAsset::Register(U"BurningLoop1", Resource(U"image/burning_loop_1.png"));
 		TextureAsset::Register(U"BurningEnd1", Resource(U"image/burning_end_1.png"));
 		TextureAsset::Register(U"Shadow", Resource(U"image/shadow.png"));
+		TextureAsset::Register(U"WhiteArrow", Resource(U"image/white_arrow.png"));
 
 		//Load
 		//...
@@ -81,7 +82,7 @@ void Main()
 	App app{ gameData };
 	RegisterScenes<TitleScene, OptionScene, MainScene>(app);
 	app.setFadeColor(DefaultBgColor);
-	app.init(OptionScene::Name, 0s);
+	app.init(TitleScene::Name, 0s);
 
 	// ウィンドウスケール設定変更を監視
 	int32 previousScale = gameData->userSetting->get().windowScale;

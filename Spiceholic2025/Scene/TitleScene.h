@@ -18,6 +18,13 @@ namespace Spiceholic
 		void draw() const override;
 
 	private:
+		void selectNext_();
+		void selectPrevious_();
+
 		Timer timerSceneChange_;
+
+		// 選択中の項目
+		size_t selectedMenuIndex_;
+
 	};
 }

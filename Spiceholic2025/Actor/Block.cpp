@@ -14,8 +14,7 @@ namespace Spiceholic
 		Actor{ pos },
 		type_{ type },
 		gameData_{ gameData },
-		collision_{},
-		timerDamaged_{ 0.3s, StartImmediately::No, Clock() }
+		collision_{}
 	{
 		collision_.set(RectF{ Arg::center = Vec2{}, 16 - 2 });
 	}

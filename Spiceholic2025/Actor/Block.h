@@ -34,6 +34,5 @@ namespace Spiceholic
 		ActorType type_;
 		GameData& gameData_;
 		Collision collision_;
-		Timer timerDamaged_;
 	};
 }

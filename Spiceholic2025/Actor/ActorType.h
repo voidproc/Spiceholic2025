@@ -11,7 +11,7 @@ namespace Spiceholic
 		//...
 
 		// Enemy:
-		Enemy1,
+		EnemyChick,
 		Enemy2,
 		//...
 

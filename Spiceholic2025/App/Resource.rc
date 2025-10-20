@@ -138,6 +138,7 @@ Resource(image/burning_loop_1.png)
 Resource(image/burning_end_1.png)
 Resource(image/shadow.png)
 Resource(image/white_arrow.png)
+Resource(image/enemy_chick.png)
 
 Resource(font/px7812.ttf)
 Resource(font/k8x12L.ttf)

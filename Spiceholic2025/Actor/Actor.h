@@ -79,6 +79,9 @@ namespace Spiceholic
 		Vec2 moveAmount_;
 		bool active_;
 		double life_;
+
+	protected:
+		Timer timerDamaged_;
 	};
 
 	// アクターどうしが衝突判定の対象かどうか

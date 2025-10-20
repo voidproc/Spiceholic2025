@@ -1,5 +1,6 @@
 ﻿#include "MainScene.h"
 #include "Actor/Block.h"
+#include "Actor/Enemy.h"
 #include "Actor/Item.h"
 #include "Actor/Player.h"
 #include "Config/GameConfig.h"
@@ -30,6 +31,10 @@ namespace Spiceholic
 			case ActorType::ItemChilipepper:
 			case ActorType::ItemKey:
 				gameData.actors.push_back(std::make_unique<Item>(spawn.position, spawn.type, gameData));
+				break;
+
+			case ActorType::EnemyChick:
+				gameData.actors.push_back(std::make_unique<EnemyChick>(spawn.position, gameData));
 				break;
 
 			default:
@@ -81,6 +86,23 @@ namespace Spiceholic
 				if (IsColliding(actor, blocks))
 				{
 					actor.revertMoveX();
+				}
+				else
+				{
+					break;
+				}
+			}
+
+			// まだ衝突していたらしょうがないから1pxずつ戻す
+			// 方向:
+			const auto origMoveAmount = actor.getMoveAmount();
+			double dirX = Sign(origMoveAmount.x);
+			for (int iN = 1; iN <= 4; ++iN)
+			{
+				if (IsColliding(actor, blocks))
+				{
+					actor.setMoveAmount(origMoveAmount - Vec2{ dirX, 0 });
+					actor.applyMoveX();
 				}
 				else
 				{
@@ -230,8 +252,17 @@ namespace Spiceholic
 				getData().actors[i]->update();
 			}
 
-			// アクターの位置を更新
+			// プレイヤーの位置を調整
 			UpdateActorPos(player, getData().blocks);
+
+			// 敵の位置を調整
+			for (auto& actor : getData().actors)
+			{
+				if (actor->type() == ActorType::EnemyChick)
+				{
+					UpdateActorPos(*actor, getData().blocks);
+				}
+			}
 
 			// アクター同士の衝突判定
 			CheckCollision(player, getData().actors, getData().blocks);

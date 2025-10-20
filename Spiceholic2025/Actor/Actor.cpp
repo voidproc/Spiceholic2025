@@ -7,7 +7,8 @@ namespace Spiceholic
 		pos_{ pos },
 		moveAmount_{},
 		active_{ true },
-		life_{ 1.0 }
+		life_{ 1.0 },
+		timerDamaged_{ 0.3s, StartImmediately::No, Clock() }
 	{
 	}
 
@@ -96,11 +97,16 @@ namespace Spiceholic
 
 	void Actor::setDamage(double value)
 	{
-		life_ -= value;
-
-		if (life_ <= 0)
+		if (not timerDamaged_.isRunning())
 		{
-			setInactive();
+			life_ -= value;
+
+			timerDamaged_.restart();
+
+			if (life_ <= 0)
+			{
+				setInactive();
+			}
 		}
 	}
 

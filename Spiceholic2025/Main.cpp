@@ -34,6 +34,7 @@ namespace
 		TextureAsset::Register(U"BurningEnd1", Resource(U"image/burning_end_1.png"));
 		TextureAsset::Register(U"Shadow", Resource(U"image/shadow.png"));
 		TextureAsset::Register(U"WhiteArrow", Resource(U"image/white_arrow.png"));
+		TextureAsset::Register(U"EnemyChick", Resource(U"image/enemy_chick.png"));
 
 		//Load
 		//...

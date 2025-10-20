@@ -258,6 +258,9 @@
     <ClCompile Include="Core\GlobalClock.cpp">
       <Filter>Core</Filter>
     </ClCompile>
+    <ClCompile Include="Actor\Enemy.cpp">
+      <Filter>Actor</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">
@@ -1027,6 +1030,9 @@
     </ClInclude>
     <ClInclude Include="Core\GameClock.h">
       <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Actor\Enemy.h">
+      <Filter>Actor</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

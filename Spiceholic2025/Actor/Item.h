@@ -38,6 +38,7 @@ namespace Spiceholic
 		GameData& gameData_;
 		Collision collision_;
 		ActorType type_;
+		Stopwatch time_;
 
 		// 跳ねながら出現用
 		Timer timerJumping_;

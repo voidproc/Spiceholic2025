@@ -4,6 +4,7 @@
 #include "Core/LowResolution.h"
 #include "Scene/Scenes.h"
 #include "Setting/AppSetting.h"
+#include "Setting/UserSetting.h"
 
 namespace
 {
@@ -63,6 +64,7 @@ void Main()
 	// ゲームデータ
 	auto gameData = std::make_shared<GameData>();
 	gameData->appSetting->load();
+	gameData->userSetting->load(UserSettingFilePath);
 
 	InitSivSystem(*gameData->appSetting);
 
@@ -72,14 +74,17 @@ void Main()
 	//LoadAudio();
 
 	// 低解像度シーン
-	constexpr double DefaultWindowScale = 4;  // TODO: 設定ファイルからの読込
+	const double DefaultWindowScale = gameData->userSetting->get().windowScale;
 	LowResolution lowres{ SceneSize, DefaultWindowScale };
 
 	// シーン初期化
 	App app{ gameData };
-	RegisterScenes<TitleScene, MainScene>(app);
+	RegisterScenes<TitleScene, OptionScene, MainScene>(app);
 	app.setFadeColor(DefaultBgColor);
-	app.init(TitleScene::Name, 0s);
+	app.init(OptionScene::Name, 0s);
+
+	// ウィンドウスケール設定変更を監視
+	int32 previousScale = gameData->userSetting->get().windowScale;
 
 	while (System::Update())
 	{
@@ -95,7 +100,12 @@ void Main()
 
 		lowres.draw();
 
-		// TODO: ウィンドウスケール設定変更時に反映
-		//...
+		// ウィンドウスケール設定変更時に反映
+		if (const auto newScale = gameData->userSetting->get().windowScale;
+			newScale != previousScale)
+		{
+			lowres.setScale(newScale);
+			previousScale = newScale;
+		}
 	}
 }

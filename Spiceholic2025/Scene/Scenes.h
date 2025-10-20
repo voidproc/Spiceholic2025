@@ -2,6 +2,7 @@
 
 #include "Scene/TitleScene.h"
 #include "Scene/MainScene.h"
+#include "Scene/OptionScene.h"
 
 template <class ... Scenes, class App>
 void RegisterScenes(App& app) {

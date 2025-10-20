@@ -9,4 +9,5 @@ namespace Spiceholic
 	inline constexpr Size ActorsFieldViewportSize = SceneSize - Size{ 0, TileSize * 2 };
 	inline constexpr Rect ActorsFieldViewportRect{ 0, TileSize, ActorsFieldViewportSize };
 	inline constexpr FilePathView AppSettingJsonPath = U"setting/setting.json";
+	inline constexpr FilePathView UserSettingFilePath = U"setting.ini";
 }

@@ -3,12 +3,14 @@
 #include "Actor/Block.h"
 #include "Actor/Player.h"
 #include "Setting/AppSetting.h"
+#include "Setting/UserSetting.h"
 
 namespace Spiceholic
 {
 	GameData::GameData()
 		:
 		appSetting{ std::make_unique<AppSetting>() },
+		userSetting{ std::make_unique<UserSetting>() },
 		player{},
 		blocks{ Arg::reserve = 128 },
 		actors{ Arg::reserve = 128 }

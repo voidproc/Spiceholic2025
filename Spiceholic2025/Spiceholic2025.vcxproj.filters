@@ -225,6 +225,18 @@
     <ClCompile Include="Actor\Effect.cpp">
       <Filter>Actor</Filter>
     </ClCompile>
+    <ClCompile Include="Scene\OptionScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Setting\UserSetting.cpp">
+      <Filter>Setting</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\DrawText.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Audio\AudioVolume.cpp">
+      <Filter>Audio</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">
@@ -961,6 +973,18 @@
     </ClInclude>
     <ClInclude Include="Actor\Effect.h">
       <Filter>Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\OptionScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Setting\UserSetting.h">
+      <Filter>Setting</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\DrawText.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Audio\AudioVolume.h">
+      <Filter>Audio</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -237,6 +237,21 @@
     <ClCompile Include="Audio\AudioVolume.cpp">
       <Filter>Audio</Filter>
     </ClCompile>
+    <ClCompile Include="Input\Action.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Input\ActionInput.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Input\Input.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Setting\InputSetting.cpp">
+      <Filter>Setting</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene\InputSettingScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">
@@ -985,6 +1000,21 @@
     </ClInclude>
     <ClInclude Include="Audio\AudioVolume.h">
       <Filter>Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="Input\Action.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Input\ActionInput.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Input\Input.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Setting\InputSetting.h">
+      <Filter>Setting</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\InputSettingScene.h">
+      <Filter>Scene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

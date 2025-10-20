@@ -10,4 +10,5 @@ namespace Spiceholic
 	inline constexpr Rect ActorsFieldViewportRect{ 0, TileSize, ActorsFieldViewportSize };
 	inline constexpr FilePathView AppSettingJsonPath = U"setting/setting.json";
 	inline constexpr FilePathView UserSettingFilePath = U"setting.ini";
+	inline constexpr FilePathView InputSettingFilePath = U"input.ini";
 }

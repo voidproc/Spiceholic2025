@@ -18,8 +18,8 @@ namespace
 
 		Window::SetTitle(Format(appSetting.get().title, U" - v"), appSetting.get().version);
 
-		// TODO: アプリ終了条件
-		//...
+		// ESCキーで終了しない
+		System::SetTerminationTriggers(UserAction::CloseButtonClicked);
 	}
 
 	void LoadImage()
@@ -80,7 +80,7 @@ void Main()
 
 	// シーン初期化
 	App app{ gameData };
-	RegisterScenes<TitleScene, OptionScene, MainScene>(app);
+	RegisterScenes<TitleScene, OptionScene, InputSettingScene, MainScene>(app);
 	app.setFadeColor(DefaultBgColor);
 	app.init(TitleScene::Name, 0s);
 

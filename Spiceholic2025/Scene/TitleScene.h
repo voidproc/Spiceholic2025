@@ -26,5 +26,8 @@ namespace Spiceholic
 		// 選択中の項目
 		size_t selectedMenuIndex_;
 
+		// 描画用
+		Timer timerMoveCursorLeft_;
+		Timer timerMoveCursorRight_;
 	};
 }

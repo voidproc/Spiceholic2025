@@ -2,6 +2,7 @@
 #include "Weapon.h"
 #include "Config/GameConfig.h"
 #include "Core/Periodic.h"
+#include "Input/ActionInput.h"
 #include "Setting/AppSetting.h"
 
 namespace Spiceholic
@@ -40,15 +41,15 @@ namespace Spiceholic
 				const double MoveSpeed = DefaultPlayerMoveSpeed;
 
 				const Vec2 playerMoveAmount{
-					(KeyRight.pressed() - KeyLeft.pressed()) * MoveSpeed,
-					(KeyDown.pressed() - KeyUp.pressed()) * MoveSpeed
+					(gameData_.actionInput->pressed(Action::MoveRight) - gameData_.actionInput->pressed(Action::MoveLeft)) * MoveSpeed,
+					(gameData_.actionInput->pressed(Action::MoveDown) - gameData_.actionInput->pressed(Action::MoveUp)) * MoveSpeed
 				};
 
 				setMoveAmount(playerMoveAmount.limitLength(MoveSpeed) * Scene::DeltaTime());
 			}
 
 			// 炎を吐く
-			if (KeySpace.down())
+			if (gameData_.actionInput->pressed(Action::Attack))
 			{
 				const Circular fireDir{ 14, DirectionToAngle(moveDirection_) };
 				gameData_.actors.push_back(std::make_unique<WeaponFire>(position().currentPos() + Vec2{ 0, -1 } + fireDir, fireDir, 3, gameData_));

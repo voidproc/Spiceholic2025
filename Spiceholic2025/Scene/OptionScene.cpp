@@ -2,6 +2,7 @@
 #include "Audio/AudioVolume.h"
 #include "Config/GameConfig.h"
 #include "Core/DrawText.h"
+#include "Input/ActionInput.h"
 #include "Setting/UserSetting.h"
 
 namespace Spiceholic
@@ -21,7 +22,7 @@ namespace Spiceholic
 			constexpr ColorF TitleTextColor = Palette::Whitesmoke;
 			constexpr ColorF LabelColor = Palette::Lightcoral.lerp(Palette::White, 0.3);
 			constexpr ColorF ValueColor = Palette::Lightcoral.lerp(Palette::White, 0.3);
-			constexpr ColorF ValueChangeColor = Palette::Cyan.lerp(Palette::White, 0.3);
+			constexpr ColorF ValueChangeColor = Palette::Yellow;
 			constexpr ColorF SelectedColor = Palette::Whitesmoke;
 		}
 
@@ -108,14 +109,14 @@ namespace Spiceholic
 	void OptionScene::update()
 	{
 		// カーソル移動
-		if (KeyUp.down())
+		if (getData().actionInput->down(Action::MoveUp))
 		{
 			selectPrevious_();
 
 			// 描画用
 			timerMoveCursor_.restart(0.1s);
 		}
-		else if (KeyDown.down())
+		else if (getData().actionInput->down(Action::MoveDown))
 		{
 			selectNext_();
 
@@ -127,7 +128,7 @@ namespace Spiceholic
 		const auto& selectedField = SettingFieldList[selectedFieldIndex_];
 
 		// 選択項目に対する決定操作
-		if (KeyZ.down())
+		if (getData().actionInput->down(Action::Decide))
 		{
 			if (selectedField.field == UserSettingField::Back)
 			{

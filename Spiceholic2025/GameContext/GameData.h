@@ -4,6 +4,7 @@ namespace Spiceholic
 {
 	class AppSetting;
 	class UserSetting;
+	class ActionInput;
 	class Player;
 	class Block;
 	class Actor;
@@ -15,6 +16,9 @@ namespace Spiceholic
 
 		// ユーザー設定
 		std::unique_ptr<UserSetting> userSetting;
+
+		// 入力
+		std::unique_ptr<ActionInput> actionInput;
 
 		// プレイヤー
 		std::unique_ptr<Player> player;

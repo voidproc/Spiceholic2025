@@ -81,7 +81,7 @@ namespace Spiceholic
 		time_{ StartImmediately::Yes, Clock() },
 		makeNextFire_{ false }
 	{
-		collision_.set(RectF{ Arg::center = Vec2{ 0, 3 }, SizeF{ 16, 14 } });
+		collision_.set(RectF{ Arg::center = Vec2{ 0, 4 }, SizeF{ 14, 14 } });
 	}
 
 	WeaponFire::~WeaponFire()

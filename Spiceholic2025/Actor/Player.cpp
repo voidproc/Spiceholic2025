@@ -53,7 +53,7 @@ namespace Spiceholic
 			if (gameData_.actionInput->pressed(Action::Attack))
 			{
 				const Circular fireDir{ 14, DirectionToAngle(moveDirection_) };
-				gameData_.actors.push_back(std::make_unique<WeaponFire>(position().currentPos() + Vec2{ 0, -1 } + fireDir, fireDir, 3, gameData_));
+				gameData_.actors.push_back(std::make_unique<WeaponFire>(position().currentPos() + Vec2{ 0, 0 } + fireDir, fireDir, 3, gameData_));
 
 				// 炎を吐いたタイマー: 動作中、プレイヤーは硬直する
 				timerFire_.restart(0.5s);

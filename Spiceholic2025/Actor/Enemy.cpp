@@ -1,5 +1,7 @@
 ﻿#include "Enemy.h"
-#include "Actor/Player.h"
+#include "Effect.h"
+#include "Item.h"
+#include "Player.h"
 #include "Config/GameConfig.h"
 #include "Core/Periodic.h"
 #include "Setting/AppSetting.h"
@@ -43,6 +45,19 @@ namespace Spiceholic
 
 	void Enemy::onCollide(Actor* /*other*/)
 	{
+	}
+
+	void Enemy::onDead()
+	{
+		// 爆発
+		gameData_.actors.push_back(std::make_unique<FxBlockBreak>(position().currentPos()));
+
+		// アイテム放出
+		for (int i = 0, n = Random(3, 3), a = Random(Math::TwoPi); i < n; ++i)
+		{
+			const Vec2 pos = position().currentPos() + Circular{ 12, a + 120_deg * i };
+			gameData_.actors.push_back(std::make_unique<Item>(pos, ActorType::ItemChilipepper, gameData_, true, 0.04 * i));
+		}
 	}
 
 	const Vec2& Enemy::getCollisionPos() const
@@ -93,7 +108,7 @@ namespace Spiceholic
 			ScopedColorMul2D mul{ t, 1 };
 			ScopedColorAdd2D add{ 1 - t, 0 };
 
-			DrawSprite(*gameData_.appSetting, U"EnemyChick", 0.8s, spriteMirror_, position().currentPos() + drawOffset_);
+			DrawSprite(*gameData_.appSetting, U"EnemyChick", 0.65s, spriteMirror_, position().currentPos() + drawOffset_);
 		}
 	}
 

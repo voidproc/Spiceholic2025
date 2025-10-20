@@ -11,7 +11,7 @@ namespace Spiceholic
 		inline static constexpr ActorTag Tag = ActorTag::Item;
 
 	public:
-		Item(const Vec2& pos, ActorType itemType, GameData& gameData, bool appearJumping = false);
+		Item(const Vec2& pos, ActorType itemType, GameData& gameData, bool appearJumping = false, double delay = 0);
 
 		~Item() override;
 
@@ -39,6 +39,8 @@ namespace Spiceholic
 		Collision collision_;
 		ActorType type_;
 		Stopwatch time_;
+		bool appearJumping_;
+		Timer timerDelay_;
 
 		// 跳ねながら出現用
 		Timer timerJumping_;

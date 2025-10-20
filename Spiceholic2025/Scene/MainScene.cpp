@@ -205,7 +205,6 @@ namespace Spiceholic
 		CustomScene{ init },
 		stageData_{},
 		time_{ StartImmediately::Yes, Clock() },
-		gauge_{ 0 },
 		timerGaugeRecovery_{ 0.8s, StartImmediately::Yes, Clock() }
 	{
 		// ステージデータ読み込み
@@ -288,7 +287,7 @@ namespace Spiceholic
 			// 炎ゲージ自動回復
 			if (timerGaugeRecovery_.reachedZero())
 			{
-				gauge_ = Saturate(gauge_ + 0.008);
+				getData().gauge = Saturate(getData().gauge + 0.008);
 				timerGaugeRecovery_.restart();
 			}
 		}
@@ -344,7 +343,7 @@ namespace Spiceholic
 
 			// ゲージ枠、ゲージ
 			const Vec2 gaugePos{ 60, 174 };
-			const double gaugeLength = 95 * gauge_;
+			const double gaugeLength = 95 * getData().gauge;
 			TextureAsset(U"Gauge")(0, 0, gaugeLength, 6).draw(gaugePos + Vec2{ 21, 7 }, ColorF{ 1 - 0.08 * Periodic::Sine0_1(0.3s, ClockTime()) });
 			TextureAsset(U"GaugeFrame").draw(gaugePos);
 		}

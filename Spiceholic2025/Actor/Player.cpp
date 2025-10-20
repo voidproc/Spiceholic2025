@@ -103,6 +103,11 @@ namespace Spiceholic
 		else if (other->tag() == ActorTag::Item)
 		{
 			timerGetItem_.restart();
+
+			if (other->type() == ActorType::ItemChilipepper)
+			{
+				gameData_.gauge = Saturate(gameData_.gauge + 0.15);
+			}
 		}
 	}
 

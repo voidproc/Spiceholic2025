@@ -22,8 +22,6 @@ namespace Spiceholic
 		StageData stageData_;
 		Stopwatch time_;
 
-		// 炎ゲージ
-		double gauge_;
 		// 炎ゲージ自動回復用タイマー
 		Timer timerGaugeRecovery_;
 

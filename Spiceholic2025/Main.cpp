@@ -57,6 +57,11 @@ namespace
 		//Load
 		//...
 	}
+
+	void LoadAudio()
+	{
+		//...
+	}
 }
 
 void Main()
@@ -76,7 +81,7 @@ void Main()
 	// アセット読み込み
 	LoadImage();
 	LoadFont();
-	//LoadAudio();
+	LoadAudio();
 
 	// 低解像度シーン
 	const double DefaultWindowScale = gameData->userSetting->get().windowScale;

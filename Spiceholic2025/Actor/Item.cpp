@@ -16,25 +16,27 @@ namespace Spiceholic
 
 	}
 
-	Item::Item(const Vec2& pos, ActorType itemType, GameData& gameData, bool appearJumping)
+	Item::Item(const Vec2& pos, ActorType itemType, GameData& gameData, bool appearJumping, double delay)
 		:
 		Actor{ pos },
 		gameData_{ gameData },
 		collision_{},
 		type_{ itemType },
-		time_{ StartImmediately::Yes, Clock() },
+		time_{ StartImmediately::No, Clock() },
+		appearJumping_{ appearJumping },
+		timerDelay_{ Duration{ delay }, StartImmediately::Yes, Clock() },
 		timerJumping_{ 999s, StartImmediately::No, Clock() },
-		timerMakeFx_{ 1.1s, StartImmediately::Yes, Clock() }
+		timerMakeFx_{ 1.1s, StartImmediately::No, Clock() }
 	{
-		if (appearJumping)
-		{
-			timerJumping_.restart(TimeAppear);
-		}
-		else
-		{
-			initCollision_();
-			timerJumping_.reset();
-		}
+		//if (appearJumping)
+		//{
+		//	timerJumping_.restart(TimeAppear);
+		//}
+		//else
+		//{
+		//	initCollision_();
+		//	timerJumping_.reset();
+		//}
 	}
 
 	Item::~Item()
@@ -43,6 +45,23 @@ namespace Spiceholic
 
 	void Item::update()
 	{
+		if (timerDelay_.reachedZero())
+		{
+			timerDelay_ = Timer{ 999s, StartImmediately::No, Clock() };
+			time_.start();
+			timerMakeFx_.start();
+
+			if (appearJumping_)
+			{
+				timerJumping_.restart(TimeAppear);
+			}
+			else
+			{
+				initCollision_();
+				timerJumping_.reset();
+			}
+		}
+
 		// 跳ねながら出現の場合
 		if (timerJumping_.reachedZero())
 		{

@@ -29,6 +29,9 @@ namespace Spiceholic
 		// その他（敵・アイテムなど）
 		Array<std::unique_ptr<Actor>> actors;
 
+		// 炎ゲージ
+		double gauge;
+
 		GameData();
 
 		~GameData();

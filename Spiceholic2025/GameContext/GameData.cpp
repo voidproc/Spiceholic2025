@@ -15,7 +15,8 @@ namespace Spiceholic
 		actionInput{ std::make_unique<ActionInput>() },
 		player{},
 		blocks{ Arg::reserve = 128 },
-		actors{ Arg::reserve = 128 }
+		actors{ Arg::reserve = 128 },
+		gauge{ 0 }
 	{
 	}
 

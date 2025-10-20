@@ -24,6 +24,8 @@ namespace Spiceholic
 
 		void onCollide(Actor* other) override;
 
+		void onDead() override;
+
 		// ICollidable
 		const Vec2& getCollisionPos() const override;
 

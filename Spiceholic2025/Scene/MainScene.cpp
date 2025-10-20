@@ -146,7 +146,7 @@ namespace Spiceholic
 			// その他とブロック
 			for (auto i = 0; i < actors.size(); ++i)
 			{
-				for (auto j = i + 1; j < blocks.size(); ++j)
+				for (auto j = 0; j < blocks.size(); ++j)
 				{
 					auto& ai = actors[i];
 					auto& aj = blocks[j];

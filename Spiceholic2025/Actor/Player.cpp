@@ -82,8 +82,8 @@ namespace Spiceholic
 		const int animFrame = PeriodicStair(0.8s, 0, sprite.count - 1, ClockTime());
 
 		{
+			// アイテム取得時点滅
 			const double t = (timerGetItem_.isRunning()) ? Periodic::Square0_1(0.06s, ClockTime()) : 1;
-
 			ScopedColorMul2D mul{ t, t, t, 1 };
 			ScopedColorAdd2D add{ (1 - t) * 0.8, (1 - t) * 0.8, (1 - t) * 0, 0 };
 

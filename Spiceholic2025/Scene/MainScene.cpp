@@ -94,7 +94,6 @@ namespace Spiceholic
 			}
 
 			// まだ衝突していたらしょうがないから1pxずつ戻す
-			// 方向:
 			const auto origMoveAmount = actor.getMoveAmount();
 			double dirX = Sign(origMoveAmount.x);
 			for (int iN = 1; iN <= 4; ++iN)
@@ -121,6 +120,21 @@ namespace Spiceholic
 				if (IsColliding(actor, blocks))
 				{
 					actor.revertMoveY();
+				}
+				else
+				{
+					break;
+				}
+			}
+
+			// まだ衝突していたらしょうがないから1pxずつ戻す
+			double dirY = Sign(origMoveAmount.y);
+			for (int iN = 1; iN <= 4; ++iN)
+			{
+				if (IsColliding(actor, blocks))
+				{
+					actor.setMoveAmount(origMoveAmount - Vec2{ 0, dirY });
+					actor.applyMoveY();
 				}
 				else
 				{

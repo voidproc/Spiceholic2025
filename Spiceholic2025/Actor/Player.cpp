@@ -18,6 +18,7 @@ namespace Spiceholic
 		gameData_{ gameData },
 		collision_{},
 		timerFire_{ 1s, StartImmediately::No, Clock() },
+		timerGetItem_{ 0.3s, StartImmediately::No, Clock() },
 		moveDirection_{ Direction::S },
 		moveDirectionText_{ U"" },
 		spriteName_{ U"PlayerStand" },
@@ -79,9 +80,17 @@ namespace Spiceholic
 		const SpriteInfo& sprite = gameData_.appSetting->get().sprite[spriteName_];
 
 		const int animFrame = PeriodicStair(0.8s, 0, sprite.count - 1, ClockTime());
-		TextureAsset(sprite.textureName)(sprite.pos + Vec2{ animFrame * sprite.size, 0 }, sprite.size, sprite.size)
-			.mirrored(spriteMirror_)
-			.drawAt(position().currentPos() + drawOffset_);
+
+		{
+			const double t = (timerGetItem_.isRunning()) ? Periodic::Square0_1(0.06s, ClockTime()) : 1;
+
+			ScopedColorMul2D mul{ t, t, t, 1 };
+			ScopedColorAdd2D add{ (1 - t) * 0.8, (1 - t) * 0.8, (1 - t) * 0, 0 };
+
+			TextureAsset(sprite.textureName)(sprite.pos + Vec2{ animFrame * sprite.size, 0 }, sprite.size, sprite.size)
+				.mirrored(spriteMirror_)
+				.drawAt(position().currentPos() + drawOffset_);
+		}
 	}
 
 	void Player::onCollide(Actor* other)
@@ -90,6 +99,10 @@ namespace Spiceholic
 		if (other->tag() == ActorTag::Enemy)
 		{
 			//...
+		}
+		else if (other->tag() == ActorTag::Item)
+		{
+			timerGetItem_.restart();
 		}
 	}
 

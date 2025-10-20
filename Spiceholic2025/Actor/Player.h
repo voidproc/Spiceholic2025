@@ -43,6 +43,9 @@ namespace Spiceholic
 		// 炎を吐くアクション
 		Timer timerFire_;
 
+		// アイテム取得
+		Timer timerGetItem_;
+
 		// テクスチャ描画用
 		Direction moveDirection_;
 		String moveDirectionText_;

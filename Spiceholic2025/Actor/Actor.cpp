@@ -24,6 +24,10 @@ namespace Spiceholic
 	{
 	}
 
+	void Actor::onDead()
+	{
+	}
+
 	const Position& Actor::position() const
 	{
 		return pos_;
@@ -83,6 +87,7 @@ namespace Spiceholic
 	void Actor::setInactive()
 	{
 		active_ = false;
+		onDead();
 	}
 
 	double Actor::life() const
@@ -97,7 +102,7 @@ namespace Spiceholic
 
 	void Actor::setDamage(double value)
 	{
-		if (not timerDamaged_.isRunning())
+		if (not timerDamaged_.isRunning() && not invincible())
 		{
 			life_ -= value;
 

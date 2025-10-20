@@ -132,7 +132,7 @@ namespace Spiceholic
 		if (other->tag() == ActorTag::Block ||
 			other->tag() == ActorTag::Enemy)
 		{
-			other->setDamage(0.6);
+			other->setDamage(0.4);
 
 			// なにかに当たったら爆発して消える
 			gameData_.actors.push_back(std::make_unique<WeaponExplode>(position().currentPos() + Circular{ Random(2.0, 4.0), Random(Math::TwoPi) }, 1.0, 0.0));
@@ -203,9 +203,10 @@ namespace Spiceholic
 
 	void WeaponExplode::onCollide(Actor* other)
 	{
-		if (other->tag() == ActorTag::Enemy)
+		if ((other->tag() == ActorTag::Enemy) ||
+			(other->tag() == ActorTag::Block))
 		{
-			other->setDamage(0.6);
+			other->setDamage(0.4);
 		}
 	}
 

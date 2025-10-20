@@ -21,6 +21,8 @@ namespace Spiceholic
 
 		void onCollide(Actor* other) override;
 
+		void onDead() override;
+
 		ActorTag tag() const override { return Tag; }
 		ActorType type() const override { return type_; }
 
@@ -29,6 +31,8 @@ namespace Spiceholic
 
 		// ICollidable
 		const Collision& getCollision() const override;
+
+		bool invincible() const override;
 
 	private:
 		ActorType type_;

@@ -30,6 +30,8 @@ namespace Spiceholic
 		// ICollidable
 		const Collision& getCollision() const override;
 
+		bool invincible() const override;
+
 	protected:
 		Collision collision_;
 		GameData& gameData_;

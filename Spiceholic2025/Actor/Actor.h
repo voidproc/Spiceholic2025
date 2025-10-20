@@ -23,6 +23,8 @@ namespace Spiceholic
 		// 衝突時
 		virtual void onCollide(Actor* /*actor*/);
 
+		virtual void onDead();
+
 		virtual ActorTag tag() const { return Tag; }
 		virtual ActorType type() const { return Type; }
 
@@ -72,6 +74,11 @@ namespace Spiceholic
 		virtual Vec2 shadowOffset() const
 		{
 			return Vec2{ 0, 8 };
+		}
+
+		virtual bool invincible() const
+		{
+			return true;
 		}
 
 	private:

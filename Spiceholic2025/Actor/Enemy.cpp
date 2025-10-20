@@ -55,6 +55,11 @@ namespace Spiceholic
 		return collision_;
 	}
 
+	bool Enemy::invincible() const
+	{
+		return false;
+	}
+
 	EnemyChick::EnemyChick(const Vec2& pos, GameData& gameData)
 		:
 		Enemy{ pos, gameData },

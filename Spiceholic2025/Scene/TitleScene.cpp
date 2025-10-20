@@ -6,6 +6,11 @@ namespace Spiceholic
 {
 	namespace
 	{
+		namespace Theme
+		{
+			constexpr ColorF BgColor = Palette::Indianred.lerp(Palette::Darkred, 0.3);
+		}
+
 		enum class TitleMenuItemType
 		{
 			Start,
@@ -93,7 +98,7 @@ namespace Spiceholic
 	void TitleScene::draw() const
 	{
 		// BG
-		SceneRect.draw(Palette::Indianred);
+		SceneRect.draw(Theme::BgColor);
 
 		// タイトル
 		DrawText(U"px7812", U"Blazing Spiceholics", Arg::center = SceneRect.center().withY(64), Palette::White);

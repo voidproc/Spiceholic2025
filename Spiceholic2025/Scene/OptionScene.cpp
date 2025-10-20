@@ -17,10 +17,12 @@ namespace Spiceholic
 
 		namespace Theme
 		{
-			constexpr ColorF BgColor = Palette::Lightseagreen.lerp(Palette::Black, 0.3);
-			constexpr ColorF TitleTextColor = Palette::Yellow;
-			constexpr ColorF LabelColor = Palette::Cyan.lerp(Palette::Black, 0.2);
-			constexpr ColorF ValueColor = Palette::Cyan;
+			constexpr ColorF BgColor = Palette::Indianred.lerp(Palette::Darkred, 0.5);
+			constexpr ColorF TitleTextColor = Palette::Whitesmoke;
+			constexpr ColorF LabelColor = Palette::Lightcoral.lerp(Palette::White, 0.3);
+			constexpr ColorF ValueColor = Palette::Lightcoral.lerp(Palette::White, 0.3);
+			constexpr ColorF ValueChangeColor = Palette::Cyan.lerp(Palette::White, 0.3);
+			constexpr ColorF SelectedColor = Palette::Whitesmoke;
 		}
 
 		struct SettingField
@@ -172,10 +174,10 @@ namespace Spiceholic
 			}
 
 			const double labelShiftX = selected ? 4 * EaseOutCubic(timerMoveCursor_.progress0_1()) : 0;
-			const ColorF labelColor = selected ? Theme::ValueColor : Theme::LabelColor;
+			const ColorF labelColor = selected ? Theme::SelectedColor : Theme::LabelColor;
 			const bool valueChanged = (iField == valueChangedIndex_) && timerChangeValue_.isRunning();
 			const double valueShiftX = valueChanged ? 2 * Periodic::Sine1_1(0.01s) : 0;
-			const ColorF valueColor = valueChanged ? Theme::ValueColor.lerp(Palette::Black, 0.3).lerp(Palette::Yellow, Periodic::Square0_1(0.034s)) : Theme::ValueColor;
+			const ColorF valueColor = valueChanged ? Theme::ValueColor.lerp(Palette::Black, 0.5).lerp(Theme::ValueChangeColor, Periodic::Square0_1(0.034s)) : (selected ? Theme::SelectedColor : Theme::ValueColor);
 			DrawSettingField(*getData().userSetting, field, fieldCenterY, labelShiftX, valueShiftX, labelColor, valueColor);
 		}
 	}

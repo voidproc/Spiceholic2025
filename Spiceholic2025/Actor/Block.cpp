@@ -68,7 +68,7 @@ namespace Spiceholic
 						gameData_.actors.push_back(std::make_unique<FxBlockBreak>(position().currentPos()));
 
 						// 仮: アイテム放出
-						gameData_.actors.push_back(std::make_unique<Item>(position().currentPos(), ActorType::ItemChilipepper, gameData_));
+						gameData_.actors.push_back(std::make_unique<Item>(position().currentPos(), ActorType::ItemChilipepper, gameData_, true));
 					}
 				}
 			}

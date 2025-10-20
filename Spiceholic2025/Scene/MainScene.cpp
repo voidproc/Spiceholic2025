@@ -303,5 +303,13 @@ namespace Spiceholic
 			TextureAsset(U"Gauge")(0, 0, gaugeLength, 6).draw(gaugePos + Vec2{ 21, 7 }, ColorF{ 1 - 0.08 * Periodic::Sine0_1(0.3s, ClockTime()) });
 			TextureAsset(U"GaugeFrame").draw(gaugePos);
 		}
+
+		// ポーズ中
+		if (GlobalClock::IsPaused())
+		{
+			SceneRect.draw(ColorF{ 0, 0.5 });
+			RectF{ Arg::center = SceneCenter, SizeF{ SceneSize.x, 24 } }.draw(Palette::Darkred);
+			FontAsset(U"px7812")(U"PAUSED - 休憩中").drawAt(SceneCenter);
+		}
 	}
 }

@@ -22,8 +22,8 @@ namespace Spiceholic
 		gameData_{ gameData },
 		collision_{},
 		type_{ itemType },
-		timerJumping_{ 999s },
-		timerMakeFx_{ 1.1s, StartImmediately::Yes }
+		timerJumping_{ 999s, StartImmediately::No, Clock() },
+		timerMakeFx_{ 1.1s, StartImmediately::Yes, Clock() }
 	{
 		if (appearJumping)
 		{
@@ -62,12 +62,12 @@ namespace Spiceholic
 		// 跳ねる
 		const Vec2 jump{ 0, timerJumping_.isRunning() ? -6.0 * Periodic::Jump0_1(TimeAppear, timerJumping_.progress0_1() * TimeAppearSec) : 0 };
 
-		const Vec2 pos = position().currentPos() + Vec2{ 0, 1.0 * Periodic::Sine1_1(1.5s) } + jump;
+		const Vec2 pos = position().currentPos() + Vec2{ 0, 1.0 * Periodic::Sine1_1(1.5s, ClockTime()) } + jump;
 		const ColorF color{ 1 };
 
 		if (type() == ActorType::ItemChilipepper)
 		{
-			const double t = 1.0 - EaseInOutCubic(Periodic::Triangle0_1(0.5s)) * Periodic::Square0_1(1.0s);
+			const double t = 1.0 - EaseInOutCubic(Periodic::Triangle0_1(0.5s, ClockTime())) * Periodic::Square0_1(1.0s, ClockTime());
 			ScopedColorMul2D mul(t, t, t, 1);
 			ScopedColorAdd2D add(1 - t, 1 - t, 1 - t, 0);
 

@@ -19,7 +19,7 @@ namespace Spiceholic
 			constexpr double TimeFire2PerLoop = TimePerFrame * 8;
 
 			// ループ回数
-			constexpr int Loop = 2;
+			constexpr int Loop = 1;
 
 			// 最後の5コマにかかる時間
 			constexpr double TimeFire3 = TimePerFrame * 5;
@@ -78,7 +78,7 @@ namespace Spiceholic
 		dir_{ dir },
 		power_{ power },
 		gameData_{ gameData },
-		time_{ StartImmediately::Yes },
+		time_{ StartImmediately::Yes, Clock() },
 		makeNextFire_{ false }
 	{
 		collision_.set(RectF{ Arg::center = Vec2{ 0, 3 }, SizeF{ 16, 14 } });
@@ -158,9 +158,9 @@ namespace Spiceholic
 		:
 		Weapon{ pos },
 		scale_{ scale },
-		delay_{ Duration{ delay }, StartImmediately::Yes },
+		delay_{ Duration{ delay }, StartImmediately::Yes, Clock() },
 		collision_{},
-		time_{ StartImmediately::No }
+		time_{ StartImmediately::No, Clock() }
 	{
 		collision_.set(Circle{ Vec2{}, 16 * scale });
 	}
@@ -187,12 +187,12 @@ namespace Spiceholic
 	{
 		if (not time_.isRunning()) return;
 
-		const double alpha = 0.8 + 0.2 * Periodic::Square0_1(0.08s);
+		const double alpha = 0.8 + 0.2 * Periodic::Square0_1(0.08s, ClockTime());
 		const double t = Saturate(time_.sF() / Explode::LifeTime);
 		const double r = (6 + 14 * EaseOutCubic(t)) * scale_;
 
-		const ColorF innerColor = Palette::Orange.lerp(Palette::Red, 0.5 * Periodic::Sine0_1(0.14s));
-		const ColorF outerColor = Palette::Darkorange.lerp(Palette::Darkred, 0.5 * Periodic::Sine0_1(0.14s));
+		const ColorF innerColor = Palette::Orange.lerp(Palette::Red, 0.5 * Periodic::Sine0_1(0.14s, ClockTime()));
+		const ColorF outerColor = Palette::Darkorange.lerp(Palette::Darkred, 0.5 * Periodic::Sine0_1(0.14s, ClockTime()));
 
 		Circle{ position().currentPos().asPoint(), Math::Floor(r) }
 			.draw(ColorF{ innerColor, alpha })

@@ -17,7 +17,7 @@ namespace Spiceholic
 		Actor{ pos },
 		gameData_{ gameData },
 		collision_{},
-		timerFire_{},
+		timerFire_{ 1s, StartImmediately::No, Clock() },
 		moveDirection_{ Direction::S },
 		moveDirectionText_{ U"" },
 		spriteName_{ U"PlayerStand" },
@@ -78,7 +78,7 @@ namespace Spiceholic
 	{
 		const SpriteInfo& sprite = gameData_.appSetting->get().sprite[spriteName_];
 
-		const int animFrame = PeriodicStair(0.8s, 0, sprite.count - 1);
+		const int animFrame = PeriodicStair(0.8s, 0, sprite.count - 1, ClockTime());
 		TextureAsset(sprite.textureName)(sprite.pos + Vec2{ animFrame * sprite.size, 0 }, sprite.size, sprite.size)
 			.mirrored(spriteMirror_)
 			.drawAt(position().currentPos() + drawOffset_);

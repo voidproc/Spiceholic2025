@@ -62,6 +62,9 @@ void Main()
 {
 	using namespace Spiceholic;
 
+	// Clock
+	GlobalClock::Init();
+
 	// ゲームデータ
 	auto gameData = std::make_shared<GameData>();
 	gameData->appSetting->load();

@@ -15,7 +15,7 @@ namespace Spiceholic
 		type_{ type },
 		gameData_{ gameData },
 		collision_{},
-		timerDamaged_{ 0.3s, StartImmediately::No }
+		timerDamaged_{ 0.3s, StartImmediately::No, Clock() }
 	{
 		collision_.set(RectF{ Arg::center = Vec2{}, 16 - 2 });
 	}
@@ -36,7 +36,7 @@ namespace Spiceholic
 		}
 		else if (type() == ActorType::BlockCanBreak)
 		{
-			const double t = (timerDamaged_.isRunning()) ? Periodic::Square0_1(0.06s) : 1;
+			const double t = (timerDamaged_.isRunning()) ? Periodic::Square0_1(0.06s, ClockTime()) : 1;
 
 			ScopedColorMul2D mul{ t, 1 };
 			ScopedColorAdd2D add{ 1 - t, 0 };

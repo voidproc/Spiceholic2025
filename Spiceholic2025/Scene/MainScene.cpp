@@ -3,6 +3,7 @@
 #include "Actor/Item.h"
 #include "Actor/Player.h"
 #include "Config/GameConfig.h"
+#include "Input/ActionInput.h"
 #include "Stage/Stage.h"
 
 namespace Spiceholic
@@ -167,9 +168,9 @@ namespace Spiceholic
 		:
 		CustomScene{ init },
 		stageData_{},
-		time_{ StartImmediately::Yes },
+		time_{ StartImmediately::Yes, Clock() },
 		gauge_{ 0 },
-		timerGaugeRecovery_{ 0.8s, StartImmediately::Yes }
+		timerGaugeRecovery_{ 0.8s, StartImmediately::Yes, Clock() }
 	{
 		// ステージデータ読み込み
 		LoadStage(U"1", stageData_);
@@ -191,37 +192,61 @@ namespace Spiceholic
 
 	void MainScene::update()
 	{
+		// ポーズ
+		if (getData().actionInput->down(Action::Pause))
+		{
+			if (GlobalClock::IsPaused())
+			{
+				GlobalClock::Start();
+			}
+			else
+			{
+				GlobalClock::Pause();
+			}
+		}
+
 		auto& player = *getData().player;
 
-		// プレイヤーを更新
-		player.update();
-
-		// アクター生成
-		SpawnActors(time_.sF(), stageData_, getData());
-
-		// ブロックを更新
-		for (auto& block : getData().blocks)
+		if (not GlobalClock::IsPaused())
 		{
-			block->update();
+			// ポーズ状態ではないので、シーンを更新
+
+			// プレイヤーを更新
+			player.update();
+
+			// アクター生成
+			SpawnActors(time_.sF(), stageData_, getData());
+
+			// ブロックを更新
+			for (auto& block : getData().blocks)
+			{
+				block->update();
+			}
+
+			// その他アクターを更新
+			//for (auto& actor : getData().actors)
+			for (size_t i = 0; i < getData().actors.size(); ++i)
+			{
+				getData().actors[i]->update();
+			}
+
+			// アクターの位置を更新
+			UpdateActorPos(player, getData().blocks);
+
+			// アクター同士の衝突判定
+			CheckCollision(player, getData().actors, getData().blocks);
+
+			// アクターの破棄
+			getData().actors.remove_if([](const auto& a) { return not a->active(); });
+			getData().blocks.remove_if([](const auto& a) { return not a->active(); });
+
+			// 炎ゲージ自動回復
+			if (timerGaugeRecovery_.reachedZero())
+			{
+				gauge_ = Saturate(gauge_ + 0.008);
+				timerGaugeRecovery_.restart();
+			}
 		}
-
-		// その他アクターを更新
-		//for (auto& actor : getData().actors)
-		for (size_t i = 0; i < getData().actors.size(); ++i)
-		{
-			getData().actors[i]->update();
-		}
-
-		// アクターの位置を更新
-		UpdateActorPos(player, getData().blocks);
-
-		// アクター同士の衝突判定
-		CheckCollision(player, getData().actors, getData().blocks);
-
-
-		// アクターの破棄
-		getData().actors.remove_if([](const auto& a) { return not a->active(); });
-		getData().blocks.remove_if([](const auto& a) { return not a->active(); });
 
 		// アクターの影のリストを作成
 		shadowPosList_.clear();
@@ -233,13 +258,6 @@ namespace Spiceholic
 			{
 				shadowPosList_.push_back(actor->position().currentPos() + actor->shadowOffset());
 			}
-		}
-
-		// 炎ゲージ自動回復
-		if (timerGaugeRecovery_.reachedZero())
-		{
-			gauge_ = Saturate(gauge_ + 0.008);
-			timerGaugeRecovery_.restart();
 		}
 	}
 
@@ -282,7 +300,7 @@ namespace Spiceholic
 			// ゲージ枠、ゲージ
 			const Vec2 gaugePos{ 60, 174 };
 			const double gaugeLength = 95 * gauge_;
-			TextureAsset(U"Gauge")(0, 0, gaugeLength, 6).draw(gaugePos + Vec2{ 21, 7 }, ColorF{ 1 - 0.08 * Periodic::Sine0_1(0.3s) });
+			TextureAsset(U"Gauge")(0, 0, gaugeLength, 6).draw(gaugePos + Vec2{ 21, 7 }, ColorF{ 1 - 0.08 * Periodic::Sine0_1(0.3s, ClockTime()) });
 			TextureAsset(U"GaugeFrame").draw(gaugePos);
 		}
 	}

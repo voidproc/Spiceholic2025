@@ -3,3 +3,4 @@
 # include <Siv3D.hpp>
 
 #include "App.h"
+#include "Core/GlobalClock.h"

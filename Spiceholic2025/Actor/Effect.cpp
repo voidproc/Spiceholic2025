@@ -39,8 +39,8 @@ namespace Spiceholic
 	FxBlockBreak::FxBlockBreak(const Vec2& pos)
 		:
 		Fx{ pos },
-		timer_{ 0.4s, StartImmediately::Yes },
-		timer2_{ 0.5s, StartImmediately::No }
+		timer_{ 0.4s, StartImmediately::Yes, Clock() },
+		timer2_{ 0.5s, StartImmediately::No, Clock() }
 	{
 	}
 
@@ -69,7 +69,7 @@ namespace Spiceholic
 		{
 			const double t = timer_.progress0_1();
 			const double r = 5 + 28 * EaseOutCubic(t);
-			const double alpha = 0.5 + 0.5 * Periodic::Square0_1(0.04s);
+			const double alpha = 0.5 + 0.5 * Periodic::Square0_1(0.04s, ClockTime());
 			Circle{ position(), r }.drawFrame(8 - 7 * t, ColorF{ 1.0, alpha });
 		}
 
@@ -84,7 +84,7 @@ namespace Spiceholic
 	FxTwinkle::FxTwinkle(const Vec2& pos)
 		:
 		Fx{ pos },
-		timer_{ 0.2s, StartImmediately::Yes },
+		timer_{ 0.2s, StartImmediately::Yes, Clock() },
 		angle_{ Random(1, 2) * 45_deg }
 	{
 	}

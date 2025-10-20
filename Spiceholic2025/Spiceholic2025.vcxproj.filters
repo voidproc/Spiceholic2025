@@ -252,6 +252,12 @@
     <ClCompile Include="Scene\InputSettingScene.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
+    <ClCompile Include="Core\GameClock.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\GlobalClock.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">
@@ -1015,6 +1021,12 @@
     </ClInclude>
     <ClInclude Include="Scene\InputSettingScene.h">
       <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\GlobalClock.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\GameClock.h">
+      <Filter>Core</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

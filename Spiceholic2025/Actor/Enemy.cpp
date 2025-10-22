@@ -2,9 +2,11 @@
 #include "Effect.h"
 #include "Item.h"
 #include "Player.h"
+#include "Block.h"
 #include "Config/GameConfig.h"
 #include "Core/Periodic.h"
 #include "Setting/AppSetting.h"
+#include "Stage/Stage.h"
 
 namespace Spiceholic
 {
@@ -18,6 +20,18 @@ namespace Spiceholic
 			TextureAsset(sprite.textureName)(sprite.pos + Vec2{ animFrame * sprite.size, 0 }, sprite.size, sprite.size)
 				.mirrored(mirror)
 				.drawAt(pos);
+		}
+
+		bool IntersectsAnyBlock(const Actor& actor, const Vec2& pos, const Array<std::unique_ptr<Block>>& blocks)
+		{
+			for (const auto& block : blocks)
+			{
+				if (actor.getCollision().isCollidingWith(pos, block->getCollision(), block->position()))
+				{
+					return true;
+				}
+			}
+			return false;
 		}
 	}
 
@@ -53,7 +67,7 @@ namespace Spiceholic
 		gameData_.actors.push_back(std::make_unique<FxBlockBreak>(position().currentPos()));
 
 		// アイテム放出
-		for (int i = 0, n = Random(3, 3), a = Random(Math::TwoPi); i < n; ++i)
+		for (int i = 0, n = Random(1, 3), a = Random(Math::TwoPi); i < n; ++i)
 		{
 			const Vec2 pos = position().currentPos() + Circular{ 12, a + 120_deg * i };
 			gameData_.actors.push_back(std::make_unique<Item>(pos, ActorType::ItemChilipepper, gameData_, true, 0.04 * i));
@@ -75,13 +89,19 @@ namespace Spiceholic
 		return false;
 	}
 
-	EnemyChick::EnemyChick(const Vec2& pos, GameData& gameData)
+	EnemyChick::EnemyChick(const Vec2& pos, GameData& gameData, Direction dir, int32 subType)
 		:
 		Enemy{ pos, gameData },
-		dir_{ -1, 0 },
+		subType_{ subType },
+		dir_{},
 		currentSpeed_{ 0, 0 }
 	{
 		collision_.set(RectF{ Arg::center = Vec2{}, 12 });
+
+		if (subType == 0)
+		{
+			dir_ = (dir == Direction::Left) ? Vec2::Left() : Vec2::Right();
+		}
 	}
 
 	EnemyChick::~EnemyChick()
@@ -90,9 +110,25 @@ namespace Spiceholic
 
 	void EnemyChick::update()
 	{
-		// プレイヤーの方を向く
-		spriteMirror_ = (gameData_.player->position().currentPos().x < position().currentPos().x);
-		dir_.x = spriteMirror_ ? -1 : 1;
+		if (subType_ == 0)
+		{
+			// 0: ひたすら直進
+
+			// 進行方向上のちょっと先にブロックがあったら振り向く
+			const Vec2 nextPos = position().currentPos() + dir_ * 8.0;
+			if (IntersectsAnyBlock(*this, nextPos, gameData_.blocks))
+			{
+				dir_.x = -dir_.x;
+			}
+
+			spriteMirror_ = (gameData_.player->position().currentPos().x < position().currentPos().x);
+		}
+		else if (subType_ == 1)
+		{
+			// 1: プレイヤーの方を向く
+			spriteMirror_ = (gameData_.player->position().currentPos().x < position().currentPos().x);
+			dir_.x = spriteMirror_ ? -1 : 1;
+		}
 
 		currentSpeed_ = currentSpeed_ + (dir_ * 24 * Scene::DeltaTime());
 		currentSpeed_.x = Clamp(currentSpeed_.x, -16.0, 16.0);

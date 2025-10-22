@@ -19,7 +19,7 @@ namespace Spiceholic
 		void draw() const override;
 
 	private:
-		StageData stageData_;
+		//StageData stageData_;
 		Stopwatch time_;
 
 		// 炎ゲージ自動回復用タイマー

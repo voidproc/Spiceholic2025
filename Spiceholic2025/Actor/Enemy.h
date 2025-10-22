@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "Actor.h"
+#include "Direction.h"
 #include "Core/Collision.h"
 
 namespace Spiceholic
@@ -48,7 +49,7 @@ namespace Spiceholic
 		inline static constexpr ActorType Type = ActorType::EnemyChick;
 
 	public:
-		EnemyChick(const Vec2& pos, GameData& gameData);
+		EnemyChick(const Vec2& pos, GameData& gameData, Direction dir, int32 subType);
 
 		~EnemyChick() override;
 
@@ -62,6 +63,7 @@ namespace Spiceholic
 		void onCollide(Actor* other) override;
 
 	private:
+		int32 subType_;
 		Vec2 dir_;
 		Vec2 currentSpeed_;
 	};

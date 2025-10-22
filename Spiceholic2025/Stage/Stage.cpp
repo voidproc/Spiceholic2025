@@ -65,6 +65,10 @@ namespace Spiceholic
 						{
 							spawn.direction = StringToDirection(prop[U"value"].getString());
 						}
+						else if (name == U"SubType")
+						{
+							spawn.subType = prop[U"value"].getOr<int32>(0);
+						}
 					}
 				}
 

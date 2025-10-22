@@ -8,6 +8,7 @@ namespace Spiceholic
 	class Player;
 	class Block;
 	class Actor;
+	struct StageData;
 
 	struct GameData
 	{
@@ -19,6 +20,9 @@ namespace Spiceholic
 
 		// 入力
 		std::unique_ptr<ActionInput> actionInput;
+
+		// 入力
+		std::unique_ptr<StageData> stageData;
 
 		// プレイヤー
 		std::unique_ptr<Player> player;

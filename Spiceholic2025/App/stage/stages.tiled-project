@@ -30,6 +30,11 @@
                     "name": "SpawnTime",
                     "type": "float",
                     "value": 0
+                },
+                {
+                    "name": "SubType",
+                    "type": "int",
+                    "value": 0
                 }
             ],
             "name": "Actor",

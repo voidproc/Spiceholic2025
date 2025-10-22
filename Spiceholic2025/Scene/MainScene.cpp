@@ -34,7 +34,7 @@ namespace Spiceholic
 				break;
 
 			case ActorType::EnemyChick:
-				gameData.actors.push_back(std::make_unique<EnemyChick>(spawn.position, gameData));
+				gameData.actors.push_back(std::make_unique<EnemyChick>(spawn.position, gameData, spawn.direction, spawn.subType));
 				break;
 
 			default:
@@ -203,22 +203,21 @@ namespace Spiceholic
 	MainScene::MainScene(const InitData& init)
 		:
 		CustomScene{ init },
-		stageData_{},
 		time_{ StartImmediately::Yes, Clock() },
 		timerGaugeRecovery_{ 0.8s, StartImmediately::Yes, Clock() }
 	{
 		// ステージデータ読み込み
-		LoadStage(U"1", stageData_);
+		LoadStage(U"1", *getData().stageData);
 
 		// プレイヤーを初期化
-		getData().player = std::make_unique<Player>(stageData_.playerStartPos, getData());
+		getData().player = std::make_unique<Player>(getData().stageData->playerStartPos, getData());
 
 		// アクターのリストを初期化
 		getData().blocks.clear();
 		getData().actors.clear();
 
 		// アクターの初期配置
-		SpawnActors(0, stageData_, getData());
+		SpawnActors(0, *getData().stageData, getData());
 	}
 
 	MainScene::~MainScene()
@@ -250,7 +249,7 @@ namespace Spiceholic
 			player.update();
 
 			// アクター生成
-			SpawnActors(time_.sF(), stageData_, getData());
+			SpawnActors(time_.sF(), *getData().stageData, getData());
 
 			// ブロックを更新
 			for (auto& block : getData().blocks)

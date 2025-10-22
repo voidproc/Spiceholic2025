@@ -63,6 +63,11 @@
                          "propertytype":"Direction",
                          "type":"string",
                          "value":"Left"
+                        }, 
+                        {
+                         "name":"SubType",
+                         "type":"int",
+                         "value":0
                         }],
                  "rotation":0,
                  "type":"",

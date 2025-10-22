@@ -5,6 +5,7 @@
 #include "Input/ActionInput.h"
 #include "Setting/AppSetting.h"
 #include "Setting/UserSetting.h"
+#include "Stage/Stage.h"
 
 namespace Spiceholic
 {
@@ -13,6 +14,7 @@ namespace Spiceholic
 		appSetting{ std::make_unique<AppSetting>() },
 		userSetting{ std::make_unique<UserSetting>() },
 		actionInput{ std::make_unique<ActionInput>() },
+		stageData{ std::make_unique<StageData>() },
 		player{},
 		blocks{ Arg::reserve = 128 },
 		actors{ Arg::reserve = 128 },

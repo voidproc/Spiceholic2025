@@ -14,6 +14,8 @@ namespace Spiceholic
 
 		// 向いている方向や進む方向など
 		Direction direction;
+
+		int32 subType;
 	};
 
 	struct StageData

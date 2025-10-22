@@ -10,7 +10,6 @@ namespace Spiceholic
 		// 別のICollidableとのあたり判定結果を返す
 		virtual bool isCollidingWith(const ICollidable& other) const;
 
-	private:
 		// あたり判定の中心位置を返す
 		// このインターフェースを実装するコンポーネントがActor*を保持し、その pos() を返すなど
 		virtual const Vec2& getCollisionPos() const = 0;

@@ -163,6 +163,9 @@
     <Filter Include="Stage">
       <UniqueIdentifier>{170753df-7c62-4d79-bfe8-aca6d68ee585}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Event">
+      <UniqueIdentifier>{a8ff4ea0-e4af-48b0-b059-256eccc98639}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -263,6 +266,12 @@
     </ClCompile>
     <ClCompile Include="Core\Gauge.cpp">
       <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\DrawSprite.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Event\Dispatch.cpp">
+      <Filter>Event</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -1039,6 +1048,15 @@
     </ClInclude>
     <ClInclude Include="Core\Gauge.h">
       <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\DrawSprite.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Event\Events.h">
+      <Filter>Event</Filter>
+    </ClInclude>
+    <ClInclude Include="Event\Dispatch.h">
+      <Filter>Event</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

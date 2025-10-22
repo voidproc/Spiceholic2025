@@ -22,6 +22,11 @@
                     "value": "None"
                 },
                 {
+                    "name": "HasKey",
+                    "type": "bool",
+                    "value": false
+                },
+                {
                     "name": "Life",
                     "type": "float",
                     "value": 1

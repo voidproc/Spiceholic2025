@@ -107,13 +107,14 @@ namespace Spiceholic
 		Shape2D::NStar(4, 5 * scale, 2 * scale, position().currentPos().asPoint() + Vec2{.5,.5}, angle_).draw();
 	}
 
-	FxSmoke::FxSmoke(const Vec2& pos, const Actor& target, double scale)
+	FxSmoke::FxSmoke(const Vec2& pos, const Actor* target, double scale, double delay)
 		:
 		Fx{ pos },
 		target_{ target },
 		scale_{ scale },
-		offset_{ target.position().currentPos() - pos },
-		timer_{ Duration{ Random(0.2, 0.35) }, StartImmediately::Yes, Clock() },
+		timerDelay_{ Duration{ delay }, StartImmediately::Yes, Clock() },
+		offset_{ target ? target->position().currentPos() - pos : Vec2{} },
+		timer_{ Duration{ Random(0.2, 0.35) }, StartImmediately::No, Clock() },
 		angle_{ Random(Math::TwoPi) }
 	{
 	}
@@ -124,6 +125,14 @@ namespace Spiceholic
 
 	void FxSmoke::update()
 	{
+		if (timerDelay_.reachedZero())
+		{
+			timerDelay_.set(999s);
+			timerDelay_.reset();
+
+			timer_.start();
+		}
+
 		if (timer_.reachedZero())
 		{
 			setInactive();
@@ -137,7 +146,7 @@ namespace Spiceholic
 
 		const ColorF color{ 1.0, EaseOutCubic(t10) };
 
-		RectF{ Arg::center = target_.position().currentPos() - offset_ - Vec2{ 0, EaseOutQuad(t01) * 12 }, 4.5 * scale_ }
+		RectF{ Arg::center = (target_ ? target_->position().currentPos() : position().currentPos()) - offset_ - Vec2{ 0, EaseOutQuad(t01) * 12 }, 4.5 * scale_ }
 			.scaled(EaseOutSine(t01))
 			.rotated(angle_ + t01 * 200_deg)
 			.draw(color);

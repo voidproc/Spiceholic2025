@@ -15,7 +15,11 @@ namespace Spiceholic
 		// 向いている方向や進む方向など
 		Direction direction;
 
+		// 敵の挙動パターンのバリエーションなど
 		int32 subType;
+
+		// 鍵を持っている
+		bool hasKey;
 	};
 
 	struct StageData

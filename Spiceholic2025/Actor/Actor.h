@@ -59,7 +59,7 @@ namespace Spiceholic
 		bool active() const;
 
 		// 破棄待ちの状態にする
-		void setInactive();
+		void setInactive(bool callOnDead = true);
 
 		// ライフ
 		double life() const;

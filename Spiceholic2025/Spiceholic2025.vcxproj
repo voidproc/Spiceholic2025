@@ -75,7 +75,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <ForcedIncludeFiles>stdafx.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
       <BuildStlModules>false</BuildStlModules>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)Lib</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)Lib\entt-3.15.0</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -103,7 +103,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <ForcedIncludeFiles>stdafx.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
       <BuildStlModules>false</BuildStlModules>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)Lib</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)Lib\entt-3.15.0</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -128,6 +128,7 @@
     <ClCompile Include="Actor\Weapon.cpp" />
     <ClCompile Include="Audio\AudioVolume.cpp" />
     <ClCompile Include="Core\Collision.cpp" />
+    <ClCompile Include="Core\DrawSprite.cpp" />
     <ClCompile Include="Core\DrawText.cpp" />
     <ClCompile Include="Core\GameClock.cpp" />
     <ClCompile Include="Core\Gauge.cpp" />
@@ -135,6 +136,7 @@
     <ClCompile Include="Core\LowResolution.cpp" />
     <ClCompile Include="Core\Periodic.cpp" />
     <ClCompile Include="Core\Position.cpp" />
+    <ClCompile Include="Event\Dispatch.cpp" />
     <ClCompile Include="GameContext\GameData.cpp" />
     <ClCompile Include="Input\Action.cpp" />
     <ClCompile Include="Input\ActionInput.cpp" />
@@ -373,6 +375,7 @@
     <ClInclude Include="Audio\AudioVolume.h" />
     <ClInclude Include="Config\GameConfig.h" />
     <ClInclude Include="Core\Collision.h" />
+    <ClInclude Include="Core\DrawSprite.h" />
     <ClInclude Include="Core\DrawText.h" />
     <ClInclude Include="Core\GameClock.h" />
     <ClInclude Include="Core\Gauge.h" />
@@ -380,6 +383,8 @@
     <ClInclude Include="Core\LowResolution.h" />
     <ClInclude Include="Core\Periodic.h" />
     <ClInclude Include="Core\Position.h" />
+    <ClInclude Include="Event\Dispatch.h" />
+    <ClInclude Include="Event\Events.h" />
     <ClInclude Include="GameContext\GameData.h" />
     <ClInclude Include="Input\Action.h" />
     <ClInclude Include="Input\ActionInput.h" />

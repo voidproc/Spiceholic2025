@@ -2,6 +2,7 @@
 #include "Effect.h"
 #include "Player.h"
 #include "Config/GameConfig.h"
+#include "Core/DrawSprite.h"
 
 namespace Spiceholic
 {
@@ -73,27 +74,28 @@ namespace Spiceholic
 		// 跳ねる
 		const Vec2 jump{ 0, timerJumping_.isRunning() ? -6.0 * Periodic::Jump0_1(TimeAppear, timerJumping_.progress0_1() * TimeAppearSec) : 0 };
 
-		const Vec2 pos = position().currentPos() + Vec2{ 0, 1.0 * Periodic::Sine1_1(1.5s, time_.sF()) } + jump;
+		const Vec2 pos = position().currentPos()
+			+ ((type() == ActorType::ItemKey) ? Vec2{} : Vec2{ 0, 1.0 * Periodic::Sine1_1(1.5s, time_.sF()) })
+			+ jump;
 		const ColorF color{ 1 };
+
+		// 白点滅
+		const double t = 1.0 - EaseInOutCubic(Periodic::Triangle0_1(0.5s, time_.sF())) * Periodic::Square0_1(1.0s, time_.sF());
+		ScopedColorMul2D mul(t, t, t, 1);
+		ScopedColorAdd2D add(1 - t, 1 - t, 1 - t, 0);
 
 		if (type() == ActorType::ItemChilipepper)
 		{
-			const double t = 1.0 - EaseInOutCubic(Periodic::Triangle0_1(0.5s, time_.sF())) * Periodic::Square0_1(1.0s, time_.sF());
-			ScopedColorMul2D mul(t, t, t, 1);
-			ScopedColorAdd2D add(1 - t, 1 - t, 1 - t, 0);
-
 			TextureAsset(U"Item")(0, 0, 24).drawAt(pos, color);
+		}
+		else if (type() == ActorType::ItemKey)
+		{
+			DrawSprite(*gameData_.appSetting, U"ItemKey", 1s, false, pos);
 		}
 	}
 
 	void Item::onCollide(Actor* /*other*/)
 	{
-		if (type() == ActorType::ItemChilipepper)
-		{
-			// なにかしらの効果（イベント発行など）
-			//...
-		}
-
 		// 破棄待ちの状態へ
 		setInactive();
 	}
@@ -113,6 +115,10 @@ namespace Spiceholic
 		int32 score = 0;
 
 		if (type_ == ActorType::ItemChilipepper)
+		{
+			score = 100;
+		}
+		else if (type_ == ActorType::ItemKey)
 		{
 			score = 100;
 		}

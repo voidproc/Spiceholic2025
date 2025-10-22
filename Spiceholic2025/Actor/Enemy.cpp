@@ -4,7 +4,10 @@
 #include "Player.h"
 #include "Block.h"
 #include "Config/GameConfig.h"
+#include "Core/DrawSprite.h"
 #include "Core/Periodic.h"
+#include "Event/Dispatch.h"
+#include "Event/Events.h"
 #include "Setting/AppSetting.h"
 #include "Stage/Stage.h"
 
@@ -12,16 +15,6 @@ namespace Spiceholic
 {
 	namespace
 	{
-		void DrawSprite(const AppSetting& appSetting, StringView spriteName, const Duration& animSpeed, bool mirror, const Vec2& pos)
-		{
-			const SpriteInfo& sprite = appSetting.get().sprite.at(spriteName);
-
-			const int animFrame = PeriodicStair(animSpeed, 0, sprite.count - 1, ClockTime());
-			TextureAsset(sprite.textureName)(sprite.pos + Vec2{ animFrame * sprite.size, 0 }, sprite.size, sprite.size)
-				.mirrored(mirror)
-				.drawAt(pos);
-		}
-
 		bool IntersectsAnyBlock(const Actor& actor, const Vec2& pos, const Array<std::unique_ptr<Block>>& blocks)
 		{
 			for (const auto& block : blocks)
@@ -35,18 +28,21 @@ namespace Spiceholic
 		}
 	}
 
-	Enemy::Enemy(const Vec2& pos, GameData& gameData)
+	Enemy::Enemy(const Vec2& pos, GameData& gameData, bool hasKey)
 		:
 		Actor{ pos },
 		gameData_{ gameData },
+		hasKey_{ hasKey },
 		collision_{},
 		spriteMirror_{ false },
 		drawOffset_{}
 	{
+		GetDispatch().subscribe<GetKeyEvent, &Enemy::onGetKey_>(this);
 	}
 
 	Enemy::~Enemy()
 	{
+		GetDispatch().unsubscribe<GetKeyEvent>(this);
 	}
 
 	void Enemy::update()
@@ -64,15 +60,24 @@ namespace Spiceholic
 	void Enemy::onDead()
 	{
 		// 爆発
-		gameData_.actors.push_back(std::make_unique<FxBlockBreak>(position().currentPos()));
+		explode_();
 
 		// アイテム放出
-		// TODO: 敵によって放出量を変える
-		const double a = Random(Math::TwoPi);
-		for (int i = 0, n = 3; i < n; ++i)
+		if (hasKey_)
 		{
-			const Vec2 pos = position().currentPos() + Circular{ 12, a + 120_deg * i };
-			gameData_.actors.push_back(std::make_unique<Item>(pos, ActorType::ItemChilipepper, gameData_, true, 0.04 * i));
+			// 鍵を持っていた
+			gameData_.actors.push_back(std::make_unique<Item>(position().currentPos(), ActorType::ItemKey, gameData_, true));
+		}
+		else
+		{
+			// 辛味アイテム
+			// TODO: 敵によって放出量を変える
+			const double a = Random(Math::TwoPi);
+			for (int i = 0, n = 3; i < n; ++i)
+			{
+				const Vec2 pos = position().currentPos() + Circular{ 12, a + 120_deg * i };
+				gameData_.actors.push_back(std::make_unique<Item>(pos, ActorType::ItemChilipepper, gameData_, true, 0.04 * i));
+			}
 		}
 	}
 
@@ -91,9 +96,26 @@ namespace Spiceholic
 		return false;
 	}
 
-	EnemyChick::EnemyChick(const Vec2& pos, GameData& gameData, Direction dir, int32 subType)
+	void Enemy::onGetKey_()
+	{
+		setInactive(false);
+
+		// 爆発
+		explode_();
+	}
+
+	void Enemy::explode_()
+	{
+		gameData_.actors.push_back(std::make_unique<FxSmoke>(position().currentPos() + Vec2{}, nullptr, Random(0.9, 1.5), 0.00));
+		gameData_.actors.push_back(std::make_unique<FxSmoke>(position().currentPos() + Vec2{Random(6, 12), Random(-8, 0)}, nullptr, Random(0.9, 1.5), 0.08));
+		gameData_.actors.push_back(std::make_unique<FxSmoke>(position().currentPos() + Vec2{-Random(6, 12), Random(-8, 0) }, nullptr, Random(0.9, 1.5), 0.16));
+
+		gameData_.actors.push_back(std::make_unique<FxBlockBreak>(position().currentPos()));
+	}
+
+	EnemyChick::EnemyChick(const Vec2& pos, GameData& gameData, Direction dir, int32 subType, bool hasKey)
 		:
-		Enemy{ pos, gameData },
+		Enemy{ pos, gameData, hasKey },
 		subType_{ subType },
 		dir_{},
 		currentSpeed_{ 0, 0 }

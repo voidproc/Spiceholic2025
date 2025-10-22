@@ -35,7 +35,7 @@ namespace Spiceholic
 				break;
 
 			case ActorType::EnemyChick:
-				gameData.actors.push_back(std::make_unique<EnemyChick>(spawn.position, gameData, spawn.direction, spawn.subType));
+				gameData.actors.push_back(std::make_unique<EnemyChick>(spawn.position, gameData, spawn.direction, spawn.subType, spawn.hasKey));
 				break;
 
 			default:
@@ -151,8 +151,10 @@ namespace Spiceholic
 		void CheckCollision(Player& player, Array<std::unique_ptr<Actor>>& actors, Array<std::unique_ptr<Block>>& blocks)
 		{
 			// プレイヤーとその他
-			for (auto& actor : actors)
+			for (auto i = 0; i < actors.size(); ++i)
 			{
+				auto& actor = actors[i];
+
 				if (not IsCollidable(player, *actor)) continue;
 
 				if (player.isCollidingWith(*actor))

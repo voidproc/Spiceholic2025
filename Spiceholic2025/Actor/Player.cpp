@@ -4,6 +4,8 @@
 #include "Config/GameConfig.h"
 #include "Core/Gauge.h"
 #include "Core/Periodic.h"
+#include "Event/Dispatch.h"
+#include "Event/Events.h"
 #include "Input/ActionInput.h"
 #include "Setting/AppSetting.h"
 
@@ -86,8 +88,8 @@ namespace Spiceholic
 				if (gameData_.gauge->isPoweredUp())
 				{
 					const Vec2 smokeOffset{ 6.0 * ((moveDirection_ == Direction::Left) ? -1 : ((moveDirection_ == Direction::Right) ? 1 : 0)), -6.0 };
-					gameData_.actors.push_back(std::make_unique<FxSmoke>(position().currentPos() + smokeOffset + RandomVec2(2.0), *this, 1.0));
-					gameData_.actors.push_back(std::make_unique<FxSmoke>(position().currentPos() + smokeOffset + Vec2{ Random(-5.0, 5.0), Random(1.0, 2.0) }, *this, 0.5));
+					gameData_.actors.push_back(std::make_unique<FxSmoke>(position().currentPos() + smokeOffset + RandomVec2(2.0), this, 1.0));
+					gameData_.actors.push_back(std::make_unique<FxSmoke>(position().currentPos() + smokeOffset + Vec2{ Random(-5.0, 5.0), Random(1.0, 2.0) }, this, 0.5));
 				}
 			}
 		}
@@ -113,7 +115,7 @@ namespace Spiceholic
 	void Player::draw() const
 	{
 		const SpriteInfo& sprite = gameData_.appSetting->get().sprite[spriteName_];
-		const Duration animSpeed = gameData_.gauge->isPoweredUp() ? 0.6s : 0.8s;
+		const Duration animSpeed = gameData_.gauge->isPoweredUp() ? 0.5s : 0.8s;
 		const int animFrame = PeriodicStair(animSpeed, 0, sprite.count - 1, ClockTime());
 
 		// ノックバック中の描画オフセット
@@ -163,6 +165,18 @@ namespace Spiceholic
 			{
 				// ゲージ回復
 				gameData_.gauge->add(0.15);
+			}
+			else if (other->type() == ActorType::ItemKey)
+			{
+				// 鍵をとったので次のステージに向かう
+
+				// 鍵をとったイベント発行
+				GetDispatch().publish(GetKeyEvent{});
+
+				// TOOD: 敵全滅
+				//...
+
+				// 
 			}
 		}
 	}

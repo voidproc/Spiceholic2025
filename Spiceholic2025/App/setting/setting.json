@@ -43,6 +43,12 @@
       "Count": 2,
       "Size": 24,
       "Pos": [0, 0]
+    },
+    "ItemKey": {
+      "Texture": "ItemKey",
+      "Count": 1,
+      "Size": 24,
+      "Pos": [0, 0]
     }
   }
 }

@@ -84,10 +84,14 @@ namespace Spiceholic
 		return active_;
 	}
 
-	void Actor::setInactive()
+	void Actor::setInactive(bool callOnDead)
 	{
 		active_ = false;
-		onDead();
+
+		if (callOnDead)
+		{
+			onDead();
+		}
 	}
 
 	double Actor::life() const

@@ -16,6 +16,12 @@
             "id": 1,
             "members": [
                 {
+                    "name": "Direction",
+                    "propertyType": "Direction",
+                    "type": "string",
+                    "value": "None"
+                },
+                {
                     "name": "Life",
                     "type": "float",
                     "value": 1
@@ -39,6 +45,20 @@
                 "wangset",
                 "project"
             ]
+        },
+        {
+            "id": 2,
+            "name": "Direction",
+            "storageType": "string",
+            "type": "enum",
+            "values": [
+                "None",
+                "Up",
+                "Down",
+                "Left",
+                "Right"
+            ],
+            "valuesAsFlags": false
         }
     ]
 }

@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "Actor/ActorType.h"
+#include "Actor/Direction.h"
 
 namespace Spiceholic
 {
@@ -10,6 +11,9 @@ namespace Spiceholic
 		Vec2 position;
 		double time;
 		double life;
+
+		// 向いている方向や進む方向など
+		Direction direction;
 	};
 
 	struct StageData

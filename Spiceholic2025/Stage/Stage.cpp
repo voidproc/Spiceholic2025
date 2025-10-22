@@ -61,6 +61,10 @@ namespace Spiceholic
 						{
 							spawn.life = prop[U"value"].getOr<double>(1.0);
 						}
+						else if (name == U"Direction")
+						{
+							spawn.direction = StringToDirection(prop[U"value"].getString());
+						}
 					}
 				}
 

@@ -21,7 +21,7 @@ namespace Spiceholic
 		timerGetItem_{ 0.3s, StartImmediately::No, Clock() },
 		timerKnockback_{ 0.4s, StartImmediately::No, Clock() },
 		timerTr_{ 1.8s, StartImmediately::No, Clock() },
-		moveDirection_{ Direction::S },
+		moveDirection_{ Direction::Down },
 		moveDirectionText_{ U"" },
 		spriteName_{ U"PlayerStand" },
 		spriteMirror_{ false },
@@ -158,17 +158,17 @@ namespace Spiceholic
 		{
 			moveDirectionText_ = U"R";
 			spriteMirror_ = (angle < 0);
-			moveDirection_ = spriteMirror_ ? Direction::W : Direction::E;
+			moveDirection_ = spriteMirror_ ? Direction::Left : Direction::Right;
 		}
 		else if (Abs(angle) > 45_deg)
 		{
 			moveDirectionText_ = U"";
-			moveDirection_ = Direction::S;
+			moveDirection_ = Direction::Down;
 		}
 		else if (Abs(angle) < 45_deg)
 		{
 			moveDirectionText_ = U"U";
-			moveDirection_ = Direction::N;
+			moveDirection_ = Direction::Up;
 		}
 
 		spriteName_ = U"PlayerWalk{}"_fmt(moveDirectionText_);

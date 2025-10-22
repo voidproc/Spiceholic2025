@@ -57,6 +57,13 @@
                  "height":16,
                  "id":3,
                  "name":"",
+                 "properties":[
+                        {
+                         "name":"Direction",
+                         "propertytype":"Direction",
+                         "type":"string",
+                         "value":"Left"
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,

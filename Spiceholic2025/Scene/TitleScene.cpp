@@ -39,7 +39,8 @@ namespace Spiceholic
 		CustomScene{ init },
 		time_{ StartImmediately::Yes },
 		timerSceneChange_{ 1.0s, StartImmediately::No },
-		selectedMenuIndex_{ 0 }
+		selectedMenuIndex_{ 0 },
+		randomCharaTexName_{ Random() < 0.8 ? U"DragonGirl" : U"DragonGirl2" }
 	{
 		if (getData().titleCharacterShown)
 		{
@@ -141,8 +142,8 @@ namespace Spiceholic
 				const double jump = Periodic::Jump0_1(0.1s, tMoveCursor * 0.1);
 				const Vec2 pos = SceneRect.bottomCenter() + Vec2{ -40 + 300 * (1 - EaseOutCubic(t)), -5 * Periodic::Sine1_1(6.0s) - 64 } + Vec2{ 0, -4 * jump };
 
-				TextureAsset(U"DragonGirl").scaled(1 + 0.03 * jump, 1 + 0.05 * jump).drawAt(pos + Vec2::One() * 4, ColorF{Palette::Darkred, 0.3});
-				TextureAsset(U"DragonGirl").scaled(1 + 0.03 * jump, 1 + 0.05 * jump).drawAt(pos);
+				TextureAsset(randomCharaTexName_).scaled(1 + 0.03 * jump, 1 + 0.05 * jump).drawAt(pos + Vec2::One() * 4, ColorF{ Palette::Darkred, 0.3 });
+				TextureAsset(randomCharaTexName_).scaled(1 + 0.03 * jump, 1 + 0.05 * jump).drawAt(pos);
 			}
 
 			const double t3 = Saturate((time_.sF() - 0.9) / 0.8);
@@ -157,7 +158,7 @@ namespace Spiceholic
 			Transformer2D scale{ Mat3x2::Scale(1, 2) };
 			const double alpha = Saturate((time_.sF() - 1.5) / 0.5);
 			const Vec2 center = SceneRect.center().withY(20);
-			RectF{ Arg::center = center, SizeF{ SceneSize.x, 24 } }.draw(ColorF{ Palette::Darkred, 0.8 * alpha });
+			RectF{ Arg::center = center + Vec2{ 0, 1 }, SizeF{SceneSize.x, 14} }.draw(ColorF{ Palette::Darkred, 0.8 * alpha });
 			const ColorF textColor = Palette::Yellow.lerp(Palette::Red.lerp(Palette::Lime.lerp(Palette::White, Periodic::Sine0_1(0.3s)), Periodic::Sine0_1(0.4s)), Periodic::Sine0_1(0.45s));
 			DrawText(U"NotJamSig21", U"Blazing Spiceholics", Arg::center = center, ColorF{ textColor, alpha }, ColorF{ 0, 0.5 * alpha });
 		}

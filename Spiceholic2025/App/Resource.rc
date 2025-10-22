@@ -141,6 +141,7 @@ Resource(image/shadow.png)
 Resource(image/white_arrow.png)
 Resource(image/enemy_chick.png)
 Resource(image/dragon_girl.png)
+Resource(image/dragon_girl_2.png)
 
 Resource(font/px7812.ttf)
 Resource(font/px7812m.ttf)

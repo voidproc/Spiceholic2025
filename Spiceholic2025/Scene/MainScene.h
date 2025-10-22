@@ -26,6 +26,7 @@ namespace Spiceholic
 		void onGaugeMax_();
 
 		Stopwatch time_;
+		double stageClearTime_;
 
 		Stopwatch timeStartReady_;
 

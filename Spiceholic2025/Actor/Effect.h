@@ -40,7 +40,7 @@ namespace Spiceholic
 		inline static constexpr ActorType Type = ActorType::None;
 
 	public:
-		FxBlockBreak(const Vec2& pos);
+		FxBlockBreak(const Vec2& pos, bool secret = false);
 
 		~FxBlockBreak() override;
 
@@ -51,6 +51,7 @@ namespace Spiceholic
 	private:
 		Timer timer_;
 		Timer timer2_;
+		bool secret_;
 	};
 
 	class FxTwinkle : public Fx

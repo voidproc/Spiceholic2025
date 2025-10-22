@@ -5,7 +5,8 @@ namespace Spiceholic
 	Gauge::Gauge(double value)
 		:
 		currentValue_{ value },
-		displayValue_{ value }
+		displayValue_{ value },
+		timeMaxEffect_{ StartImmediately::No, Clock() }
 	{
 	}
 
@@ -42,6 +43,15 @@ namespace Spiceholic
 
 		// ゲージ枠
 		TextureAsset(U"GaugeFrame").draw(gaugePos, ColorF{ 1 - 0.08 * Periodic::Sine0_1(0.2s, ClockTime()) });
+
+		// ゲージMAXエフェクト
+		if (timeMaxEffect_.isRunning() && timeMaxEffect_ < 0.8s)
+		{
+			const double t = Saturate(timeMaxEffect_.sF() / 0.8);
+			const double r = 4 + 24 * EaseOutCubic(t);
+			const double alpha = (timeMaxEffect_ > 0.5s) ? Periodic::Square0_1(0.05s, ClockTime()) : 1.0;
+			Circle{ Vec2{ 60 + 21 + 95, 174 + 7 + 6 / 2 }, r }.drawFrame(8 - 7 * EaseOutSine(t), ColorF{ Palette::Red.lerp(Palette::Yellow, 0.5 * Periodic::Square0_1(0.07s, ClockTime())), alpha });
+		}
 	}
 
 	double Gauge::getValue() const
@@ -57,5 +67,10 @@ namespace Spiceholic
 	bool Gauge::isPoweredUp() const
 	{
 		return currentValue_ > 0.499;
+	}
+
+	void Gauge::startDrawMaxEffect()
+	{
+		timeMaxEffect_.restart();
 	}
 }

@@ -88,7 +88,7 @@ namespace Spiceholic
 		gameData_.actors.push_back(std::make_unique<FxSmoke>(position().currentPos() + Vec2{ Random(6, 12), Random(-8, 0) }, nullptr, Random(0.9, 1.5), 0.08));
 		gameData_.actors.push_back(std::make_unique<FxSmoke>(position().currentPos() + Vec2{ -Random(6, 12), Random(-8, 0) }, nullptr, Random(0.9, 1.5), 0.16));
 
-		gameData_.actors.push_back(std::make_unique<FxBlockBreak>(position().currentPos()));
+		gameData_.actors.push_back(std::make_unique<FxBlockBreak>(position().currentPos(), secretRoute_));
 	}
 
 	void Block::setInactiveIfSecret()

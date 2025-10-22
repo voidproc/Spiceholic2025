@@ -19,8 +19,11 @@ namespace Spiceholic
 
 		bool isPoweredUp() const;
 
+		void startDrawMaxEffect();
+
 	private:
 		double currentValue_;
 		double displayValue_;
+		Stopwatch timeMaxEffect_;
 	};
 }

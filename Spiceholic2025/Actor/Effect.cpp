@@ -36,11 +36,12 @@ namespace Spiceholic
 		return collision_;
 	}
 
-	FxBlockBreak::FxBlockBreak(const Vec2& pos)
+	FxBlockBreak::FxBlockBreak(const Vec2& pos, bool secret)
 		:
 		Fx{ pos },
 		timer_{ 0.4s, StartImmediately::Yes, Clock() },
-		timer2_{ 0.5s, StartImmediately::No, Clock() }
+		timer2_{ 0.5s, StartImmediately::No, Clock() },
+		secret_{ secret }
 	{
 	}
 
@@ -65,19 +66,21 @@ namespace Spiceholic
 
 	void FxBlockBreak::draw() const
 	{
+		const ColorF color = secret_ ? Palette::Red.lerp(Palette::Yellow, 0.5 * Periodic::Square0_1(0.07s, ClockTime())) : Palette::White;
+
 		if (timer_.isRunning())
 		{
 			const double t = timer_.progress0_1();
 			const double r = 5 + 28 * EaseOutCubic(t);
 			const double alpha = 0.5 + 0.5 * Periodic::Square0_1(0.04s, ClockTime());
-			Circle{ position(), r }.drawFrame(8 - 7 * t, ColorF{ 1.0, alpha });
+			Circle{ position(), r }.drawFrame(8 - 7 * t, ColorF{ color, alpha });
 		}
 
 		if (timer2_.isRunning())
 		{
 			const double r = 8 + 64 * EaseOutQuad(timer2_.progress0_1());
 			const double alpha = 1.0 - EaseInSine(timer2_.progress0_1());
-			Circle{ position(), r }.drawFrame(1.0, ColorF{ 1.0, alpha });
+			Circle{ position(), r }.drawFrame(1.0, ColorF{ color, alpha });
 		}
 	}
 

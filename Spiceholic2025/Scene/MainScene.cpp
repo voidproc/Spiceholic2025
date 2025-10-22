@@ -237,6 +237,7 @@ namespace Spiceholic
 		:
 		CustomScene{ init },
 		time_{ StartImmediately::No, Clock() },
+		stageClearTime_{ 0 },
 		timeStartReady_{ StartImmediately::Yes, Clock() },
 		timerGaugeRecovery_{ 0.8s, StartImmediately::Yes, Clock() },
 		timeGetKey_{ StartImmediately::No, Clock() },
@@ -429,6 +430,9 @@ namespace Spiceholic
 			DrawText(U"px7812m", U"{:08d}"_fmt(getData().score->displayScore()), Arg::center = regionHudU.center(), ColorF{ 0.3 });
 			DrawText(U"px7812m", U"{:-8d}"_fmt(getData().score->displayScore()), Arg::center = regionHudU.center(), scoreColor, ColorF{ Palette::Darkred, 0.6 - 0.1 * Periodic::Square0_1(0.25s, ClockTime()) });
 
+			// 経過時間
+			//FontAsset(U"px7812m")(U"{:02d}:{:02d}"_fmt(time_.min(), time_.s() % 60)).draw(Arg::rightCenter = regionHudU.rightCenter() + Vec2{ -1, 0 }, Palette::Gray);
+
 			// ゲージ枠、ゲージ
 			getData().gauge->draw();
 
@@ -452,7 +456,7 @@ namespace Spiceholic
 			const double height = 24 * EaseInQuad(Saturate(timeStageClear_.sF() / 0.3));
 			RectF{ Arg::center = SceneCenter, SizeF{ SceneSize.x, height } }.draw(ColorF{ Palette::Darkred, 0.9 });
 
-			const String text = U"{}  Clear!"_fmt(getData().stageData->name);
+			const String text = U"{}  Clear!  ({:02d}:{:02d})"_fmt(getData().stageData->name, (int)(stageClearTime_) / 60, (int)stageClearTime_ % 60);
 			const Vec2 textPos = SceneCenter + Vec2{ 400 * (1 - EaseOutExpo(Saturate(timeStageClear_.sF() / 1.0))), 0 };
 			DrawText(U"px7812", text, Arg::center = textPos, Palette::Yellow.lerp(Palette::Black, 0.2 * Periodic::Square0_1(0.25s, ClockTime())));
 
@@ -470,12 +474,6 @@ namespace Spiceholic
 			RectF{ Arg::center = SceneCenter, SizeF{ SceneSize.x, 24 } }.draw(Palette::Darkred);
 			DrawText(U"px7812", U"PAUSED - 休憩中", Arg::center = SceneCenter, Palette::White);
 		}
-
-		// DEBUG: 経過時間
-		{
-			FontAsset(U"px7812")(Format(time_.s())).draw(Arg::bottomRight = SceneRect.br(), Palette::Gray);
-		}
-
 	}
 
 	void MainScene::recoverGaugeAuto_()
@@ -524,7 +522,13 @@ namespace Spiceholic
 
 	void MainScene::onGetKey_()
 	{
+		// プレイヤーが鍵をとった
+		// ゲームクリア表示へ...
 		timeGetKey_.start();
+
+		// TODO: クリアタイム
+		//...
+		stageClearTime_ = time_.sF();
 	}
 
 	void MainScene::onGaugeMax_()
@@ -537,6 +541,11 @@ namespace Spiceholic
 			for (size_t i = 0; i < getData().blocks.size(); ++i)
 			{
 				getData().blocks[i]->setInactiveIfSecret();
+			}
+
+			// ゲージマックス時ゲージエフェクト
+			{
+				getData().gauge->startDrawMaxEffect();
 			}
 		}
 	}

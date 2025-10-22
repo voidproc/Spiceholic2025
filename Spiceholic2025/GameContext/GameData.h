@@ -44,6 +44,8 @@ namespace Spiceholic
 		// その他（敵・アイテムなど）
 		Array<std::unique_ptr<Actor>> actors;
 
+		bool titleCharacterShown;
+
 		GameData();
 
 		~GameData();

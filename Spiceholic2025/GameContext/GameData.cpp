@@ -22,7 +22,8 @@ namespace Spiceholic
 		score{ std::make_unique<Score>() },
 		player{},
 		blocks{ Arg::reserve = 128 },
-		actors{ Arg::reserve = 128 }
+		actors{ Arg::reserve = 128 },
+		titleCharacterShown{ false }
 	{
 	}
 

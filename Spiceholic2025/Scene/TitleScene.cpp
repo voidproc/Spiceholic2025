@@ -41,6 +41,10 @@ namespace Spiceholic
 		timerSceneChange_{ 1.0s, StartImmediately::No },
 		selectedMenuIndex_{ 0 }
 	{
+		if (getData().titleCharacterShown)
+		{
+			time_.set(2.7s);
+		}
 	}
 
 	TitleScene::~TitleScene()
@@ -58,6 +62,8 @@ namespace Spiceholic
 
 			return;
 		}
+
+		getData().titleCharacterShown = true;
 
 		// カーソル移動
 		// GameStart決定後は行わない
@@ -117,7 +123,12 @@ namespace Spiceholic
 	void TitleScene::draw() const
 	{
 		// BG
-		SceneRect.draw(Palette::White.lerp(Theme::BgColor, Saturate((time_.sF() - 0.9) / 0.4)));
+		{
+			const double alpha = Saturate((time_.sF() - 0.9) / 0.4);
+			SceneRect.draw(Palette::White.lerp(Theme::BgColor, alpha));
+			RectF{ Arg::topCenter = SceneRect.topCenter(), SizeF{ SceneSize.x, SceneSize.y / 3 } }.draw(Arg::top = ColorF{ Palette::Darkred, 0.3 * alpha }, Arg::bottom = ColorF{ Palette::Darkred, 0 });
+			RectF{ Arg::bottomCenter = SceneRect.bottomCenter(), SizeF{ SceneSize.x, SceneSize.y / 3 } }.draw(Arg::top = ColorF{ Palette::Darkred, 0 }, Arg::bottom = ColorF{ Palette::Darkred, 0.3 * alpha });
+		}
 
 		// キャラクター
 		{

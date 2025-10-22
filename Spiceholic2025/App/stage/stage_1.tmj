@@ -124,7 +124,7 @@
                         {
                          "name":"SpawnTime",
                          "type":"float",
-                         "value":12
+                         "value":6.5
                         }, 
                         {
                          "name":"SubType",
@@ -272,7 +272,7 @@
                         {
                          "name":"SpawnTime",
                          "type":"float",
-                         "value":13
+                         "value":8
                         }, 
                         {
                          "name":"SubType",

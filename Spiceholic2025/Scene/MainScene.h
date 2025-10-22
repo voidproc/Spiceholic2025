@@ -20,9 +20,8 @@ namespace Spiceholic
 
 	private:
 		void recoverGaugeAuto_();
-
 		void makeCharacterShadows_();
-
+		Transformer2D cameraTransform_() const;
 		void onGetKey_();
 		void onGaugeMax_();
 

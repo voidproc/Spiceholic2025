@@ -393,27 +393,7 @@ namespace Spiceholic
 		{
 			const ScopedViewport2D viewport{ ActorsFieldViewportRect };
 
-			const SizeF mapSize = getData().stageData->gridSize * TileSize;
-			const Vec2 playerPos = getData().player->position().currentPos();
-			RectF cameraRect{ Arg::center = playerPos, ActorsFieldViewportSize };
-			if (openedSecretRoute_)
-			{
-				cameraRect.x = Max(cameraRect.x, 0.0);
-				cameraRect.y = Max(cameraRect.y, 0.0);
-				cameraRect.x = Min(cameraRect.x, mapSize.x - ActorsFieldViewportSize.x);
-				cameraRect.y = Min(cameraRect.y, mapSize.y - ActorsFieldViewportSize.y);
-			}
-			else
-			{
-				cameraRect.x = Max(cameraRect.x, getData().stageData->cameraTopLeft.x);
-				cameraRect.y = Max(cameraRect.y, getData().stageData->cameraTopLeft.y);
-				cameraRect.x = Min(cameraRect.x, getData().stageData->cameraBottomRight.x - ActorsFieldViewportSize.x);
-				cameraRect.y = Min(cameraRect.y, getData().stageData->cameraBottomRight.y - ActorsFieldViewportSize.y);
-			}
-
-			const Vec2 cameraMove = -cameraRect.pos;
-			const Transformer2D translate{ Mat3x2::Translate(cameraMove) };
-
+			const auto trans = cameraTransform_();
 
 			// アクターの影
 			for (const auto& shadowPos : shadowPosList_)
@@ -512,6 +492,27 @@ namespace Spiceholic
 				shadowPosList_.push_back(actor->position().currentPos() + actor->shadowOffset());
 			}
 		}
+	}
+
+	Transformer2D MainScene::cameraTransform_() const
+	{
+		const SizeF mapSize = getData().stageData->gridSize * TileSize;
+		const Vec2 playerPos = getData().player->position().currentPos();
+		RectF cameraRect{ Arg::center = playerPos, ActorsFieldViewportSize };
+
+		if (openedSecretRoute_)
+		{
+			cameraRect.x = Clamp(cameraRect.x, 0.0, mapSize.x - ActorsFieldViewportSize.x);
+			cameraRect.y = Clamp(cameraRect.y, 0.0, mapSize.y - ActorsFieldViewportSize.y);
+		}
+		else
+		{
+			cameraRect.x = Clamp(cameraRect.x, getData().stageData->cameraTopLeft.x, getData().stageData->cameraBottomRight.x - ActorsFieldViewportSize.x);
+			cameraRect.y = Clamp(cameraRect.y, getData().stageData->cameraTopLeft.y, getData().stageData->cameraBottomRight.y - ActorsFieldViewportSize.y);
+		}
+
+		const Vec2 cameraMove = -cameraRect.pos;
+		return Transformer2D{ Mat3x2::Translate(cameraMove) };
 	}
 
 	void MainScene::onGetKey_()

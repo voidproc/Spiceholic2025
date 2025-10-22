@@ -1,4 +1,5 @@
 ﻿#include "Player.h"
+#include "Effect.h"
 #include "Weapon.h"
 #include "Config/GameConfig.h"
 #include "Core/Gauge.h"
@@ -10,7 +11,8 @@ namespace Spiceholic
 {
 	namespace
 	{
-		constexpr double DefaultPlayerMoveSpeed = 1.2 * 60;
+		constexpr double DefaultMoveSpeed = 0.9 * 60;
+		constexpr double PoweredupMoveAccel = 0.3 * 60;
 	}
 
 	Player::Player(const Vec2& pos, GameData& gameData)
@@ -22,6 +24,7 @@ namespace Spiceholic
 		timerGetItem_{ 0.3s, StartImmediately::No, Clock() },
 		timerKnockback_{ 0.4s, StartImmediately::No, Clock() },
 		timerTr_{ 1.8s, StartImmediately::No, Clock() },
+		timerPowerupSmoke_{ 0.55s, StartImmediately::Yes, Clock() },
 		moveDirection_{ Direction::Down },
 		moveDirectionText_{ U"" },
 		spriteName_{ U"PlayerStand" },
@@ -43,7 +46,7 @@ namespace Spiceholic
 
 			// 移動
 			{
-				const double MoveSpeed = DefaultPlayerMoveSpeed;
+				const double MoveSpeed = DefaultMoveSpeed + (gameData_.gauge->isPoweredUp() ? PoweredupMoveAccel : 0);
 
 				const Vec2 playerMoveAmount{
 					(gameData_.actionInput->pressed(Action::MoveRight) - gameData_.actionInput->pressed(Action::MoveLeft)) * MoveSpeed,
@@ -58,7 +61,7 @@ namespace Spiceholic
 			{
 				// ゲージ量に応じて射程変化
 				// ゲージ半分以上ならMAX射程
-				const int nFire = (gameData_.gauge->getValue() > 0.499) ? 7 : 3;
+				const int nFire = gameData_.gauge->isPoweredUp() ? 7 : 3;
 
 				const Circular fireDir{ 14, DirectionToAngle(moveDirection_) };
 				gameData_.actors.push_back(std::make_unique<WeaponFire>(position().currentPos() + Vec2{ 0, 0 } + fireDir.fastToVec2() * 0.8, fireDir, nFire, gameData_));
@@ -74,6 +77,19 @@ namespace Spiceholic
 
 			// 移動方向によりスプライト名を決定
 			updateSpriteState_();
+
+			// パワーアップ中の煙
+			if (timerPowerupSmoke_.reachedZero())
+			{
+				timerPowerupSmoke_.restart();
+
+				if (gameData_.gauge->isPoweredUp())
+				{
+					const Vec2 smokeOffset{ 6.0 * ((moveDirection_ == Direction::Left) ? -1 : ((moveDirection_ == Direction::Right) ? 1 : 0)), -6.0 };
+					gameData_.actors.push_back(std::make_unique<FxSmoke>(position().currentPos() + smokeOffset + RandomVec2(2.0), *this, 1.0));
+					gameData_.actors.push_back(std::make_unique<FxSmoke>(position().currentPos() + smokeOffset + Vec2{ Random(-5.0, 5.0), Random(1.0, 2.0) }, *this, 0.5));
+				}
+			}
 		}
 		else if (timerFire_.isRunning())
 		{
@@ -97,7 +113,8 @@ namespace Spiceholic
 	void Player::draw() const
 	{
 		const SpriteInfo& sprite = gameData_.appSetting->get().sprite[spriteName_];
-		const int animFrame = PeriodicStair(0.8s, 0, sprite.count - 1, ClockTime());
+		const Duration animSpeed = gameData_.gauge->isPoweredUp() ? 0.6s : 0.8s;
+		const int animFrame = PeriodicStair(animSpeed, 0, sprite.count - 1, ClockTime());
 
 		// ノックバック中の描画オフセット
 		const Vec2 knockbackOffset = timerKnockback_.isRunning() ? Vec2{ 0, -8 * Periodic::Jump0_1(timerKnockback_.duration(), timerKnockback_.progress0_1() * timerKnockback_.duration().count()) } : Vec2{};
@@ -108,6 +125,9 @@ namespace Spiceholic
 		// アルファ（無敵中は点滅）
 		const double alpha = (timerTr_.isRunning()) ? 0.2 + 0.7 * Periodic::Square0_1(0.08s, ClockTime()) : 1.0;
 
+		// ベースカラー: パワーアップ中に変化
+		const ColorF color = gameData_.gauge->isPoweredUp() ? Palette::White.lerp(Palette::Orange, 1.0 * Periodic::Jump0_1(0.4s, ClockTime())) : Palette::White;
+
 		{
 			// アイテム取得時点滅
 			const double t = (timerGetItem_.isRunning()) ? Periodic::Square0_1(0.06s, ClockTime()) : 1;
@@ -116,7 +136,7 @@ namespace Spiceholic
 
 			TextureAsset(sprite.textureName)(sprite.pos + Vec2{ animFrame * sprite.size, 0 }, sprite.size, sprite.size)
 				.mirrored(spriteMirror_)
-				.drawAt(pos, AlphaF(alpha));
+				.drawAt(pos, ColorF{ color, alpha });
 		}
 	}
 

@@ -73,4 +73,27 @@ namespace Spiceholic
 		double angle_;
 	};
 
+	class FxSmoke : public Fx
+	{
+	public:
+		inline static constexpr ActorTag Tag = ActorTag::Effect;
+		inline static constexpr ActorType Type = ActorType::None;
+
+	public:
+		FxSmoke(const Vec2& pos, const Actor& target, double scale);
+
+		~FxSmoke() override;
+
+		void update() override;
+
+		void draw() const override;
+
+	private:
+		const Actor& target_;
+		const double scale_;
+		const Vec2 offset_;
+		Timer timer_;
+		double angle_;
+	};
+
 }

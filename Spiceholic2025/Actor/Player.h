@@ -50,6 +50,9 @@ namespace Spiceholic
 		Timer timerKnockback_;
 		Timer timerTr_;
 
+		// パワーアップ時
+		Timer timerPowerupSmoke_;
+
 		// テクスチャ描画用
 		Direction moveDirection_;
 		String moveDirectionText_;

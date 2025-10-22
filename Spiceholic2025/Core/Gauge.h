@@ -17,6 +17,8 @@ namespace Spiceholic
 
 		double displayValue() const;
 
+		bool isPoweredUp() const;
+
 	private:
 		double currentValue_;
 		double displayValue_;

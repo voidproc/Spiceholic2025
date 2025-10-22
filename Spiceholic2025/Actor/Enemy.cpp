@@ -68,7 +68,8 @@ namespace Spiceholic
 
 		// アイテム放出
 		// TODO: 敵によって放出量を変える
-		for (int i = 0, n = 3, a = Random(Math::TwoPi); i < n; ++i)
+		const double a = Random(Math::TwoPi);
+		for (int i = 0, n = 3; i < n; ++i)
 		{
 			const Vec2 pos = position().currentPos() + Circular{ 12, a + 120_deg * i };
 			gameData_.actors.push_back(std::make_unique<Item>(pos, ActorType::ItemChilipepper, gameData_, true, 0.04 * i));

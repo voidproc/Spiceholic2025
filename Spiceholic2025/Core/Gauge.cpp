@@ -53,4 +53,9 @@ namespace Spiceholic
 	{
 		return displayValue_;
 	}
+
+	bool Gauge::isPoweredUp() const
+	{
+		return currentValue_ > 0.499;
+	}
 }

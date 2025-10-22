@@ -136,6 +136,7 @@
     <ClCompile Include="Core\LowResolution.cpp" />
     <ClCompile Include="Core\Periodic.cpp" />
     <ClCompile Include="Core\Position.cpp" />
+    <ClCompile Include="Core\Score.cpp" />
     <ClCompile Include="Event\Dispatch.cpp" />
     <ClCompile Include="GameContext\GameData.cpp" />
     <ClCompile Include="Input\Action.cpp" />
@@ -383,6 +384,7 @@
     <ClInclude Include="Core\LowResolution.h" />
     <ClInclude Include="Core\Periodic.h" />
     <ClInclude Include="Core\Position.h" />
+    <ClInclude Include="Core\Score.h" />
     <ClInclude Include="Event\Dispatch.h" />
     <ClInclude Include="Event\Events.h" />
     <ClInclude Include="GameContext\GameData.h" />

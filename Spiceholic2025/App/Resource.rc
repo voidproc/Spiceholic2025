@@ -142,6 +142,7 @@ Resource(image/white_arrow.png)
 Resource(image/enemy_chick.png)
 
 Resource(font/px7812.ttf)
+Resource(font/px7812m.ttf)
 Resource(font/k8x12L.ttf)
 
 Resource(stage/stage_1.tmj)

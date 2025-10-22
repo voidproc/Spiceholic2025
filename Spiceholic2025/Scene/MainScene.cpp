@@ -8,6 +8,7 @@
 #include "Core/DrawText.h"
 #include "Core/DrawSprite.h"
 #include "Core/Gauge.h"
+#include "Core/Score.h"
 #include "Event/Dispatch.h"
 #include "Event/Events.h"
 #include "Input/ActionInput.h"
@@ -420,11 +421,16 @@ namespace Spiceholic
 		// HUD
 		{
 			// BG (0, 0), (0, 176)
-			Rect{ 0, 0, Size{ SceneSize.x, TileSize } }.draw(ColorF{ 0.1 });
-			Rect{ 0, 176, Size{ SceneSize.x, TileSize } }.draw(ColorF{ 0.1 });
+			const auto regionHudU = Rect{ 0, 0, Size{ SceneSize.x, TileSize } }.draw(ColorF{ 0.1 });
+			const auto regionHudD = Rect{ 0, 176, Size{ SceneSize.x, TileSize } }.draw(ColorF{ 0.1 });
+
+			// スコア
+			DrawText(U"px7812m", U"{:08d}"_fmt(getData().score->displayScore()), Arg::center = regionHudU.center(), ColorF{ 0.3 });
+			DrawText(U"px7812m", U"{:-8d}"_fmt(getData().score->displayScore()), Arg::center = regionHudU.center(), ColorF{ 0.9 - 0.1 * Periodic::Square0_1(0.25s) }, ColorF{ Palette::Darkred, 0.6 - 0.1 * Periodic::Square0_1(0.25s) });
 
 			// ゲージ枠、ゲージ
 			getData().gauge->draw();
+
 		}
 
 		// ステージ開始時
@@ -525,8 +531,6 @@ namespace Spiceholic
 		if (not openedSecretRoute_)
 		{
 			openedSecretRoute_ = true;
-
-			Print << U"GaugeMax";
 
 			// ブロックを更新
 			for (size_t i = 0; i < getData().blocks.size(); ++i)

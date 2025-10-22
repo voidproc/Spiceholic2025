@@ -4,6 +4,7 @@
 #include "Config/GameConfig.h"
 #include "Core/Gauge.h"
 #include "Core/Periodic.h"
+#include "Core/Score.h"
 #include "Event/Dispatch.h"
 #include "Event/Events.h"
 #include "Input/ActionInput.h"
@@ -170,6 +171,9 @@ namespace Spiceholic
 				{
 					GetDispatch().publish(GaugeMaxEvent{});
 				}
+
+				// スコア加算
+				gameData_.score->add(other->score());
 			}
 			else if (other->type() == ActorType::ItemKey)
 			{
@@ -178,10 +182,8 @@ namespace Spiceholic
 				// 鍵をとったイベント発行
 				GetDispatch().publish(GetKeyEvent{});
 
-				// TOOD: 敵全滅
-				//...
-
-				// 
+				// スコア加算
+				gameData_.score->add(other->score());
 			}
 		}
 	}

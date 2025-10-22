@@ -10,6 +10,7 @@ namespace Spiceholic
 	class Actor;
 	struct StageData;
 	class Gauge;
+	class Score;
 
 	struct GameData
 	{
@@ -30,6 +31,9 @@ namespace Spiceholic
 
 		// 辛ゲージ
 		std::unique_ptr<Gauge> gauge;
+
+		// スコア
+		std::unique_ptr<Score> score;
 
 		// プレイヤー
 		std::unique_ptr<Player> player;

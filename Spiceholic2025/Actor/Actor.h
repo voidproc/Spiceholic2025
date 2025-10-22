@@ -81,6 +81,11 @@ namespace Spiceholic
 			return true;
 		}
 
+		virtual int32 score() const
+		{
+			return 0;
+		}
+
 	private:
 		Position pos_;
 		Vec2 moveAmount_;

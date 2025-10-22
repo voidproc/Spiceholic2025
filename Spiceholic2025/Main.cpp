@@ -47,6 +47,9 @@ namespace
 		auto data_px7812 = std::make_unique<FontAssetData>();
 		data_px7812->font = Font{ 12, Resource(U"font/px7812.ttf"), FontStyle::Bitmap };
 
+		auto data_px7812m = std::make_unique<FontAssetData>();
+		data_px7812m->font = Font{ 12, Resource(U"font/px7812m.ttf"), FontStyle::Bitmap };
+
 		auto data_k8x12L = std::make_unique<FontAssetData>();
 		data_k8x12L->font = Font{ 12, Resource(U"font/k8x12L.ttf"), FontStyle::Bitmap };
 
@@ -54,6 +57,7 @@ namespace
 		data_px7812->font.addFallback(data_k8x12L->font);
 
 		FontAsset::Register(U"px7812", std::move(data_px7812));
+		FontAsset::Register(U"px7812m", std::move(data_px7812m));
 		FontAsset::Register(U"k8x12L", std::move(data_k8x12L));
 
 		//Load

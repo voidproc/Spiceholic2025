@@ -30,7 +30,7 @@ namespace Spiceholic
 		// ICollidable
 		const Collision& getCollision() const override;
 
-		int32 score() const;
+		int32 score() const override;
 
 	private:
 		void initCollision_();

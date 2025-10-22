@@ -27,6 +27,9 @@ namespace Spiceholic
 		// ステージ名
 		String name;
 
+		// 次のステージID
+		String nextStageID;
+
 		// ステージの大きさ（グリッド列数・行数）
 		Size gridSize;
 

@@ -25,6 +25,9 @@ namespace Spiceholic
 		// ステージ
 		std::unique_ptr<StageData> stageData;
 
+		// 次のステージID
+		String nextStageID;
+
 		// 辛ゲージ
 		std::unique_ptr<Gauge> gauge;
 

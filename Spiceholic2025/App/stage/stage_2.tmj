@@ -5,14 +5,14 @@
  "layers":[
         {
          "data":[2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-            2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2,
-            2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2,
-            2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2,
-            2, 2, 2, 0, 0, 0, 2, 2, 2, 0, 0, 0, 2, 2, 2,
-            2, 2, 2, 0, 0, 0, 2, 2, 2, 0, 0, 0, 2, 2, 2,
-            2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2,
-            2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2,
-            2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2,
+            2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2,
+            2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2,
+            2, 0, 0, 2, 3, 2, 0, 0, 0, 2, 3, 2, 0, 0, 2,
+            2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2,
+            2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2,
+            2, 0, 0, 2, 3, 2, 0, 0, 0, 2, 3, 2, 0, 0, 2,
+            2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2,
+            2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2,
             2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
          "height":10,
          "id":1,
@@ -39,7 +39,19 @@
                  "visible":true,
                  "width":16,
                  "x":112,
-                 "y":48
+                 "y":88
+                }, 
+                {
+                 "gid":9,
+                 "height":16,
+                 "id":2,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":112,
+                 "y":128
                 }, 
                 {
                  "gid":17,
@@ -51,7 +63,7 @@
                          "name":"Direction",
                          "propertytype":"Direction",
                          "type":"string",
-                         "value":"Right"
+                         "value":"Left"
                         }, 
                         {
                          "name":"HasKey",
@@ -67,80 +79,37 @@
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":112,
-                 "y":128
-                }, 
-                {
-                 "gid":9,
-                 "height":16,
-                 "id":5,
-                 "name":"",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":160,
-                 "y":104
-                }, 
-                {
-                 "gid":9,
-                 "height":16,
-                 "id":6,
-                 "name":"",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":64,
-                 "y":104
-                }, 
-                {
-                 "gid":9,
-                 "height":16,
-                 "id":8,
-                 "name":"",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":160,
+                 "x":200,
                  "y":88
                 }, 
                 {
-                 "gid":9,
+                 "gid":17,
                  "height":16,
-                 "id":9,
+                 "id":4,
                  "name":"",
+                 "properties":[
+                        {
+                         "name":"Direction",
+                         "propertytype":"Direction",
+                         "type":"string",
+                         "value":"Left"
+                        }, 
+                        {
+                         "name":"HasKey",
+                         "type":"bool",
+                         "value":false
+                        }, 
+                        {
+                         "name":"SubType",
+                         "type":"int",
+                         "value":0
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":64,
-                 "y":88
-                }, 
-                {
-                 "gid":9,
-                 "height":16,
-                 "id":10,
-                 "name":"",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":160,
-                 "y":72
-                }, 
-                {
-                 "gid":9,
-                 "height":16,
-                 "id":11,
-                 "name":"",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":64,
-                 "y":72
+                 "x":200,
+                 "y":40
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -149,13 +118,13 @@
          "y":0
         }],
  "nextlayerid":3,
- "nextobjectid":12,
+ "nextobjectid":5,
  "orientation":"orthogonal",
  "properties":[
         {
          "name":"NextStageID",
          "type":"string",
-         "value":"2"
+         "value":"1"
         }],
  "renderorder":"right-down",
  "tiledversion":"1.11.0",

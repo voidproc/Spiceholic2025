@@ -46,13 +46,8 @@
             "type": "class",
             "useAs": [
                 "property",
-                "map",
-                "layer",
                 "object",
                 "tile",
-                "tileset",
-                "wangcolor",
-                "wangset",
                 "project"
             ]
         },
@@ -69,6 +64,30 @@
                 "Right"
             ],
             "valuesAsFlags": false
+        },
+        {
+            "color": "#ffa0a0a4",
+            "drawFill": true,
+            "id": 4,
+            "members": [
+                {
+                    "name": "NextStageID",
+                    "type": "string",
+                    "value": ""
+                },
+                {
+                    "name": "StageName",
+                    "type": "string",
+                    "value": ""
+                }
+            ],
+            "name": "Map",
+            "type": "class",
+            "useAs": [
+                "property",
+                "map",
+                "project"
+            ]
         }
     ]
 }

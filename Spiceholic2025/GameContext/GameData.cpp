@@ -16,6 +16,7 @@ namespace Spiceholic
 		userSetting{ std::make_unique<UserSetting>() },
 		actionInput{ std::make_unique<ActionInput>() },
 		stageData{ std::make_unique<StageData>() },
+		nextStageID{ U"1" },
 		gauge{ std::make_unique<Gauge>() },
 		player{},
 		blocks{ Arg::reserve = 128 },

@@ -217,7 +217,10 @@ namespace Spiceholic
 		timeStageClear_{ StartImmediately::No, Clock() }
 	{
 		// ステージデータ読み込み
-		LoadStage(U"1", *getData().stageData);
+		LoadStage(getData().nextStageID, *getData().stageData);
+
+		// 次のステージIDを設定
+		getData().nextStageID = getData().stageData->nextStageID;
 
 		// プレイヤーを初期化
 		getData().player = std::make_unique<Player>(getData().stageData->playerStartPos, getData());

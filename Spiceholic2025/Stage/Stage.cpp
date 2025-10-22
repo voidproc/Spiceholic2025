@@ -105,6 +105,10 @@ namespace Spiceholic
 				{
 					stageData.name = prop[U"value"].getString();
 				}
+				else if (name == U"NextStageID")
+				{
+					stageData.nextStageID = prop[U"value"].getString();
+				}
 			}
 		}
 

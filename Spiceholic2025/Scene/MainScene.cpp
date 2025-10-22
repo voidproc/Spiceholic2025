@@ -425,8 +425,9 @@ namespace Spiceholic
 			const auto regionHudD = Rect{ 0, 176, Size{ SceneSize.x, TileSize } }.draw(ColorF{ 0.1 });
 
 			// スコア
+			const ColorF scoreColor = (getData().score->animating()) ? ColorF{ Palette::White.lerp(Palette::Red, 0.8 * Periodic::Square0_1(0.06s, ClockTime())) } : ColorF{ 0.9 - 0.1 * Periodic::Square0_1(0.25s, ClockTime()) };
 			DrawText(U"px7812m", U"{:08d}"_fmt(getData().score->displayScore()), Arg::center = regionHudU.center(), ColorF{ 0.3 });
-			DrawText(U"px7812m", U"{:-8d}"_fmt(getData().score->displayScore()), Arg::center = regionHudU.center(), ColorF{ 0.9 - 0.1 * Periodic::Square0_1(0.25s) }, ColorF{ Palette::Darkred, 0.6 - 0.1 * Periodic::Square0_1(0.25s) });
+			DrawText(U"px7812m", U"{:-8d}"_fmt(getData().score->displayScore()), Arg::center = regionHudU.center(), scoreColor, ColorF{ Palette::Darkred, 0.6 - 0.1 * Periodic::Square0_1(0.25s, ClockTime()) });
 
 			// ゲージ枠、ゲージ
 			getData().gauge->draw();
@@ -442,7 +443,7 @@ namespace Spiceholic
 			const String text = (timeStartReady_ < 1.5s) ? getData().stageData->name : U"Ready";
 			const Vec2 textPos = SceneCenter + Vec2{ 400 * (1 - EaseOutExpo(Saturate(timeStartReady_.sF() / 1.0))), 0 };
 
-			DrawText(U"px7812", text, Arg::center = textPos, ColorF{ 1.0 - 0.3  * Periodic::Square0_1(0.25s) });
+			DrawText(U"px7812", text, Arg::center = textPos, ColorF{ 1.0 - 0.3  * Periodic::Square0_1(0.25s, ClockTime()) });
 		}
 
 		// ステージクリア時
@@ -453,12 +454,12 @@ namespace Spiceholic
 
 			const String text = U"{}  Clear!"_fmt(getData().stageData->name);
 			const Vec2 textPos = SceneCenter + Vec2{ 400 * (1 - EaseOutExpo(Saturate(timeStageClear_.sF() / 1.0))), 0 };
-			DrawText(U"px7812", text, Arg::center = textPos, Palette::Yellow.lerp(Palette::Black, 0.2 * Periodic::Square0_1(0.25s)));
+			DrawText(U"px7812", text, Arg::center = textPos, Palette::Yellow.lerp(Palette::Black, 0.2 * Periodic::Square0_1(0.25s, ClockTime())));
 
 			// 入力待ち表示
 			if (timeStageClear_ > 1.5s)
 			{
-				DrawSprite(*getData().appSetting, U"WhiteArrowDown", 0.5s, false, SceneCenter + Vec2{ SceneSize.x / 2 - 16 , 4 + 1 * Periodic::Square0_1(0.5s) });
+				DrawSprite(*getData().appSetting, U"WhiteArrowDown", 0.5s, false, SceneCenter + Vec2{ SceneSize.x / 2 - 16 , 4 + 1 * Periodic::Square0_1(0.5s, ClockTime()) });
 			}
 		}
 

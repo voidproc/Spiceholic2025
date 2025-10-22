@@ -22,6 +22,8 @@ namespace Spiceholic
 
 		int32 displayScore() const;
 
+		bool animating() const;
+
 	private:
 		void startAnimation_(int32 startScore);
 

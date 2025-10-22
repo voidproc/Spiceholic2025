@@ -66,6 +66,11 @@ namespace Spiceholic
 			static_cast<int32>((currentScore_ - animationStartScore_) * animationTimer_.progress0_1());
 	}
 
+	bool Score::animating() const
+	{
+		return animationTimer_.isRunning();
+	}
+
 	void Score::startAnimation_(int32 startScore)
 	{
 		animationStartScore_ = startScore;

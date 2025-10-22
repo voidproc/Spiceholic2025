@@ -67,7 +67,8 @@ namespace Spiceholic
 		gameData_.actors.push_back(std::make_unique<FxBlockBreak>(position().currentPos()));
 
 		// アイテム放出
-		for (int i = 0, n = Random(1, 3), a = Random(Math::TwoPi); i < n; ++i)
+		// TODO: 敵によって放出量を変える
+		for (int i = 0, n = 3, a = Random(Math::TwoPi); i < n; ++i)
 		{
 			const Vec2 pos = position().currentPos() + Circular{ 12, a + 120_deg * i };
 			gameData_.actors.push_back(std::make_unique<Item>(pos, ActorType::ItemChilipepper, gameData_, true, 0.04 * i));

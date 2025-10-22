@@ -130,6 +130,7 @@
     <ClCompile Include="Core\Collision.cpp" />
     <ClCompile Include="Core\DrawText.cpp" />
     <ClCompile Include="Core\GameClock.cpp" />
+    <ClCompile Include="Core\Gauge.cpp" />
     <ClCompile Include="Core\GlobalClock.cpp" />
     <ClCompile Include="Core\LowResolution.cpp" />
     <ClCompile Include="Core\Periodic.cpp" />
@@ -374,6 +375,7 @@
     <ClInclude Include="Core\Collision.h" />
     <ClInclude Include="Core\DrawText.h" />
     <ClInclude Include="Core\GameClock.h" />
+    <ClInclude Include="Core\Gauge.h" />
     <ClInclude Include="Core\GlobalClock.h" />
     <ClInclude Include="Core\LowResolution.h" />
     <ClInclude Include="Core\Periodic.h" />

@@ -10,25 +10,27 @@ namespace Spiceholic
 		namespace Fire
 		{
 			// 1コマあたりの時間
-			constexpr double TimePerFrame = 0.9 / 16;
+			constexpr double TimePerFrame1 = 0.6 / 16;
+			constexpr double TimePerFrame2 = 0.8 / 16;
+			constexpr double TimePerFrame3 = 0.6 / 16;
 
 			// 最初の4コマにかかる時間
-			constexpr double TimeFire1 = TimePerFrame * 4;
+			constexpr double TimeFire1 = TimePerFrame1 * 4;
 
 			// ループ素材の1ループにかかる時間
-			constexpr double TimeFire2PerLoop = TimePerFrame * 8;
+			constexpr double TimeFire2PerLoop = TimePerFrame2 * 8;
 
 			// ループ回数
 			constexpr int Loop = 1;
 
 			// 最後の5コマにかかる時間
-			constexpr double TimeFire3 = TimePerFrame * 5;
+			constexpr double TimeFire3 = TimePerFrame3 * 5;
 
 			// 描画位置調整
 			constexpr Vec2 DrawOffset{ 0, -6 };
 
 			// 次の炎を生成するまでの時間
-			constexpr double TimeNextFire = 0.1;
+			constexpr double TimeNextFire = 0.18;
 		}
 
 		namespace Explode

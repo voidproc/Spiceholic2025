@@ -9,6 +9,7 @@ namespace Spiceholic
 	class Block;
 	class Actor;
 	struct StageData;
+	class Gauge;
 
 	struct GameData
 	{
@@ -21,8 +22,11 @@ namespace Spiceholic
 		// 入力
 		std::unique_ptr<ActionInput> actionInput;
 
-		// 入力
+		// ステージ
 		std::unique_ptr<StageData> stageData;
+
+		// 辛ゲージ
+		std::unique_ptr<Gauge> gauge;
 
 		// プレイヤー
 		std::unique_ptr<Player> player;
@@ -32,9 +36,6 @@ namespace Spiceholic
 
 		// その他（敵・アイテムなど）
 		Array<std::unique_ptr<Actor>> actors;
-
-		// 炎ゲージ
-		double gauge;
 
 		GameData();
 

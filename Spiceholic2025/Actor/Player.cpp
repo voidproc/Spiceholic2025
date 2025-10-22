@@ -1,6 +1,7 @@
 ﻿#include "Player.h"
 #include "Weapon.h"
 #include "Config/GameConfig.h"
+#include "Core/Gauge.h"
 #include "Core/Periodic.h"
 #include "Input/ActionInput.h"
 #include "Setting/AppSetting.h"
@@ -55,11 +56,18 @@ namespace Spiceholic
 			// 炎を吐く
 			if (gameData_.actionInput->pressed(Action::Attack))
 			{
+				// ゲージ量に応じて射程変化
+				// ゲージ半分以上ならMAX射程
+				const int nFire = (gameData_.gauge->getValue() > 0.499) ? 7 : 3;
+
 				const Circular fireDir{ 14, DirectionToAngle(moveDirection_) };
-				gameData_.actors.push_back(std::make_unique<WeaponFire>(position().currentPos() + Vec2{ 0, 0 } + fireDir, fireDir, 3, gameData_));
+				gameData_.actors.push_back(std::make_unique<WeaponFire>(position().currentPos() + Vec2{ 0, 0 } + fireDir.fastToVec2() * 0.8, fireDir, nFire, gameData_));
 
 				// 炎を吐いたタイマー: 動作中、プレイヤーは硬直する
 				timerFire_.restart(0.5s);
+
+				// すこしゲージ消費
+				gameData_.gauge->add(-0.02);
 			}
 
 			drawOffset_ = Vec2::Zero();
@@ -117,11 +125,14 @@ namespace Spiceholic
 		// TODO: 敵に触れると...
 		if (other->tag() == ActorTag::Enemy && not timerTr_.isRunning())
 		{
-			// ノックバック & 無敵
+			// ノックバック、無敵、ゲージ消費
 			if (not timerKnockback_.isRunning())
 			{
 				timerKnockback_.restart();
 				timerTr_.restart();
+
+				// ゲージ消費
+				gameData_.gauge->add(-0.20);
 			}
 		}
 		else if (other->tag() == ActorTag::Item)
@@ -130,7 +141,8 @@ namespace Spiceholic
 
 			if (other->type() == ActorType::ItemChilipepper)
 			{
-				gameData_.gauge = Saturate(gameData_.gauge + 0.15);
+				// ゲージ回復
+				gameData_.gauge->add(0.15);
 			}
 		}
 	}

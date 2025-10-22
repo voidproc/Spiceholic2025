@@ -28,15 +28,6 @@ namespace Spiceholic
 		timerJumping_{ 999s, StartImmediately::No, Clock() },
 		timerMakeFx_{ 1.1s, StartImmediately::No, Clock() }
 	{
-		//if (appearJumping)
-		//{
-		//	timerJumping_.restart(TimeAppear);
-		//}
-		//else
-		//{
-		//	initCollision_();
-		//	timerJumping_.reset();
-		//}
 	}
 
 	Item::~Item()

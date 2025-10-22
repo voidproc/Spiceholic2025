@@ -19,6 +19,8 @@ namespace Spiceholic
 		void draw() const override;
 
 	private:
+		void recoverGaugeAuto_();
+
 		//StageData stageData_;
 		Stopwatch time_;
 

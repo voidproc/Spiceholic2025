@@ -4,6 +4,7 @@
 #include "Actor/Item.h"
 #include "Actor/Player.h"
 #include "Config/GameConfig.h"
+#include "Core/Gauge.h"
 #include "Input/ActionInput.h"
 #include "Stage/Stage.h"
 
@@ -283,12 +284,12 @@ namespace Spiceholic
 			getData().actors.remove_if([](const auto& a) { return not a->active(); });
 			getData().blocks.remove_if([](const auto& a) { return not a->active(); });
 
+			// 炎ゲージ更新
+			getData().gauge->update();
+
 			// 炎ゲージ自動回復
-			if (timerGaugeRecovery_.reachedZero())
-			{
-				getData().gauge = Saturate(getData().gauge + 0.008);
-				timerGaugeRecovery_.restart();
-			}
+			// しない
+			//recoverGaugeAuto_();
 		}
 
 		// アクターの影のリストを作成
@@ -341,10 +342,7 @@ namespace Spiceholic
 			Rect{ 0, 176, Size{ SceneSize.x, TileSize } }.draw(ColorF{ 0.1 });
 
 			// ゲージ枠、ゲージ
-			const Vec2 gaugePos{ 60, 174 };
-			const double gaugeLength = 95 * getData().gauge;
-			TextureAsset(U"Gauge")(0, 0, gaugeLength, 6).draw(gaugePos + Vec2{ 21, 7 }, ColorF{ 1 - 0.08 * Periodic::Sine0_1(0.3s, ClockTime()) });
-			TextureAsset(U"GaugeFrame").draw(gaugePos);
+			getData().gauge->draw();
 		}
 
 		// ポーズ中
@@ -353,6 +351,15 @@ namespace Spiceholic
 			SceneRect.draw(ColorF{ 0, 0.5 });
 			RectF{ Arg::center = SceneCenter, SizeF{ SceneSize.x, 24 } }.draw(Palette::Darkred);
 			FontAsset(U"px7812")(U"PAUSED - 休憩中").drawAt(SceneCenter);
+		}
+	}
+
+	void MainScene::recoverGaugeAuto_()
+	{
+		if (timerGaugeRecovery_.reachedZero())
+		{
+			getData().gauge->add(0.008);
+			timerGaugeRecovery_.restart();
 		}
 	}
 }

@@ -21,6 +21,8 @@ namespace Spiceholic
 	private:
 		void recoverGaugeAuto_();
 
+		void makeCharacterShadows_();
+
 		void onGetKey_();
 
 		Stopwatch time_;

@@ -248,8 +248,6 @@ namespace Spiceholic
 			{
 				timeStartReady_.reset();
 			}
-
-			return;
 		}
 
 		// ステージクリア時の入力待ち
@@ -265,8 +263,9 @@ namespace Spiceholic
 		}
 
 		// ポーズ
-		// 鍵取得～シーン遷移まではポーズ状態を変更しない
+		// ステージ開始時と、鍵取得～シーン遷移まではポーズ状態を変更しない
 		if (getData().actionInput->down(Action::Pause) &&
+			not timeStartReady_.isRunning() &&
 			not timeGetKey_.isRunning())
 		{
 			if (GlobalClock::IsPaused())
@@ -281,7 +280,10 @@ namespace Spiceholic
 
 		auto& player = *getData().player;
 
-		if (timeGetKey_.isRunning())
+		if (timeStartReady_.isRunning())
+		{
+		}
+		else if (timeGetKey_.isRunning())
 		{
 			// 鍵取得～シーン遷移
 			if (timeGetKey_ > 2s)
@@ -349,16 +351,7 @@ namespace Spiceholic
 		}
 
 		// アクターの影のリストを作成
-		shadowPosList_.clear();
-		shadowPosList_.push_back(player.position().currentPos() + player.shadowOffset());
-		for (size_t i = 0; i < getData().actors.size(); ++i)
-		{
-			const auto& actor = getData().actors[i];
-			if (actor->tag() == ActorTag::Enemy || actor->tag() == ActorTag::Item)
-			{
-				shadowPosList_.push_back(actor->position().currentPos() + actor->shadowOffset());
-			}
-		}
+		makeCharacterShadows_();
 	}
 
 	void MainScene::draw() const
@@ -445,6 +438,20 @@ namespace Spiceholic
 		{
 			getData().gauge->add(0.008);
 			timerGaugeRecovery_.restart();
+		}
+	}
+
+	void MainScene::makeCharacterShadows_()
+	{
+		shadowPosList_.clear();
+		shadowPosList_.push_back(getData().player->position().currentPos() + getData().player->shadowOffset());
+		for (size_t i = 0; i < getData().actors.size(); ++i)
+		{
+			const auto& actor = getData().actors[i];
+			if (actor->tag() == ActorTag::Enemy || actor->tag() == ActorTag::Item)
+			{
+				shadowPosList_.push_back(actor->position().currentPos() + actor->shadowOffset());
+			}
 		}
 	}
 

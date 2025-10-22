@@ -125,6 +125,8 @@ namespace Spiceholic
 		if (subType == 0)
 		{
 			dir_ = (dir == Direction::Left) ? Vec2::Left() : Vec2::Right();
+			spriteMirror_ = (dir_.x < 0);
+
 		}
 	}
 

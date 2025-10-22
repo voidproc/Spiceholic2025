@@ -21,13 +21,19 @@ namespace Spiceholic
 	private:
 		void recoverGaugeAuto_();
 
-		//StageData stageData_;
+		void onGetKey_();
+
 		Stopwatch time_;
+
+		Stopwatch timeStartReady_;
 
 		// 炎ゲージ自動回復用タイマー
 		Timer timerGaugeRecovery_;
 
 		// アクターの影
 		Array<Vec2> shadowPosList_;
+
+		// 鍵をとった
+		Stopwatch timeGetKey_;
 	};
 }

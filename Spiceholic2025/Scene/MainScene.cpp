@@ -4,7 +4,10 @@
 #include "Actor/Item.h"
 #include "Actor/Player.h"
 #include "Config/GameConfig.h"
+#include "Core/DrawText.h"
 #include "Core/Gauge.h"
+#include "Event/Dispatch.h"
+#include "Event/Events.h"
 #include "Input/ActionInput.h"
 #include "Stage/Stage.h"
 
@@ -206,8 +209,10 @@ namespace Spiceholic
 	MainScene::MainScene(const InitData& init)
 		:
 		CustomScene{ init },
-		time_{ StartImmediately::Yes, Clock() },
-		timerGaugeRecovery_{ 0.8s, StartImmediately::Yes, Clock() }
+		time_{ StartImmediately::No, Clock() },
+		timeStartReady_{ StartImmediately::Yes, Clock() },
+		timerGaugeRecovery_{ 0.8s, StartImmediately::Yes, Clock() },
+		timeGetKey_{ StartImmediately::No, Clock() }
 	{
 		// ステージデータ読み込み
 		LoadStage(U"1", *getData().stageData);
@@ -221,16 +226,33 @@ namespace Spiceholic
 
 		// アクターの初期配置
 		SpawnActors(0, *getData().stageData, getData());
+
+		// イベント購読
+		GetDispatch().subscribe<GetKeyEvent, &MainScene::onGetKey_>(this);
+
 	}
 
 	MainScene::~MainScene()
 	{
+		GetDispatch().unsubscribe<GetKeyEvent>(this);
 	}
 
 	void MainScene::update()
 	{
+		if (timeStartReady_.isRunning())
+		{
+			if (timeStartReady_ > 2.5s)
+			{
+				timeStartReady_.reset();
+			}
+
+			return;
+		}
+
 		// ポーズ
-		if (getData().actionInput->down(Action::Pause))
+		// 鍵取得～シーン遷移まではポーズ状態を変更しない
+		if (getData().actionInput->down(Action::Pause) &&
+			not timeGetKey_.isRunning())
 		{
 			if (GlobalClock::IsPaused())
 			{
@@ -244,9 +266,27 @@ namespace Spiceholic
 
 		auto& player = *getData().player;
 
-		if (not GlobalClock::IsPaused())
+		if (timeGetKey_.isRunning())
 		{
-			// ポーズ状態ではないので、シーンを更新
+			// 鍵取得～シーン遷移
+			if (timeGetKey_ > 2s)
+			{
+				changeScene(U"MainScene", 0);
+				return;
+			}
+
+			// エフェクトを更新
+			for (size_t i = 0; i < getData().actors.size(); ++i)
+			{
+				if (getData().actors[i]->tag() == ActorTag::Effect)
+				{
+					getData().actors[i]->update();
+				}
+			}
+		}
+		else if (not GlobalClock::IsPaused())
+		{
+			// 鍵取得状態でなく、かつポーズ状態ではないので、シーンを更新
 
 			// プレイヤーを更新
 			player.update();
@@ -261,7 +301,6 @@ namespace Spiceholic
 			}
 
 			// その他アクターを更新
-			//for (auto& actor : getData().actors)
 			for (size_t i = 0; i < getData().actors.size(); ++i)
 			{
 				getData().actors[i]->update();
@@ -347,12 +386,24 @@ namespace Spiceholic
 			getData().gauge->draw();
 		}
 
+		// ステージ開始時
+		if (timeStartReady_.isRunning())
+		{
+			const double height = 24 * EaseInQuad(Saturate(timeStartReady_.sF() / 0.3));
+			RectF{ Arg::center = SceneCenter, SizeF{ SceneSize.x, height } }.draw(ColorF{ Palette::Darkred, 0.9 });
+
+			const String text = (timeStartReady_ < 1.5s) ? getData().stageData->name : U"Ready";
+			const Vec2 textPos = SceneCenter + Vec2{ 400 * (1 - EaseOutQuad(Saturate((timeStartReady_.sF() - 0.1) / 0.9))), 0 };
+
+			DrawText(U"px7812", text, Arg::center = textPos, ColorF{ 1.0 - 0.3  * Periodic::Square0_1(0.25s) });
+		}
+
 		// ポーズ中
 		if (GlobalClock::IsPaused())
 		{
 			SceneRect.draw(ColorF{ 0, 0.5 });
 			RectF{ Arg::center = SceneCenter, SizeF{ SceneSize.x, 24 } }.draw(Palette::Darkred);
-			FontAsset(U"px7812")(U"PAUSED - 休憩中").drawAt(SceneCenter);
+			DrawText(U"px7812", U"PAUSED - 休憩中", Arg::center = SceneCenter, Palette::White);
 		}
 	}
 
@@ -363,5 +414,10 @@ namespace Spiceholic
 			getData().gauge->add(0.008);
 			timerGaugeRecovery_.restart();
 		}
+	}
+
+	void MainScene::onGetKey_()
+	{
+		timeGetKey_.start();
 	}
 }

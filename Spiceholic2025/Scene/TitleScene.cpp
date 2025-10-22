@@ -37,6 +37,7 @@ namespace Spiceholic
 	TitleScene::TitleScene(const InitData& init)
 		:
 		CustomScene{ init },
+		time_{ StartImmediately::Yes },
 		timerSceneChange_{ 1.0s, StartImmediately::No },
 		selectedMenuIndex_{ 0 }
 	{
@@ -48,6 +49,16 @@ namespace Spiceholic
 
 	void TitleScene::update()
 	{
+		if (time_ < 2.7s)
+		{
+			if (getData().actionInput->down(Action::Decide))
+			{
+				time_.set(2.7s);
+			}
+
+			return;
+		}
+
 		// カーソル移動
 		// GameStart決定後は行わない
 		if (not timerSceneChange_.isRunning())
@@ -106,22 +117,55 @@ namespace Spiceholic
 	void TitleScene::draw() const
 	{
 		// BG
-		SceneRect.draw(Theme::BgColor);
+		SceneRect.draw(Palette::White.lerp(Theme::BgColor, Saturate((time_.sF() - 0.9) / 0.4)));
+
+		// キャラクター
+		{
+			const double t = Saturate(time_.sF() / 1.1);
+			const double t2 = 1.0 - 0.7 * Saturate((time_.sF() - 1.5) / 0.45);
+			{
+				ScopedColorMul2D mul{ 1, t2 };
+
+				const double tMoveCursor = Saturate(1 - (timerMoveCursorLeft_.progress1_0() + timerMoveCursorRight_.progress1_0()));
+				const double jump = Periodic::Jump0_1(0.1s, tMoveCursor * 0.1);
+				const Vec2 pos = SceneRect.bottomCenter() + Vec2{ -40 + 300 * (1 - EaseOutCubic(t)), -5 * Periodic::Sine1_1(6.0s) - 64 } + Vec2{ 0, -4 * jump };
+
+				TextureAsset(U"DragonGirl").scaled(1 + 0.03 * jump, 1 + 0.05 * jump).drawAt(pos + Vec2::One() * 4, ColorF{Palette::Darkred, 0.3});
+				TextureAsset(U"DragonGirl").scaled(1 + 0.03 * jump, 1 + 0.05 * jump).drawAt(pos);
+			}
+
+			const double t3 = Saturate((time_.sF() - 0.9) / 0.8);
+			const double t4 = Saturate((time_.sF() - 0.9) / 0.30);
+			const ColorF barColor{ 1, 1 - t4 };
+			RectF{ 0, 0, SceneSize.x, (130 - 16) * (1 - EaseOutCubic(t3)) }.draw(barColor);
+			RectF{ 0, 130 + 16 + (130 - 16) * EaseOutCubic(t3), SceneSize.x, SceneSize.y - (130 + 16) }.draw(barColor);
+		}
 
 		// タイトル
-		DrawText(U"px7812", U"Blazing Spiceholics", Arg::center = SceneRect.center().withY(64), Palette::White);
+		{
+			Transformer2D scale{ Mat3x2::Scale(1, 2) };
+			const double alpha = Saturate((time_.sF() - 1.5) / 0.5);
+			const Vec2 center = SceneRect.center().withY(20);
+			RectF{ Arg::center = center, SizeF{ SceneSize.x, 24 } }.draw(ColorF{ Palette::Darkred, 0.8 * alpha });
+			const ColorF textColor = Palette::Yellow.lerp(Palette::Red.lerp(Palette::Lime.lerp(Palette::White, Periodic::Sine0_1(0.3s)), Periodic::Sine0_1(0.4s)), Periodic::Sine0_1(0.45s));
+			DrawText(U"NotJamSig21", U"Blazing Spiceholics", Arg::center = center, ColorF{ textColor, alpha }, ColorF{ 0, 0.5 * alpha });
+		}
 
 		// メニュー
-		const Vec2 menuCenter = SceneRect.center() + Vec2{ 0, 16 };
-		const double vibrateX_l = timerMoveCursorLeft_.isRunning() ? 2 * Periodic::Sine1_1(0.01s) : 0;
-		const double vibrateX_r = timerMoveCursorRight_.isRunning() ? 2 * Periodic::Sine1_1(0.01s) : 0;
-		DrawText(U"px7812", TitleMenuItemList[selectedMenuIndex_].text, Arg::center = menuCenter + Vec2{ Max(vibrateX_l, vibrateX_r), 0 }, Palette::White);
-
-		// メニュー矢印
+		if (time_ > 2.7s)
 		{
-			const double color = 0.7 + 0.3 * Periodic::Square0_1(0.5s);
-			TextureAsset(U"WhiteArrow")(0, 0, 16).drawAt(menuCenter - Vec2{ 75 + vibrateX_l, 0 }, ColorF(color));
-			TextureAsset(U"WhiteArrow")(16, 0, 16).drawAt(menuCenter + Vec2{ 75 + vibrateX_r, 0 }, ColorF(color));
+			const Vec2 menuCenter = SceneRect.center() + Vec2{ 0, 16 };
+			const double vibrateX_l = timerMoveCursorLeft_.isRunning() ? 2 * Periodic::Sine1_1(0.01s) : 0;
+			const double vibrateX_r = timerMoveCursorRight_.isRunning() ? 2 * Periodic::Sine1_1(0.01s) : 0;
+			RectF{ Arg::center = menuCenter, SizeF{ SceneSize.x, 20 } }.draw(ColorF{ Palette::Darkred, 0.5 });
+			const ColorF color = Palette::White.lerp(Palette::Darkred, 0.2 * Periodic::Square0_1(0.5s));
+			DrawText(U"px7812", TitleMenuItemList[selectedMenuIndex_].text, Arg::center = menuCenter + Vec2{ Max(vibrateX_l, vibrateX_r), 0 }, color);
+
+			// メニュー矢印
+			{
+				TextureAsset(U"WhiteArrow")(0, 0, 16).drawAt(menuCenter - Vec2{ 75 + vibrateX_l, 0 }, color);
+				TextureAsset(U"WhiteArrow")(16, 0, 16).drawAt(menuCenter + Vec2{ 75 + vibrateX_r, 0 }, color);
+			}
 		}
 
 		// フェード

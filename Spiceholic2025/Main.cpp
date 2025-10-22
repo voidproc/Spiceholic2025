@@ -37,6 +37,7 @@ namespace
 		TextureAsset::Register(U"Shadow", Resource(U"image/shadow.png"));
 		TextureAsset::Register(U"WhiteArrow", Resource(U"image/white_arrow.png"));
 		TextureAsset::Register(U"EnemyChick", Resource(U"image/enemy_chick.png"));
+		TextureAsset::Register(U"DragonGirl", Resource(U"image/dragon_girl.png"));
 
 		//Load
 		//...
@@ -59,6 +60,7 @@ namespace
 		FontAsset::Register(U"px7812", std::move(data_px7812));
 		FontAsset::Register(U"px7812m", std::move(data_px7812m));
 		FontAsset::Register(U"k8x12L", std::move(data_k8x12L));
+		FontAsset::Register(U"NotJamSig21", 21, Resource(U"font/Not_Jam_Signature_21.ttf"), FontStyle::Bitmap);
 
 		//Load
 		//...

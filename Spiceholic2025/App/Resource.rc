@@ -140,10 +140,12 @@ Resource(image/burning_end_1.png)
 Resource(image/shadow.png)
 Resource(image/white_arrow.png)
 Resource(image/enemy_chick.png)
+Resource(image/dragon_girl.png)
 
 Resource(font/px7812.ttf)
 Resource(font/px7812m.ttf)
 Resource(font/k8x12L.ttf)
+Resource(font/Not_Jam_Signature_21.ttf)
 
 Resource(stage/stage_1.tmj)
 Resource(stage/stage_2.tmj)

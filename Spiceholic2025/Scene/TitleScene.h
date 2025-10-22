@@ -21,6 +21,8 @@ namespace Spiceholic
 		void selectNext_();
 		void selectPrevious_();
 
+		Stopwatch time_;
+
 		Timer timerSceneChange_;
 
 		// 選択中の項目

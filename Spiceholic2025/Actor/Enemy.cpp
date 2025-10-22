@@ -122,7 +122,7 @@ namespace Spiceholic
 				dir_.x = -dir_.x;
 			}
 
-			spriteMirror_ = (gameData_.player->position().currentPos().x < position().currentPos().x);
+			spriteMirror_ = (dir_.x < 0);
 		}
 		else if (subType_ == 1)
 		{

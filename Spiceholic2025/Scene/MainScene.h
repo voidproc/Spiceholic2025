@@ -24,6 +24,7 @@ namespace Spiceholic
 		void makeCharacterShadows_();
 
 		void onGetKey_();
+		void onGaugeMax_();
 
 		Stopwatch time_;
 
@@ -38,5 +39,8 @@ namespace Spiceholic
 		// 鍵をとった
 		Stopwatch timeGetKey_;
 		Stopwatch timeStageClear_;
+
+		// シークレット
+		bool openedSecretRoute_;
 	};
 }

@@ -34,7 +34,7 @@ namespace Spiceholic
 			}
 		}
 
-		void MakeSpawnsFromObjectLayer(const JSON& objLayer, Array<ActorSpawnInfo>& spawns, Vec2& playerStartPos)
+		void MakeSpawnsFromObjectLayer(const JSON& objLayer, Array<ActorSpawnInfo>& spawns, Vec2& playerStartPos, StageData& stageData)
 		{
 			for (auto&& [keyObj, obj] : objLayer[U"objects"])
 			{
@@ -73,12 +73,27 @@ namespace Spiceholic
 						{
 							spawn.hasKey = prop[U"value"].getOr<bool>(false);
 						}
+						else if (name == U"SecretRoute")
+						{
+							spawn.secretRoute = prop[U"value"].getOr<bool>(false);
+						}
 					}
 				}
 
 				if (spawn.type == ActorType::PlayerA)
 				{
 					playerStartPos = spawn.position;
+					continue;
+				}
+				else if (spawn.type == ActorType::CameraTopLeft)
+				{
+					stageData.cameraTopLeft = spawn.position - SizeF{ TileSize, TileSize } / 2.0;
+					continue;
+				}
+				else if (spawn.type == ActorType::CameraBottomRight)
+				{
+					stageData.cameraBottomRight = spawn.position + SizeF{ TileSize, TileSize } / 2.0;
+					continue;
 				}
 
 				if ((spawn.type != ActorType::None) && (spawn.type != ActorType::PlayerA))
@@ -128,7 +143,7 @@ namespace Spiceholic
 			else if (layerType == U"objectgroup")
 			{
 				// オブジェクトレイヤー
-				MakeSpawnsFromObjectLayer(layer, stageData.actorSpawns, stageData.playerStartPos);
+				MakeSpawnsFromObjectLayer(layer, stageData.actorSpawns, stageData.playerStartPos, stageData);
 			}
 		}
 	}

@@ -33,5 +33,10 @@ namespace Spiceholic
 
 		// Effect:
 		//...
+
+		// Other:
+		CameraTopLeft,
+		CameraBottomRight,
+
 	};
 }

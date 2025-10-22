@@ -32,6 +32,11 @@
                     "value": 1
                 },
                 {
+                    "name": "SecretRoute",
+                    "type": "bool",
+                    "value": false
+                },
+                {
                     "name": "SpawnTime",
                     "type": "float",
                     "value": 0

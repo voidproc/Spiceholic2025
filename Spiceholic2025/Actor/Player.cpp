@@ -164,7 +164,12 @@ namespace Spiceholic
 			if (other->type() == ActorType::ItemChilipepper)
 			{
 				// ゲージ回復
-				gameData_.gauge->add(0.15);
+				// ゲージMAXイベント発行
+				if (const double gaugeVal = gameData_.gauge->add(0.15);
+					Abs(gaugeVal - 1.0) < 1e-3)
+				{
+					GetDispatch().publish(GaugeMaxEvent{});
+				}
 			}
 			else if (other->type() == ActorType::ItemKey)
 			{

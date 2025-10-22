@@ -4,6 +4,9 @@ namespace Spiceholic
 {
 	struct GetKeyEvent
 	{
+	};
 
+	struct GaugeMaxEvent
+	{
 	};
 }

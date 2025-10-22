@@ -33,7 +33,7 @@ namespace Spiceholic
 			case ActorType::BlockSteel:
 			case ActorType::BlockCanBreak:
 			case ActorType::BlockGiftbox:
-				gameData.blocks.push_back(std::make_unique<Block>(spawn.position, spawn.type, gameData, spawn.hasKey));
+				gameData.blocks.push_back(std::make_unique<Block>(spawn.position, spawn.type, gameData, spawn.hasKey, spawn.secretRoute));
 				actor = gameData.blocks.back().get();
 				break;
 
@@ -239,7 +239,8 @@ namespace Spiceholic
 		timeStartReady_{ StartImmediately::Yes, Clock() },
 		timerGaugeRecovery_{ 0.8s, StartImmediately::Yes, Clock() },
 		timeGetKey_{ StartImmediately::No, Clock() },
-		timeStageClear_{ StartImmediately::No, Clock() }
+		timeStageClear_{ StartImmediately::No, Clock() },
+		openedSecretRoute_{ false }
 	{
 		// ステージデータ読み込み
 		LoadStage(getData().nextStageID, *getData().stageData);
@@ -262,12 +263,13 @@ namespace Spiceholic
 
 		// イベント購読
 		GetDispatch().subscribe<GetKeyEvent, &MainScene::onGetKey_>(this);
-
+		GetDispatch().subscribe<GaugeMaxEvent, &MainScene::onGaugeMax_>(this);
 	}
 
 	MainScene::~MainScene()
 	{
 		GetDispatch().unsubscribe<GetKeyEvent>(this);
+		GetDispatch().unsubscribe<GaugeMaxEvent>(this);
 	}
 
 	void MainScene::update()
@@ -385,11 +387,33 @@ namespace Spiceholic
 
 	void MainScene::draw() const
 	{
+		// BG
+		SceneRect.draw(Palette::Darkolivegreen.lerp(Palette::Cyan, 0.5));
+
 		{
 			const ScopedViewport2D viewport{ ActorsFieldViewportRect };
 
-			// BG
-			SceneRect.draw(Palette::Darkolivegreen.lerp(Palette::Cyan, 0.5));//
+			const SizeF mapSize = getData().stageData->gridSize * TileSize;
+			const Vec2 playerPos = getData().player->position().currentPos();
+			RectF cameraRect{ Arg::center = playerPos, ActorsFieldViewportSize };
+			if (openedSecretRoute_)
+			{
+				cameraRect.x = Max(cameraRect.x, 0.0);
+				cameraRect.y = Max(cameraRect.y, 0.0);
+				cameraRect.x = Min(cameraRect.x, mapSize.x - ActorsFieldViewportSize.x);
+				cameraRect.y = Min(cameraRect.y, mapSize.y - ActorsFieldViewportSize.y);
+			}
+			else
+			{
+				cameraRect.x = Max(cameraRect.x, getData().stageData->cameraTopLeft.x);
+				cameraRect.y = Max(cameraRect.y, getData().stageData->cameraTopLeft.y);
+				cameraRect.x = Min(cameraRect.x, getData().stageData->cameraBottomRight.x - ActorsFieldViewportSize.x);
+				cameraRect.y = Min(cameraRect.y, getData().stageData->cameraBottomRight.y - ActorsFieldViewportSize.y);
+			}
+
+			const Vec2 cameraMove = -cameraRect.pos;
+			const Transformer2D translate{ Mat3x2::Translate(cameraMove) };
+
 
 			// アクターの影
 			for (const auto& shadowPos : shadowPosList_)
@@ -493,5 +517,21 @@ namespace Spiceholic
 	void MainScene::onGetKey_()
 	{
 		timeGetKey_.start();
+	}
+
+	void MainScene::onGaugeMax_()
+	{
+		if (not openedSecretRoute_)
+		{
+			openedSecretRoute_ = true;
+
+			Print << U"GaugeMax";
+
+			// ブロックを更新
+			for (size_t i = 0; i < getData().blocks.size(); ++i)
+			{
+				getData().blocks[i]->setInactiveIfSecret();
+			}
+		}
 	}
 }

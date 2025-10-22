@@ -9,12 +9,13 @@ namespace Spiceholic
 	{
 	}
 
-	Block::Block(const Vec2& pos, ActorType type, GameData& gameData, bool hasKey)
+	Block::Block(const Vec2& pos, ActorType type, GameData& gameData, bool hasKey, bool secretRoute)
 		:
 		Actor{ pos },
 		type_{ type },
 		gameData_{ gameData },
 		hasKey_{ hasKey },
+		secretRoute_{ secretRoute },
 		collision_{}
 	{
 		collision_.set(RectF{ Arg::center = Vec2{}, 16 - 2 });
@@ -52,7 +53,7 @@ namespace Spiceholic
 	void Block::onDead()
 	{
 		// 爆発
-		explode_();
+		explode();
 
 		// アイテム放出
 		if (hasKey_)
@@ -81,7 +82,7 @@ namespace Spiceholic
 		return type() == ActorType::BlockSteel;
 	}
 
-	void Block::explode_()
+	void Block::explode()
 	{
 		gameData_.actors.push_back(std::make_unique<FxSmoke>(position().currentPos() + Vec2{}, nullptr, Random(0.9, 1.5), 0.00));
 		gameData_.actors.push_back(std::make_unique<FxSmoke>(position().currentPos() + Vec2{ Random(6, 12), Random(-8, 0) }, nullptr, Random(0.9, 1.5), 0.08));
@@ -90,4 +91,12 @@ namespace Spiceholic
 		gameData_.actors.push_back(std::make_unique<FxBlockBreak>(position().currentPos()));
 	}
 
+	void Block::setInactiveIfSecret()
+	{
+		if (secretRoute_)
+		{
+			setInactive(false);
+			explode();
+		}
+	}
 }

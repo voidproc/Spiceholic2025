@@ -20,6 +20,9 @@ namespace Spiceholic
 
 		// 鍵を持っている
 		bool hasKey;
+
+		// シークレット
+		bool secretRoute;
 	};
 
 	struct StageData
@@ -35,6 +38,10 @@ namespace Spiceholic
 
 		// プレイヤーの初期位置
 		Vec2 playerStartPos;
+
+		// デフォルトのカメラ移動可能領域
+		Vec2 cameraTopLeft;
+		Vec2 cameraBottomRight;
 
 		// アクター生成情報
 		Array<ActorSpawnInfo> actorSpawns;

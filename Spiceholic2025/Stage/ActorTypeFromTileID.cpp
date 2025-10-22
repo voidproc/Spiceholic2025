@@ -16,8 +16,8 @@ namespace Spiceholic
 			ActorType::None,
 			ActorType::None,
 			ActorType::None,
-			ActorType::None,
-			ActorType::None,
+			ActorType::CameraTopLeft,
+			ActorType::CameraBottomRight,
 
 			ActorType::ItemChilipepper,
 			ActorType::None,

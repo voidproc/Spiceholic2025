@@ -5,6 +5,7 @@
 #include "Actor/Player.h"
 #include "Config/GameConfig.h"
 #include "Core/DrawText.h"
+#include "Core/DrawSprite.h"
 #include "Core/Gauge.h"
 #include "Event/Dispatch.h"
 #include "Event/Events.h"
@@ -212,7 +213,8 @@ namespace Spiceholic
 		time_{ StartImmediately::No, Clock() },
 		timeStartReady_{ StartImmediately::Yes, Clock() },
 		timerGaugeRecovery_{ 0.8s, StartImmediately::Yes, Clock() },
-		timeGetKey_{ StartImmediately::No, Clock() }
+		timeGetKey_{ StartImmediately::No, Clock() },
+		timeStageClear_{ StartImmediately::No, Clock() }
 	{
 		// ステージデータ読み込み
 		LoadStage(U"1", *getData().stageData);
@@ -239,6 +241,7 @@ namespace Spiceholic
 
 	void MainScene::update()
 	{
+		// ステージ開始時の "Ready" 表示待ち
 		if (timeStartReady_.isRunning())
 		{
 			if (timeStartReady_ > 2.5s)
@@ -247,6 +250,18 @@ namespace Spiceholic
 			}
 
 			return;
+		}
+
+		// ステージクリア時の入力待ち
+		if (timeStageClear_ > 1s)
+		{
+			if (getData().actionInput->down(Action::Decide))
+			{
+				// TODO: 次のステージを設定
+				//...
+
+				changeScene(U"MainScene", 0);
+			}
 		}
 
 		// ポーズ
@@ -271,8 +286,8 @@ namespace Spiceholic
 			// 鍵取得～シーン遷移
 			if (timeGetKey_ > 2s)
 			{
-				changeScene(U"MainScene", 0);
-				return;
+				// ステージクリア表示
+				timeStageClear_.start();
 			}
 
 			// エフェクトを更新
@@ -393,9 +408,26 @@ namespace Spiceholic
 			RectF{ Arg::center = SceneCenter, SizeF{ SceneSize.x, height } }.draw(ColorF{ Palette::Darkred, 0.9 });
 
 			const String text = (timeStartReady_ < 1.5s) ? getData().stageData->name : U"Ready";
-			const Vec2 textPos = SceneCenter + Vec2{ 400 * (1 - EaseOutQuad(Saturate((timeStartReady_.sF() - 0.1) / 0.9))), 0 };
+			const Vec2 textPos = SceneCenter + Vec2{ 400 * (1 - EaseOutExpo(Saturate(timeStartReady_.sF() / 1.0))), 0 };
 
 			DrawText(U"px7812", text, Arg::center = textPos, ColorF{ 1.0 - 0.3  * Periodic::Square0_1(0.25s) });
+		}
+
+		// ステージクリア時
+		if (timeStageClear_.isRunning())
+		{
+			const double height = 24 * EaseInQuad(Saturate(timeStageClear_.sF() / 0.3));
+			RectF{ Arg::center = SceneCenter, SizeF{ SceneSize.x, height } }.draw(ColorF{ Palette::Darkred, 0.9 });
+
+			const String text = U"{}  Clear!"_fmt(getData().stageData->name);
+			const Vec2 textPos = SceneCenter + Vec2{ 400 * (1 - EaseOutExpo(Saturate(timeStageClear_.sF() / 1.0))), 0 };
+			DrawText(U"px7812", text, Arg::center = textPos, Palette::Yellow.lerp(Palette::Black, 0.2 * Periodic::Square0_1(0.25s)));
+
+			// 入力待ち表示
+			if (timeStageClear_ > 1s)
+			{
+				DrawSprite(*getData().appSetting, U"WhiteArrowDown", 0.5s, false, SceneCenter + Vec2{ SceneSize.x / 2 - 16 , 4 + 1 * Periodic::Square0_1(0.5s) });
+			}
 		}
 
 		// ポーズ中

@@ -35,5 +35,6 @@ namespace Spiceholic
 
 		// 鍵をとった
 		Stopwatch timeGetKey_;
+		Stopwatch timeStageClear_;
 	};
 }

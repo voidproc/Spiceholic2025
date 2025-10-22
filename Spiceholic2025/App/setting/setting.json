@@ -49,6 +49,12 @@
       "Count": 1,
       "Size": 24,
       "Pos": [0, 0]
+    },
+    "WhiteArrowDown": {
+      "Texture": "WhiteArrow",
+      "Count": 1,
+      "Size": 16,
+      "Pos": [48, 0]
     }
   }
 }

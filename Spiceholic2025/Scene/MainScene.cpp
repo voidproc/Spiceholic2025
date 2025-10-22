@@ -1,5 +1,6 @@
 ﻿#include "MainScene.h"
 #include "Actor/Block.h"
+#include "Actor/Effect.h"
 #include "Actor/Enemy.h"
 #include "Actor/Item.h"
 #include "Actor/Player.h"
@@ -25,26 +26,50 @@ namespace Spiceholic
 		// ActorSpawnInfoをもとにアクターを生成する
 		void SpawnActor(const ActorSpawnInfo& spawn, GameData& gameData)
 		{
+			Actor* actor = nullptr;
+
 			switch (spawn.type)
 			{
 			case ActorType::BlockSteel:
 			case ActorType::BlockCanBreak:
 			case ActorType::BlockGiftbox:
-				gameData.blocks.push_back(std::make_unique<Block>(spawn.position, spawn.type, gameData));
+				gameData.blocks.push_back(std::make_unique<Block>(spawn.position, spawn.type, gameData, spawn.hasKey));
+				actor = gameData.blocks.back().get();
 				break;
 
 			case ActorType::ItemChilipepper:
 			case ActorType::ItemKey:
 				gameData.actors.push_back(std::make_unique<Item>(spawn.position, spawn.type, gameData));
+				actor = gameData.actors.back().get();
 				break;
 
 			case ActorType::EnemyChick:
 				gameData.actors.push_back(std::make_unique<EnemyChick>(spawn.position, gameData, spawn.direction, spawn.subType, spawn.hasKey));
+				actor = gameData.actors.back().get();
 				break;
 
 			default:
 				break;
 			}
+
+			// 共通
+
+			if (actor != nullptr)
+			{
+				if (spawn.life > 1e-3)
+				{
+					actor->setLife(spawn.life);
+				}
+
+				// 敵のスポーン時エフェクト
+				if (actor->tag() == ActorTag::Enemy && spawn.time > 1e-3)
+				{
+					gameData.actors.push_back(std::make_unique<FxSmoke>(spawn.position + Vec2{}, nullptr, Random(0.8, 1.3), 0.00));
+					gameData.actors.push_back(std::make_unique<FxSmoke>(spawn.position + Vec2{ Random(4, 7), Random(-8, 0) }, nullptr, Random(0.8, 1.3), 0.08));
+					gameData.actors.push_back(std::make_unique<FxSmoke>(spawn.position + Vec2{ -Random(4, 7), Random(-8, 0) }, nullptr, Random(0.8, 1.3), 0.16));
+				}
+			}
+
 		}
 
 		// 指定した時刻で生成する必要のあるアクターを生成
@@ -232,6 +257,9 @@ namespace Spiceholic
 		// アクターの初期配置
 		SpawnActors(0, *getData().stageData, getData());
 
+		// ゲージ初期化
+		getData().gauge = std::make_unique<Gauge>();
+
 		// イベント購読
 		GetDispatch().subscribe<GetKeyEvent, &MainScene::onGetKey_>(this);
 
@@ -250,17 +278,15 @@ namespace Spiceholic
 			if (timeStartReady_ > 2.5s)
 			{
 				timeStartReady_.reset();
+				time_.start();
 			}
 		}
 
 		// ステージクリア時の入力待ち
-		if (timeStageClear_ > 1s)
+		if (timeStageClear_ > 1.5s)
 		{
 			if (getData().actionInput->down(Action::Decide))
 			{
-				// TODO: 次のステージを設定
-				//...
-
 				changeScene(U"MainScene", 0);
 			}
 		}
@@ -289,7 +315,7 @@ namespace Spiceholic
 		else if (timeGetKey_.isRunning())
 		{
 			// 鍵取得～シーン遷移
-			if (timeGetKey_ > 2s)
+			if (timeGetKey_ > 1.5s)
 			{
 				// ステージクリア表示
 				timeStageClear_.start();
@@ -420,7 +446,7 @@ namespace Spiceholic
 			DrawText(U"px7812", text, Arg::center = textPos, Palette::Yellow.lerp(Palette::Black, 0.2 * Periodic::Square0_1(0.25s)));
 
 			// 入力待ち表示
-			if (timeStageClear_ > 1s)
+			if (timeStageClear_ > 1.5s)
 			{
 				DrawSprite(*getData().appSetting, U"WhiteArrowDown", 0.5s, false, SceneCenter + Vec2{ SceneSize.x / 2 - 16 , 4 + 1 * Periodic::Square0_1(0.5s) });
 			}
@@ -433,6 +459,12 @@ namespace Spiceholic
 			RectF{ Arg::center = SceneCenter, SizeF{ SceneSize.x, 24 } }.draw(Palette::Darkred);
 			DrawText(U"px7812", U"PAUSED - 休憩中", Arg::center = SceneCenter, Palette::White);
 		}
+
+		// DEBUG: 経過時間
+		{
+			FontAsset(U"px7812")(Format(time_.s())).draw(Arg::bottomRight = SceneRect.br(), Palette::Gray);
+		}
+
 	}
 
 	void MainScene::recoverGaugeAuto_()

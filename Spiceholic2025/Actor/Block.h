@@ -11,7 +11,7 @@ namespace Spiceholic
 		static constexpr ActorTag Tag = ActorTag::Block;
 
 	public:
-		Block(const Vec2& pos, ActorType type, GameData& gameData);
+		Block(const Vec2& pos, ActorType type, GameData& gameData, bool hasKey = false);
 
 		~Block() override;
 
@@ -35,8 +35,11 @@ namespace Spiceholic
 		bool invincible() const override;
 
 	private:
+		void explode_();
+
 		ActorType type_;
 		GameData& gameData_;
+		bool hasKey_;
 		Collision collision_;
 	};
 }

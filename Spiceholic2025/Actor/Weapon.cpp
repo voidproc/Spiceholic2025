@@ -166,7 +166,7 @@ namespace Spiceholic
 		collision_{},
 		time_{ StartImmediately::No, Clock() }
 	{
-		collision_.set(Circle{ Vec2{}, 16 * scale });
+		collision_.set(Circle{ Vec2{}, 22 * scale });
 	}
 
 	WeaponExplode::~WeaponExplode()
@@ -200,7 +200,7 @@ namespace Spiceholic
 
 		Circle{ position().currentPos().asPoint(), Math::Floor(r) }
 			.draw(ColorF{ innerColor, alpha })
-			.drawFrame((6 - 3 * EaseInOutCubic(t)) * scale_, ColorF{ outerColor, alpha });
+			.drawFrame((8 - 4 * EaseInOutCubic(t)) * scale_, ColorF{ outerColor, alpha });
 	}
 
 	void WeaponExplode::onCollide(Actor* other)

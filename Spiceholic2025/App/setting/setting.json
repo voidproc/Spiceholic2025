@@ -1,7 +1,9 @@
 ﻿{
   "Title": "Blazing Spiceholics",
   "Version": "1.0.0",
-  "Debug_StartStageID": "4",
+  "Debug":{
+    "StartStageID": "2"
+  },
   "Sprite":{
     "PlayerWalk": {
       "Texture": "Chara",

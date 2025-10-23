@@ -17,7 +17,11 @@ namespace
 	{
 		Scene::SetBackground(ColorF{ 0.6, 0.8, 0.7 });
 
-		Window::SetTitle(Format(appSetting.get().title, U" - v"), appSetting.get().version);
+#ifdef DEBUG_MODE
+		Window::SetTitle(Format(appSetting.get().title, U" - v", appSetting.get().version, U" ★DEBUG_MODE"));
+#else
+		Window::SetTitle(Format(appSetting.get().title, U" - v", appSetting.get().version));
+#endif
 
 		// ESCキーで終了しない
 		System::SetTerminationTriggers(UserAction::CloseButtonClicked);
@@ -88,8 +92,9 @@ void Main()
 	gameData->appSetting->load();
 	gameData->userSetting->load(UserSettingFilePath);
 
-	// DEBUG:
-	gameData->nextStageID = gameData->appSetting->get().debug_startStageID;
+#ifdef DEBUG_MODE
+	gameData->nextStageID = gameData->appSetting->get().debug.startStageID;
+#endif
 
 	InitSivSystem(*gameData->appSetting);
 

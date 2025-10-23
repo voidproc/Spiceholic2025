@@ -12,3 +12,5 @@ namespace Spiceholic
 	inline constexpr FilePathView UserSettingFilePath = U"setting.ini";
 	inline constexpr FilePathView InputSettingFilePath = U"input.ini";
 }
+
+#define DEBUG_MODE

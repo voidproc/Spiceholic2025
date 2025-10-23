@@ -19,7 +19,11 @@ namespace Spiceholic
 			String version;
 			HashTable<String, SpriteInfo> sprite;
 
-			String debug_startStageID;
+			struct
+			{
+				String startStageID;
+			}
+			debug;
 		};
 
 		AppSetting();

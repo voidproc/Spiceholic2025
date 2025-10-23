@@ -54,11 +54,11 @@ namespace Spiceholic
 
 	void TitleScene::update()
 	{
-		if (time_ < 2.7s)
+		if (time_ < 3.5s)
 		{
 			if (getData().actionInput->down(Action::Decide))
 			{
-				time_.set(2.7s);
+				time_.set(3.5s);
 			}
 
 			return;
@@ -125,7 +125,8 @@ namespace Spiceholic
 	{
 		// BG
 		{
-			const double alpha = Saturate((time_.sF() - 0.9) / 0.4);
+			// 背景アルファ (1.3～2.1s)
+			const double alpha = Saturate((time_.sF() - 1.3) / 0.8);
 			SceneRect.draw(Palette::White.lerp(Theme::BgColor, alpha));
 			RectF{ Arg::topCenter = SceneRect.topCenter(), SizeF{ SceneSize.x, SceneSize.y / 3 } }.draw(Arg::top = ColorF{ Palette::Darkred, 0.3 * alpha }, Arg::bottom = ColorF{ Palette::Darkred, 0 });
 			RectF{ Arg::bottomCenter = SceneRect.bottomCenter(), SizeF{ SceneSize.x, SceneSize.y / 3 } }.draw(Arg::top = ColorF{ Palette::Darkred, 0 }, Arg::bottom = ColorF{ Palette::Darkred, 0.3 * alpha });
@@ -133,38 +134,58 @@ namespace Spiceholic
 
 		// キャラクター
 		{
-			const double t = Saturate(time_.sF() / 1.1);
-			const double t2 = 1.0 - 0.7 * Saturate((time_.sF() - 1.5) / 0.45);
 			{
-				ScopedColorMul2D mul{ 1, t2 };
-
+				// おまけのエフェクト（メニュー選択時の反応）
 				const double tMoveCursor = Saturate(1 - (timerMoveCursorLeft_.progress1_0() + timerMoveCursorRight_.progress1_0()));
-				const double jump = Periodic::Jump0_1(0.1s, tMoveCursor * 0.1);
-				const Vec2 pos = SceneRect.bottomCenter() + Vec2{ -40 + 300 * (1 - EaseOutCubic(t)), -5 * Periodic::Sine1_1(6.0s) - 64 } + Vec2{ 0, -4 * jump };
+				const Vec2 jump{ 0, Periodic::Jump0_1(0.1s, tMoveCursor * 0.1) };
+				const Vec2 scale{ 1 + 0.03 * jump.y, 1 + 0.05 * jump.y };
+				// 縦揺れ (3.0s～)
+				const Vec2 wave{ 0, -5 * Periodic::Sine1_1(6.0s) * Saturate((time_.sF() - 3.0) / 1.0) };
+				// 横移動 (0.0～1.1s, 0.9～2.0s)
+				const double t1a = Saturate(time_.sF() / 1.1);
+				const double t1b = Saturate((time_.sF() - 0.9) / 1.1);
+				const Vec2 basePos = SceneRect.bottomCenter() + Vec2{ -40, -64 };
+				const Vec2 moveX{ 300 * (1 - (0.85 * EaseOutCubic(t1a) + 0.15 * EaseOutBack(t1b))), 0 };
+				const Vec2 pos = basePos + moveX + wave - jump * 4;
+				// 登場時拡大～縮小 (0.0～0.85s)
+				const Vec2 scale2 = Vec2::One() * 0.2 * (1 - EaseInOutQuad(Saturate(time_.sF() / 0.85)));
+				// アルファ (1.8～2.3s)
+				const double alphaMul = 1.0 - 0.65 * Saturate((time_.sF() - 1.8) / 0.5);
+				ScopedColorMul2D mul{ 1, alphaMul };
 
-				TextureAsset(randomCharaTexName_).scaled(1 + 0.03 * jump, 1 + 0.05 * jump).drawAt(pos + Vec2::One() * 4, ColorF{ Palette::Darkred, 0.3 });
-				TextureAsset(randomCharaTexName_).scaled(1 + 0.03 * jump, 1 + 0.05 * jump).drawAt(pos);
+				TextureAsset(randomCharaTexName_).scaled(scale + scale2).drawAt(pos + Vec2::One() * 4, ColorF{Palette::Darkred, 0.3});
+				TextureAsset(randomCharaTexName_).scaled(scale + scale2).drawAt(pos);
 			}
 
-			const double t3 = Saturate((time_.sF() - 0.9) / 0.8);
-			const double t4 = Saturate((time_.sF() - 0.9) / 0.30);
-			const ColorF barColor{ 1, 1 - t4 };
-			RectF{ 0, 0, SceneSize.x, (130 - 16) * (1 - EaseOutCubic(t3)) }.draw(barColor);
-			RectF{ 0, 130 + 16 + (130 - 16) * EaseOutCubic(t3), SceneSize.x, SceneSize.y - (130 + 16) }.draw(barColor);
+			// 登場時 目線用
+			// 目線幅 (0.0～0.5s)
+			const double barHeight = 22 * EaseOutCirc(Saturate(time_.sF() / 0.5));
+			// 白矩形アルファ 1.2～1.5s)
+			const double barAlpha = 1.0 - Saturate((time_.sF() - 1.2) / 0.3);
+			const ColorF barColor{ 1, barAlpha };
+			const double barCenterY = 127;
+			// 上下に開放 (0.95～1.75s)
+			const double t3 = Saturate((time_.sF() - 0.95) / 0.8);
+			RectF{ 0, 0, SceneSize.x, (barCenterY - barHeight / 2) * (1 - EaseOutCubic(t3)) }.draw(barColor);
+			RectF{ 0, (barCenterY + barHeight / 2) + (barCenterY - barHeight / 2) * EaseOutCubic(t3), SceneSize.x, SceneSize.y - (barCenterY + barHeight / 2) }.draw(barColor);
 		}
 
 		// タイトル
 		{
 			Transformer2D scale{ Mat3x2::Scale(1, 2) };
-			const double alpha = Saturate((time_.sF() - 1.5) / 0.5);
+
+			// タイトルアルファ (2.0～2.6s)
+			const double alphaMul = Saturate((time_.sF() - 2.0) / 0.6);
+			ScopedColorMul2D mul{ 1, alphaMul };
+
 			const Vec2 center = SceneRect.center().withY(20);
-			RectF{ Arg::center = center + Vec2{ 0, 1 }, SizeF{SceneSize.x, 14} }.draw(ColorF{ Palette::Darkred, 0.8 * alpha });
-			const ColorF textColor = Palette::Yellow.lerp(Palette::Red.lerp(Palette::Lime.lerp(Palette::White, Periodic::Sine0_1(0.3s)), Periodic::Sine0_1(0.4s)), Periodic::Sine0_1(0.45s));
-			DrawText(U"NotJamSig21", U"Blazing Spiceholics", Arg::center = center, ColorF{ textColor, alpha }, ColorF{ 0, 0.5 * alpha });
+			RectF{ Arg::center = center + Vec2{ 0, 1 }, SizeF{ SceneSize.x, 14 } }.draw(ColorF{ Palette::Darkred, 0.8 });
+			const ColorF textColor = Palette::Yellow.lerp(Palette::Red.lerp(Palette::Lime.lerp(Palette::White, Periodic::Sine0_1(0.3s)), 0.7 * Periodic::Sine0_1(0.4s)), 0.8 * Periodic::Sine0_1(0.45s));
+			DrawText(U"NotJamSig21", U"Blazing Spiceholics", Arg::center = center, ColorF{ textColor }, ColorF{ 0, 0.5 });
 		}
 
 		// メニュー
-		if (time_ > 2.7s)
+		if (time_ > 3.5s)
 		{
 			const Vec2 menuCenter = SceneRect.center() + Vec2{ 0, 16 };
 			const double vibrateX_l = timerMoveCursorLeft_.isRunning() ? 2 * Periodic::Sine1_1(0.01s) : 0;

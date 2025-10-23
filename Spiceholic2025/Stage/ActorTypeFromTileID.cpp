@@ -20,7 +20,7 @@ namespace Spiceholic
 			ActorType::CameraBottomRight,
 
 			ActorType::ItemChilipepper,
-			ActorType::None,
+			ActorType::ItemKey,
 			ActorType::None,
 			ActorType::None,
 			ActorType::None,

@@ -242,6 +242,7 @@ namespace Spiceholic
 		timerGaugeRecovery_{ 0.8s, StartImmediately::Yes, Clock() },
 		timeGetKey_{ StartImmediately::No, Clock() },
 		timeStageClear_{ StartImmediately::No, Clock() },
+		timerGaugeMax_{ 0.50s, StartImmediately::No, Clock() },
 		openedSecretRoute_{ false }
 	{
 		// ステージデータ読み込み
@@ -381,6 +382,14 @@ namespace Spiceholic
 			// 炎ゲージ自動回復
 			// しない
 			//recoverGaugeAuto_();
+
+			// ゲージマックス時ブロック破壊
+			// ブロックを更新
+			if (timerGaugeMax_.reachedZero())
+			{
+				timerGaugeMax_.reset();
+				onTimerGaugeMax_();
+			}
 		}
 
 		// アクターの影のリストを作成
@@ -537,16 +546,19 @@ namespace Spiceholic
 		{
 			openedSecretRoute_ = true;
 
-			// ブロックを更新
-			for (size_t i = 0; i < getData().blocks.size(); ++i)
-			{
-				getData().blocks[i]->setInactiveIfSecret();
-			}
-
 			// ゲージマックス時ゲージエフェクト
-			{
-				getData().gauge->startDrawMaxEffect();
-			}
+			getData().gauge->startDrawMaxEffect();
+
+			// 時間差でブロック破壊
+			timerGaugeMax_.start();
+		}
+	}
+
+	void MainScene::onTimerGaugeMax_()
+	{
+		for (size_t i = 0; i < getData().blocks.size(); ++i)
+		{
+			getData().blocks[i]->setInactiveIfSecret();
 		}
 	}
 }

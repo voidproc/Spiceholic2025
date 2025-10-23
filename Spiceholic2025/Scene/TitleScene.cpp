@@ -44,7 +44,7 @@ namespace Spiceholic
 	{
 		if (getData().titleCharacterShown)
 		{
-			time_.set(2.7s);
+			time_.set(3.5s);
 		}
 	}
 

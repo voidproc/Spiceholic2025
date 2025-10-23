@@ -24,6 +24,7 @@ namespace Spiceholic
 		Transformer2D cameraTransform_() const;
 		void onGetKey_();
 		void onGaugeMax_();
+		void onTimerGaugeMax_();
 
 		Stopwatch time_;
 		double stageClearTime_;
@@ -41,6 +42,7 @@ namespace Spiceholic
 		Stopwatch timeStageClear_;
 
 		// シークレット
+		Timer timerGaugeMax_;
 		bool openedSecretRoute_;
 	};
 }

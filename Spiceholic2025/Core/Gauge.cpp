@@ -45,12 +45,20 @@ namespace Spiceholic
 		TextureAsset(U"GaugeFrame").draw(gaugePos, ColorF{ 1 - 0.08 * Periodic::Sine0_1(0.2s, ClockTime()) });
 
 		// ゲージMAXエフェクト
-		if (timeMaxEffect_.isRunning() && timeMaxEffect_ < 0.8s)
+		if (timeMaxEffect_.isRunning() && timeMaxEffect_ < 0.95s)
 		{
-			const double t = Saturate(timeMaxEffect_.sF() / 0.8);
+			const double t = Saturate(timeMaxEffect_.sF() / 0.95);
 			const double r = 4 + 24 * EaseOutCubic(t);
 			const double alpha = (timeMaxEffect_ > 0.5s) ? Periodic::Square0_1(0.05s, ClockTime()) : 1.0;
-			Circle{ Vec2{ 60 + 21 + 95, 174 + 7 + 6 / 2 }, r }.drawFrame(8 - 7 * EaseOutSine(t), ColorF{ Palette::Red.lerp(Palette::Yellow, 0.5 * Periodic::Square0_1(0.07s, ClockTime())), alpha });
+			const Vec2 pos{ 60 + 21 + 95, 174 + 7 + 6 / 2 };
+			const ColorF color{ Palette::Red.lerp(Palette::Yellow, 0.5 * Periodic::Square0_1(0.07s, ClockTime())), alpha };
+			Circle{ pos, r }.drawFrame(8 - 7 * EaseOutSine(t), color);
+
+			Line{ pos, pos + Circular{ 400, 10_deg + 15_deg * t } }.draw(7 - 6.5 * EaseInOutQuad(t), color);
+			Line{ pos, pos + Circular{ 400, -40_deg + 24_deg * t } }.draw(4 - 3.5 * EaseInOutCubic(t), color);
+			Line{ pos, pos + Circular{ 400, 60_deg + 13_deg * t } }.draw(5 - 4.5 * EaseInOutCirc(t), color);
+			Line{ pos, pos + Circular{ 400, -90_deg + 20_deg * t } }.draw(7 - 7.5 * EaseInOutQuad(t), color);
+
 		}
 	}
 

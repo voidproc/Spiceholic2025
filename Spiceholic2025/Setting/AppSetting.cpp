@@ -15,6 +15,8 @@ namespace Spiceholic
 		settings_.title = json[U"Title"].getString();
 		settings_.version = json[U"Version"].getString();
 
+		settings_.debug_startStageID = json[U"Debug_StartStageID"].getString();
+
 		for (const auto& s : json[U"Sprite"])
 		{
 			SpriteInfo sprite;

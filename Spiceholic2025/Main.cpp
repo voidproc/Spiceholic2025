@@ -88,6 +88,9 @@ void Main()
 	gameData->appSetting->load();
 	gameData->userSetting->load(UserSettingFilePath);
 
+	// DEBUG:
+	gameData->nextStageID = gameData->appSetting->get().debug_startStageID;
+
 	InitSivSystem(*gameData->appSetting);
 
 	// アセット読み込み

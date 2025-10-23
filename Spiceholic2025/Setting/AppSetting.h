@@ -18,6 +18,8 @@ namespace Spiceholic
 			String title;
 			String version;
 			HashTable<String, SpriteInfo> sprite;
+
+			String debug_startStageID;
 		};
 
 		AppSetting();

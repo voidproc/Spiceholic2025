@@ -60,7 +60,7 @@ namespace Spiceholic
 			}
 
 			// 炎を吐く
-			if (gameData_.actionInput->pressed(Action::Attack) && gameData_.gauge->getValue() > 0.09)
+			if (gameData_.actionInput->pressed(Action::Attack) && gameData_.gauge->getValue() >= 10)
 			{
 				// ゲージ量に応じて射程変化
 				// ゲージ半分以上ならMAX射程
@@ -73,7 +73,7 @@ namespace Spiceholic
 				timerFire_.restart(0.5s);
 
 				// すこしゲージ消費
-				gameData_.gauge->add(-0.10);
+				gameData_.gauge->add(-10);
 			}
 
 			drawOffset_ = Vec2::Zero();
@@ -155,7 +155,7 @@ namespace Spiceholic
 				timerTr_.restart();
 
 				// ゲージ消費
-				gameData_.gauge->add(-0.10);
+				gameData_.gauge->add(-10);
 			}
 		}
 		else if (other->tag() == ActorTag::Item)
@@ -166,8 +166,8 @@ namespace Spiceholic
 			{
 				// ゲージ回復
 				// ゲージMAXイベント発行
-				if (const double gaugeVal = gameData_.gauge->add(0.15);
-					Abs(gaugeVal - 1.0) < 1e-3)
+				if (const double gaugeVal = gameData_.gauge->add(15);
+					gaugeVal == 100)
 				{
 					GetDispatch().publish(GaugeMaxEvent{});
 				}

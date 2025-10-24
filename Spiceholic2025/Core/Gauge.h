@@ -5,15 +5,15 @@ namespace Spiceholic
 	class Gauge
 	{
 	public:
-		Gauge(double value = 0.3);
+		Gauge(int32 value = 30);
 
-		double add(double value);
+		int32 add(int32 value);
 
 		void update();
 
 		void draw() const;
 
-		double getValue() const;
+		int32 getValue() const;
 
 		double displayValue() const;
 
@@ -22,7 +22,7 @@ namespace Spiceholic
 		void startDrawMaxEffect();
 
 	private:
-		double currentValue_;
+		int32 currentValue_;
 		double displayValue_;
 		Stopwatch timeMaxEffect_;
 	};

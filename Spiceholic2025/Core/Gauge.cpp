@@ -3,17 +3,17 @@
 
 namespace Spiceholic
 {
-	Gauge::Gauge(double value)
+	Gauge::Gauge(int32 value)
 		:
 		currentValue_{ value },
-		displayValue_{ value },
+		displayValue_{ value * 1.0 },
 		timeMaxEffect_{ StartImmediately::No, Clock() }
 	{
 	}
 
-	double Gauge::add(double value)
+	int32 Gauge::add(int32 value)
 	{
-		currentValue_ = Saturate(currentValue_ + value);
+		currentValue_ = Clamp(currentValue_ + value, 0, 100);
 
 		return currentValue_;
 	}
@@ -26,14 +26,14 @@ namespace Spiceholic
 			return;
 		}
 
-		displayValue_ = Saturate(displayValue_ + (currentValue_ - displayValue_) * (60 * 0.3) * Scene::DeltaTime());
+		displayValue_ = Clamp(displayValue_ + (currentValue_ - displayValue_) * (60 * 0.3) * Scene::DeltaTime(), 0.0, 100.0);
 	}
 
 	void Gauge::draw() const
 	{
 		// ゲージ
 		const Vec2 gaugePos{ 60, 174 };
-		const double gaugeLength = 95 * displayValue();
+		const double gaugeLength = 95 * displayValue() / 100;
 
 		{
 			const double t = (Abs(currentValue_ - displayValue_) < 1e-3) ? 1 : 0.6 * Periodic::Pulse0_1(0.06s, 0.8, ClockTime());
@@ -69,7 +69,7 @@ namespace Spiceholic
 		}
 	}
 
-	double Gauge::getValue() const
+	int32 Gauge::getValue() const
 	{
 		return currentValue_;
 	}
@@ -81,7 +81,7 @@ namespace Spiceholic
 
 	bool Gauge::isPoweredUp() const
 	{
-		return currentValue_ > 0.499;
+		return currentValue_ >= 50;
 	}
 
 	void Gauge::startDrawMaxEffect()

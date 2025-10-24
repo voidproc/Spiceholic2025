@@ -12,7 +12,7 @@ namespace Spiceholic
 		{
 			constexpr int LineHeight = 14;
 			constexpr double LabelColumnLeftCenterX = 12;
-			constexpr double KeyColumnCenterX = SceneSize.x / 2 + 8;
+			constexpr double KeyColumnCenterX = SceneSize.x / 2 + 32;
 			constexpr double ButtonColumnCenterX = SceneSize.x - 32;
 		}
 
@@ -20,9 +20,10 @@ namespace Spiceholic
 		{
 			constexpr ColorF BgColor = Palette::Indianred.lerp(Palette::Darkred, 0.5);
 			constexpr ColorF TitleTextColor = Palette::Whitesmoke;
-			constexpr ColorF LabelColor = Palette::Lightcoral.lerp(Palette::White, 0.3);
+			constexpr ColorF LabelColor = Palette::Lightcoral.lerp(Palette::Yellow, 0.3);
 			constexpr ColorF ValueColor = Palette::Lightcoral.lerp(Palette::White, 0.3);
 			constexpr ColorF ValueChangeColor = Palette::Yellow;
+			constexpr ColorF SelectedLabelColor = Palette::Yellow.lerp(Palette::White, 0.5);
 			constexpr ColorF SelectedColor = Palette::Whitesmoke;
 			constexpr ColorF DisabledValueColor = Palette::Lightcoral.lerp(Palette::White, 0.0);
 		}
@@ -216,7 +217,7 @@ namespace Spiceholic
 
 			// ラベル
 			const double labelShiftX = (index == selectedFieldIndex_) ? EaseOutCubic(timerChangeMenuIndex_.progress0_1()) * 2 : 0;
-			DrawText(U"px7812", item.text, Arg::leftCenter = Vec2{ Layout::LabelColumnLeftCenterX + labelShiftX, posY }, (selected ? Theme::SelectedColor : Theme::LabelColor));
+			DrawText(U"px7812", item.text, Arg::leftCenter = Vec2{ Layout::LabelColumnLeftCenterX + labelShiftX, posY }, (selected ? Theme::SelectedLabelColor : Theme::LabelColor));
 
 			// 選択されているゲームコントローラ
 			if (item.type == InputSettingField::Type::Controller)

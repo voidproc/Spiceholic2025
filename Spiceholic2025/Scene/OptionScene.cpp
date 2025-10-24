@@ -20,9 +20,10 @@ namespace Spiceholic
 		{
 			constexpr ColorF BgColor = Palette::Indianred.lerp(Palette::Darkred, 0.5);
 			constexpr ColorF TitleTextColor = Palette::Whitesmoke;
-			constexpr ColorF LabelColor = Palette::Lightcoral.lerp(Palette::White, 0.3);
+			constexpr ColorF LabelColor = Palette::Lightcoral.lerp(Palette::Yellow, 0.3);
 			constexpr ColorF ValueColor = Palette::Lightcoral.lerp(Palette::White, 0.3);
 			constexpr ColorF ValueChangeColor = Palette::Yellow;
+			constexpr ColorF SelectedLabelColor = Palette::Yellow.lerp(Palette::White, 0.5);
 			constexpr ColorF SelectedColor = Palette::Whitesmoke;
 		}
 
@@ -175,7 +176,7 @@ namespace Spiceholic
 			}
 
 			const double labelShiftX = selected ? 4 * EaseOutCubic(timerMoveCursor_.progress0_1()) : 0;
-			const ColorF labelColor = selected ? Theme::SelectedColor : Theme::LabelColor;
+			const ColorF labelColor = selected ? Theme::SelectedLabelColor : Theme::LabelColor;
 			const bool valueChanged = (iField == valueChangedIndex_) && timerChangeValue_.isRunning();
 			const double valueShiftX = valueChanged ? 2 * Periodic::Sine1_1(0.01s) : 0;
 			const ColorF valueColor = valueChanged ? Theme::ValueColor.lerp(Palette::Black, 0.5).lerp(Theme::ValueChangeColor, Periodic::Square0_1(0.034s)) : (selected ? Theme::SelectedColor : Theme::ValueColor);

@@ -7,6 +7,8 @@ namespace Spiceholic
 {
 	namespace
 	{
+		constexpr Duration TimeEnableMenu = 3.5s;
+
 		enum class TitleMenuItemType
 		{
 			Start,
@@ -33,13 +35,14 @@ namespace Spiceholic
 		:
 		CustomScene{ init },
 		time_{ StartImmediately::Yes },
-		timerSceneChange_{ 1.0s, StartImmediately::No },
+		timeDecide_{ StartImmediately::No },
+		//timerSceneChange_{ 0.7s, StartImmediately::No },
 		selectedMenuIndex_{ 0 },
 		randomCharaTexName_{ U"DragonGirl" }
 	{
 		if (getData().titleCharacterShown)
 		{
-			time_.set(3.5s);
+			time_.set(TimeEnableMenu);
 			randomCharaTexName_ = Random() < 0.8 ? U"DragonGirl" : U"DragonGirl2";
 		}
 	}
@@ -50,11 +53,11 @@ namespace Spiceholic
 
 	void TitleScene::update()
 	{
-		if (time_ < 3.5s)
+		if (time_ < TimeEnableMenu)
 		{
 			if (getData().actionInput->down(Action::Decide))
 			{
-				time_.set(3.5s);
+				time_.set(TimeEnableMenu);
 			}
 
 			return;
@@ -62,10 +65,11 @@ namespace Spiceholic
 
 		getData().titleCharacterShown = true;
 
-		// カーソル移動
-		// GameStart決定後は行わない
-		if (not timerSceneChange_.isRunning())
+		// カーソル移動、項目決定
+		// 項目決定後は行わない
+		if (not timeDecide_.isRunning())
 		{
+			// カーソル移動
 			if (getData().actionInput->down(Action::MoveLeft))
 			{
 				selectPrevious_();
@@ -80,19 +84,21 @@ namespace Spiceholic
 				// 描画用
 				timerMoveCursorRight_.restart(0.1s);
 			}
+
+			// 選択項目に対する決定操作
+			if (getData().actionInput->down(Action::Decide))
+			{
+				timeDecide_.start();
+			}
 		}
 
-		// 選択項目
-		const auto& selected = TitleMenuItemList[selectedMenuIndex_];
-
-		// 選択項目に対する決定操作
-		if (getData().actionInput->down(Action::Decide))
+		if (timeDecide_ > 0.95s)
 		{
-			if (selected.type == TitleMenuItemType::Start &&
-				not timerSceneChange_.isRunning())
+			if (const auto& selected = TitleMenuItemList[selectedMenuIndex_];
+				selected.type == TitleMenuItemType::Start)
 			{
 				// メインシーンへ
-				timerSceneChange_.start();
+				changeScene(U"MainScene", 0);
 			}
 			else if (selected.type == TitleMenuItemType::Option)
 			{
@@ -109,11 +115,6 @@ namespace Spiceholic
 				// アプリ終了
 				System::Exit();
 			}
-		}
-
-		if (timerSceneChange_.reachedZero())
-		{
-			changeScene(U"MainScene", 0);
 		}
 	}
 
@@ -187,16 +188,19 @@ namespace Spiceholic
 		}
 
 		// メニュー
-		if (time_ > 3.5s)
+		if (time_ > TimeEnableMenu)
 		{
 			const Vec2 menuCenter = SceneRect.center() + Vec2{ 0, 16 };
 			const double vibrateX_l = timerMoveCursorLeft_.isRunning() ? 2 * Periodic::Sine1_1(0.01s) : 0;
 			const double vibrateX_r = timerMoveCursorRight_.isRunning() ? 2 * Periodic::Sine1_1(0.01s) : 0;
 			RectF{ Arg::center = menuCenter, SizeF{ SceneSize.x, 20 } }.draw(ColorF{ Palette::Darkred, 0.5 });
-			const ColorF color = Palette::White.lerp(Palette::Darkred, 0.2 * Periodic::Square0_1(0.5s));
+			const ColorF color = (not timeDecide_.isRunning()) ?
+				Palette::White.lerp(Palette::Darkred, 0.2 * Periodic::Square0_1(0.5s)) :
+				Palette::Yellow.lerp(Palette::Darkred, 0.8 * Periodic::Square0_1(0.15s));
 			DrawText(U"px7812", TitleMenuItemList[selectedMenuIndex_].text, Arg::center = menuCenter + Vec2{ Max(vibrateX_l, vibrateX_r), 0 }, color);
 
 			// メニュー矢印
+			if (not timeDecide_.isRunning())
 			{
 				TextureAsset(U"WhiteArrow")(0, 0, 16).drawAt(menuCenter - Vec2{ 75 + vibrateX_l, 0 }, color);
 				TextureAsset(U"WhiteArrow")(16, 0, 16).drawAt(menuCenter + Vec2{ 75 + vibrateX_r, 0 }, color);
@@ -205,7 +209,7 @@ namespace Spiceholic
 
 		// フェード
 		{
-			const double alpha = Saturate(2.5 * timerSceneChange_.progress0_1());
+			const double alpha = Saturate((timeDecide_.sF() - 0.65) / 0.30);
 			SceneRect.draw(ColorF{ Palette::Whitesmoke, EaseOutQuad(alpha) });
 		}
 	}

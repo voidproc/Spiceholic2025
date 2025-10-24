@@ -23,7 +23,9 @@ namespace Spiceholic
 
 		Stopwatch time_;
 
-		Timer timerSceneChange_;
+		Stopwatch timeDecide_;
+
+		//Timer timerSceneChange_;
 
 		// 選択中の項目
 		size_t selectedMenuIndex_;

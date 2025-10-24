@@ -408,8 +408,7 @@ namespace Spiceholic
 		for (auto& actor : actors)
 		{
 			// TODO: 位置調整の必要があるEnemyなどを列挙
-			if (actor->type() == ActorType::EnemyChick ||
-				actor->tag() == ActorTag::Item)
+			if (actor->type() == ActorType::EnemyChick)
 			{
 				UpdateActorPos(*actor, blocks);
 			}
@@ -548,9 +547,14 @@ namespace Spiceholic
 		const auto regionHudD = Rect{ Arg::bottomRight = SceneRect.br(), Size{ SceneSize.x, TileSize } }.draw(bgColor);
 
 		// スコア
-		const ColorF scoreColor = (getData().score->animating()) ? ColorF{ Palette::White.lerp(Palette::Red, 0.8 * Periodic::Square0_1(0.06s, ClockTime())) } : ColorF{ 0.9 - 0.1 * Periodic::Square0_1(0.25s, ClockTime()) };
-		DrawText(U"px7812m", U"{:08d}"_fmt(getData().score->displayScore()), Arg::center = regionHudU.center(), ColorF{ 0.3 });
-		DrawText(U"px7812m", U"{:-8d}"_fmt(getData().score->displayScore()), Arg::center = regionHudU.center(), scoreColor, ColorF{ Palette::Darkred, 0.6 - 0.1 * Periodic::Square0_1(0.25s, ClockTime()) });
+		const ColorF scoreColor = (getData().score->animating()) ?
+			ColorF{ Palette::White.lerp(Palette::Darkred, 0.8 * Periodic::Square0_1(0.06s, ClockTime())) } :
+			ColorF{ Palette::Seashell.lerp(Palette::Red, 0.1 * Periodic::Square0_1(0.25s, ClockTime())) };
+		const ColorF shadowColor = (getData().score->animating()) ?
+			ColorF{ Palette::Darkred, 0.5 - 0.3 * Periodic::Square0_1(0.25s, ClockTime())} :
+			ColorF{ Palette::Crimson.lerp(Palette::Silver, 0.3), 0.8 - 0.1 * Periodic::Square0_1(0.25s, ClockTime()) };
+		DrawText(U"px7812m", U"{:08d}"_fmt(getData().score->displayScore()), Arg::center = regionHudU.center(), ColorF{ 0.3 }.lerp(Palette::Darkred, 0.2), AlphaF(0));
+		DrawText(U"px7812m", U"{:-8d}"_fmt(getData().score->displayScore()), Arg::center = regionHudU.center(), scoreColor, shadowColor);
 
 		// 経過時間
 		//FontAsset(U"px7812m")(U"{:02d}:{:02d}"_fmt(time_.min(), time_.s() % 60)).draw(Arg::rightCenter = regionHudU.rightCenter() + Vec2{ -1, 0 }, Palette::Gray);

@@ -5,7 +5,7 @@ namespace Spiceholic
 	class Gauge
 	{
 	public:
-		Gauge(int32 value = 30);
+		Gauge(int32 value = 20);
 
 		int32 add(int32 value);
 

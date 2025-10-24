@@ -166,7 +166,7 @@ namespace Spiceholic
 			{
 				// ゲージ回復
 				// ゲージMAXイベント発行
-				if (const double gaugeVal = gameData_.gauge->add(15);
+				if (const double gaugeVal = gameData_.gauge->add(20);
 					gaugeVal == 100)
 				{
 					GetDispatch().publish(GaugeMaxEvent{});

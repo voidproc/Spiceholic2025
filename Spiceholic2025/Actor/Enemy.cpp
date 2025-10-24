@@ -29,11 +29,11 @@ namespace Spiceholic
 		}
 	}
 
-	Enemy::Enemy(const Vec2& pos, GameData& gameData, bool hasKey)
+	Enemy::Enemy(const Vec2& pos, GameData& gameData, const String& bringItems)
 		:
 		Actor{ pos },
 		gameData_{ gameData },
-		hasKey_{ hasKey },
+		bringItems_{ bringItems },
 		collision_{},
 		spriteMirror_{ false },
 		drawOffset_{}
@@ -64,22 +64,7 @@ namespace Spiceholic
 		explode_();
 
 		// アイテム放出
-		if (hasKey_)
-		{
-			// 鍵を持っていた
-			gameData_.actors.push_back(std::make_unique<Item>(position().currentPos(), ActorType::ItemKey, gameData_, true));
-		}
-		else
-		{
-			// 辛味アイテム
-			// TODO: 敵によって放出量を変える
-			const double a = Random(Math::TwoPi);
-			for (int i = 0, n = 2; i < n; ++i)
-			{
-				const Vec2 pos = position().currentPos() + Circular{ 12, a + 120_deg * i };
-				gameData_.actors.push_back(std::make_unique<Item>(pos, ActorType::ItemChilipepper, gameData_, true, 0.06 * i));
-			}
-		}
+		MakeItems(bringItems_, gameData_, position().currentPos());
 	}
 
 	const Vec2& Enemy::getCollisionPos() const
@@ -112,9 +97,9 @@ namespace Spiceholic
 		gameData_.actors.push_back(std::make_unique<FxBlockBreak>(position().currentPos()));
 	}
 
-	EnemyChick::EnemyChick(const Vec2& pos, GameData& gameData, Direction dir, int32 subType, bool hasKey)
+	EnemyChick::EnemyChick(const Vec2& pos, GameData& gameData, Direction dir, int32 subType, const String& bringItems)
 		:
-		Enemy{ pos, gameData, hasKey },
+		Enemy{ pos, gameData, bringItems },
 		subType_{ subType },
 		dir_{},
 		currentSpeed_{ 0, 0 }

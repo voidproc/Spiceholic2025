@@ -57,7 +57,7 @@ namespace Spiceholic
 			case ActorType::BlockSteel:
 			case ActorType::BlockCanBreak:
 			case ActorType::BlockGiftbox:
-				gameData.blocks.push_back(std::make_unique<Block>(spawn.position, spawn.type, gameData, spawn.hasKey, spawn.secretRoute));
+				gameData.blocks.push_back(std::make_unique<Block>(spawn.position, spawn.type, gameData, spawn.bringItems, spawn.secretRoute));
 				actor = gameData.blocks.back().get();
 				break;
 
@@ -68,7 +68,7 @@ namespace Spiceholic
 				break;
 
 			case ActorType::EnemyChick:
-				gameData.actors.push_back(std::make_unique<EnemyChick>(spawn.position, gameData, spawn.direction, spawn.subType, spawn.hasKey));
+				gameData.actors.push_back(std::make_unique<EnemyChick>(spawn.position, gameData, spawn.direction, spawn.subType, spawn.bringItems));
 				actor = gameData.actors.back().get();
 				break;
 
@@ -252,6 +252,20 @@ namespace Spiceholic
 			}
 		}
 
+		int EnemyCount(const Array<std::unique_ptr<Actor>>& actors)
+		{
+			int enemyCount = 0;
+
+			for (const auto& actor : actors)
+			{
+				if (actor->tag() == ActorTag::Enemy)
+				{
+					++enemyCount;
+				}
+			}
+
+			return enemyCount;
+		}
 	}
 
 	MainScene::MainScene(const InitData& init)
@@ -261,6 +275,8 @@ namespace Spiceholic
 		stageClearTime_{ 0 },
 		timeStageStart_{ StartImmediately::Yes, Clock() },
 		shadowPosList_{ Arg::reserve = 128 },
+		timeDestroyAllEnemy_{ StartImmediately::No, Clock() },
+		initialEnemyCount_{},
 		timeGetKey_{ StartImmediately::No, Clock() },
 		timeStageClear_{ StartImmediately::No, Clock() },
 		timerGaugeMax_{ 0.50s, StartImmediately::No, Clock() },
@@ -284,6 +300,7 @@ namespace Spiceholic
 
 		// アクターの初期配置
 		SpawnActors(0, *getData().stageData, getData());
+		initialEnemyCount_ = EnemyCount(getData().actors);
 
 		// ゲージ初期化
 		getData().gauge = std::make_unique<Gauge>();
@@ -312,14 +329,16 @@ namespace Spiceholic
 			// ◆ シーン開始～Ready表示
 			updateStageStart_();
 		}
-		else if (timeGetKey_.isRunning())
+		else if (timeGetKey_.isRunning() || timeDestroyAllEnemy_.isRunning())
 		{
-			// ◆ 鍵取得～ステージクリア表示～シーン遷移
+			// ◆ 敵全滅～ステージクリア表示～シーン遷移
+			//    または
+			//    鍵取得～ステージクリア表示～シーン遷移
 			updateStageClear_();
 		}
 		else
 		{
-			// シーン開始表示中でなく、鍵取得状態でもない通常状態
+			// シーン開始表示中でなく、ステージクリア遷移状態でもない通常状態
 
 			if (GlobalClock::IsPaused())
 			{
@@ -371,8 +390,9 @@ namespace Spiceholic
 	{
 		// ◆ 鍵取得～ステージクリア表示～シーン遷移
 
-		// 鍵取得→少し待ってからクリア表示
-		if (timeGetKey_ > 1.5s)
+		// 鍵取得 or 敵全滅 → 少し待ってからクリア表示
+		if (const auto time = Max(timeGetKey_.elapsed(), timeDestroyAllEnemy_.elapsed());
+			time > 1.5s)
 		{
 			timeStageClear_.start();
 		}
@@ -389,11 +409,12 @@ namespace Spiceholic
 			}
 		}
 
-		// アクターのうちエフェクトは更新
+		// アクターのうちアイテム、エフェクトは更新
 		for (size_t i = 0; i < getData().actors.size(); ++i)
 		{
 			if (auto& actor = getData().actors[i];
-				actor->tag() == ActorTag::Effect)
+				actor->tag() == ActorTag::Effect ||
+				actor->tag() == ActorTag::Item)
 			{
 				actor->update();
 			}
@@ -502,6 +523,12 @@ namespace Spiceholic
 		// アクターの破棄
 		actors.remove_if([](const auto& actor) { return not actor->active(); });
 		blocks.remove_if([](const auto& block) { return not block->active(); });
+
+		// 敵全滅判定
+		if (EnemyCount(getData().actors) == 0 && initialEnemyCount_ != 0)
+		{
+			onDestroyAllEnemies_();
+		}
 
 		// 炎ゲージ更新
 		getData().gauge->update();
@@ -707,6 +734,18 @@ namespace Spiceholic
 		DrawText(U"px7812", PauseMenuItemList[selectedPauseMenuIndex_].desc, Arg::center = descCenter, Palette::Silver);
 
 		SceneRect.stretched(-4).drawFrame(2.0, Palette::Gray);
+	}
+
+	void MainScene::onDestroyAllEnemies_()
+	{
+		if (not timeDestroyAllEnemy_.isRunning())
+		{
+			timeDestroyAllEnemy_.start();
+
+			// TODO: クリアタイム
+			//...
+			stageClearTime_ = time_.sF();
+		}
 	}
 
 	void MainScene::onGetKey_()

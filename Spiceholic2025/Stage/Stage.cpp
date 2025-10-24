@@ -69,9 +69,9 @@ namespace Spiceholic
 						{
 							spawn.subType = prop[U"value"].getOr<int32>(0);
 						}
-						else if (name == U"HasKey")
+						else if (name == U"BringItems")
 						{
-							spawn.hasKey = prop[U"value"].getOr<bool>(false);
+							spawn.bringItems = prop[U"value"].getString();
 						}
 						else if (name == U"SecretRoute")
 						{

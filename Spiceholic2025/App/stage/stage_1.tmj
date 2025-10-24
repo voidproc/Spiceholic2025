@@ -108,15 +108,16 @@
                  "name":"",
                  "properties":[
                         {
+                         "name":"BringItems",
+                         "propertytype":"BringItems",
+                         "type":"string",
+                         "value":"Chilipepper2"
+                        }, 
+                        {
                          "name":"Direction",
                          "propertytype":"Direction",
                          "type":"string",
                          "value":"Left"
-                        }, 
-                        {
-                         "name":"HasKey",
-                         "type":"bool",
-                         "value":true
                         }],
                  "rotation":0,
                  "type":"",

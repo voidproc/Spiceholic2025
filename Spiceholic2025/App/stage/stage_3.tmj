@@ -58,15 +58,16 @@
                  "name":"",
                  "properties":[
                         {
+                         "name":"BringItems",
+                         "propertytype":"BringItems",
+                         "type":"string",
+                         "value":"Chilipepper1"
+                        }, 
+                        {
                          "name":"Direction",
                          "propertytype":"Direction",
                          "type":"string",
                          "value":"Right"
-                        }, 
-                        {
-                         "name":"HasKey",
-                         "type":"bool",
-                         "value":true
                         }, 
                         {
                          "name":"SubType",
@@ -111,6 +112,12 @@
                  "name":"",
                  "properties":[
                         {
+                         "name":"BringItems",
+                         "propertytype":"BringItems",
+                         "type":"string",
+                         "value":"Chilipepper2"
+                        }, 
+                        {
                          "name":"Direction",
                          "propertytype":"Direction",
                          "type":"string",
@@ -124,7 +131,7 @@
                         {
                          "name":"SpawnTime",
                          "type":"float",
-                         "value":6.5
+                         "value":5
                         }, 
                         {
                          "name":"SubType",
@@ -259,6 +266,12 @@
                  "name":"",
                  "properties":[
                         {
+                         "name":"BringItems",
+                         "propertytype":"BringItems",
+                         "type":"string",
+                         "value":"Chilipepper2"
+                        }, 
+                        {
                          "name":"Direction",
                          "propertytype":"Direction",
                          "type":"string",
@@ -272,7 +285,7 @@
                         {
                          "name":"SpawnTime",
                          "type":"float",
-                         "value":8
+                         "value":7
                         }, 
                         {
                          "name":"SubType",

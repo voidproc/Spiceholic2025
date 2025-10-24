@@ -10,12 +10,12 @@ namespace Spiceholic
 	{
 	}
 
-	Block::Block(const Vec2& pos, ActorType type, GameData& gameData, bool hasKey, bool secretRoute)
+	Block::Block(const Vec2& pos, ActorType type, GameData& gameData, const String& bringItems, bool secretRoute)
 		:
 		Actor{ pos },
 		type_{ type },
 		gameData_{ gameData },
-		hasKey_{ hasKey },
+		bringItems_{ bringItems },
 		secretRoute_{ secretRoute },
 		collision_{}
 	{
@@ -57,15 +57,7 @@ namespace Spiceholic
 		explode();
 
 		// アイテム放出
-		if (hasKey_)
-		{
-			// 鍵を持っていた
-			gameData_.actors.push_back(std::make_unique<Item>(position().currentPos(), ActorType::ItemKey, gameData_, true));
-		}
-		else
-		{
-			gameData_.actors.push_back(std::make_unique<Item>(position().currentPos(), ActorType::ItemChilipepper, gameData_, true));
-		}
+		MakeItems(bringItems_, gameData_, position().currentPos());
 	}
 
 	const Vec2& Block::getCollisionPos() const

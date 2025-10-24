@@ -72,6 +72,12 @@
                  "name":"",
                  "properties":[
                         {
+                         "name":"BringItems",
+                         "propertytype":"BringItems",
+                         "type":"string",
+                         "value":"Chilipepper2"
+                        }, 
+                        {
                          "name":"SecretRoute",
                          "type":"bool",
                          "value":true
@@ -89,6 +95,12 @@
                  "id":40,
                  "name":"",
                  "properties":[
+                        {
+                         "name":"BringItems",
+                         "propertytype":"BringItems",
+                         "type":"string",
+                         "value":"Chilipepper2"
+                        }, 
                         {
                          "name":"SecretRoute",
                          "type":"bool",
@@ -118,6 +130,13 @@
                  "height":16,
                  "id":42,
                  "name":"",
+                 "properties":[
+                        {
+                         "name":"BringItems",
+                         "propertytype":"BringItems",
+                         "type":"string",
+                         "value":"Chilipepper1"
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -130,6 +149,13 @@
                  "height":16,
                  "id":43,
                  "name":"",
+                 "properties":[
+                        {
+                         "name":"BringItems",
+                         "propertytype":"BringItems",
+                         "type":"string",
+                         "value":"Chilipepper1"
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -142,6 +168,13 @@
                  "height":16,
                  "id":44,
                  "name":"",
+                 "properties":[
+                        {
+                         "name":"BringItems",
+                         "propertytype":"BringItems",
+                         "type":"string",
+                         "value":"Chilipepper1"
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -154,6 +187,13 @@
                  "height":16,
                  "id":45,
                  "name":"",
+                 "properties":[
+                        {
+                         "name":"BringItems",
+                         "propertytype":"BringItems",
+                         "type":"string",
+                         "value":"Chilipepper1"
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -166,6 +206,13 @@
                  "height":16,
                  "id":49,
                  "name":"",
+                 "properties":[
+                        {
+                         "name":"BringItems",
+                         "propertytype":"BringItems",
+                         "type":"string",
+                         "value":"Chilipepper1"
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -178,6 +225,13 @@
                  "height":16,
                  "id":52,
                  "name":"",
+                 "properties":[
+                        {
+                         "name":"BringItems",
+                         "propertytype":"BringItems",
+                         "type":"string",
+                         "value":"Chilipepper1"
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,

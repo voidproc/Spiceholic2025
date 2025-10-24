@@ -134,15 +134,16 @@ namespace Spiceholic
 		if (other->tag() == ActorTag::Block ||
 			other->tag() == ActorTag::Enemy)
 		{
-			other->setDamage(0.5);
+			// これ自体はダメージを与えない
+			//other->setDamage(0.5);
 
 			// なにかに当たったら爆発して消える
 			gameData_.actors.push_back(std::make_unique<WeaponExplode>(position().currentPos() + Circular{ Random(2.0, 4.0), Random(Math::TwoPi) }, 1.0, 0.0));
-			gameData_.actors.push_back(std::make_unique<WeaponExplode>(position().currentPos() + Circular{ Random(8.0, 12.0), Random(Math::TwoPi) }, 0.6, 0.2));
-			gameData_.actors.push_back(std::make_unique<WeaponExplode>(position().currentPos() + Circular{ Random(8.0, 12.0), Random(Math::TwoPi) }, 0.6, 0.25));
-			gameData_.actors.push_back(std::make_unique<WeaponExplode>(position().currentPos() + Circular{ Random(16.0, 20.0), Random(Math::TwoPi) }, 0.3, 0.35));
-			gameData_.actors.push_back(std::make_unique<WeaponExplode>(position().currentPos() + Circular{ Random(16.0, 20.0), Random(Math::TwoPi) }, 0.3, 0.38));
-			gameData_.actors.push_back(std::make_unique<WeaponExplode>(position().currentPos() + Circular{ Random(16.0, 20.0), Random(Math::TwoPi) }, 0.3, 0.41));
+			gameData_.actors.push_back(std::make_unique<WeaponExplode>(position().currentPos() + Circular{ Random(8.0, 12.0), Random(Math::TwoPi) }, 0.6, 0.2, false));
+			gameData_.actors.push_back(std::make_unique<WeaponExplode>(position().currentPos() + Circular{ Random(8.0, 12.0), Random(Math::TwoPi) }, 0.6, 0.25, false));
+			gameData_.actors.push_back(std::make_unique<WeaponExplode>(position().currentPos() + Circular{ Random(16.0, 20.0), Random(Math::TwoPi) }, 0.3, 0.35, false));
+			gameData_.actors.push_back(std::make_unique<WeaponExplode>(position().currentPos() + Circular{ Random(16.0, 20.0), Random(Math::TwoPi) }, 0.3, 0.38, false));
+			gameData_.actors.push_back(std::make_unique<WeaponExplode>(position().currentPos() + Circular{ Random(16.0, 20.0), Random(Math::TwoPi) }, 0.3, 0.41, false));
 
 			setInactive();
 		}
@@ -158,7 +159,7 @@ namespace Spiceholic
 		return collision_;
 	}
 
-	WeaponExplode::WeaponExplode(const Vec2& pos, double scale, double delay)
+	WeaponExplode::WeaponExplode(const Vec2& pos, double scale, double delay, bool collidable)
 		:
 		Weapon{ pos },
 		scale_{ scale },
@@ -166,7 +167,10 @@ namespace Spiceholic
 		collision_{},
 		time_{ StartImmediately::No, Clock() }
 	{
-		collision_.set(Circle{ Vec2{}, 22 * scale });
+		if (collidable)
+		{
+			collision_.set(Circle{ Vec2{}, 22 * scale });
+		}
 	}
 
 	WeaponExplode::~WeaponExplode()

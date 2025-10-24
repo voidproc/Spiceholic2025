@@ -16,15 +16,16 @@
             "id": 1,
             "members": [
                 {
-                    "name": "Direction",
-                    "propertyType": "Direction",
+                    "name": "BringItems",
+                    "propertyType": "BringItems",
                     "type": "string",
                     "value": "None"
                 },
                 {
-                    "name": "HasKey",
-                    "type": "bool",
-                    "value": false
+                    "name": "Direction",
+                    "propertyType": "Direction",
+                    "type": "string",
+                    "value": "None"
                 },
                 {
                     "name": "Life",
@@ -55,6 +56,19 @@
                 "tile",
                 "project"
             ]
+        },
+        {
+            "id": 5,
+            "name": "BringItems",
+            "storageType": "string",
+            "type": "enum",
+            "values": [
+                "None",
+                "Key",
+                "Chilipepper1",
+                "Chilipepper2"
+            ],
+            "valuesAsFlags": false
         },
         {
             "id": 2,

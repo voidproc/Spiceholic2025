@@ -12,7 +12,7 @@ namespace Spiceholic
 		inline static constexpr ActorTag Tag = ActorTag::Enemy;
 
 	public:
-		Enemy(const Vec2& pos, GameData& gameData, bool hasKey = false);
+		Enemy(const Vec2& pos, GameData& gameData, const String& bringItems);
 
 		~Enemy() override;
 
@@ -42,7 +42,7 @@ namespace Spiceholic
 
 		Collision collision_;
 		GameData& gameData_;
-		bool hasKey_;
+		String bringItems_;
 		bool spriteMirror_;
 		Vec2 drawOffset_;
 	};
@@ -54,7 +54,7 @@ namespace Spiceholic
 		inline static constexpr ActorType Type = ActorType::EnemyChick;
 
 	public:
-		EnemyChick(const Vec2& pos, GameData& gameData, Direction dir, int32 subType, bool hasKey);
+		EnemyChick(const Vec2& pos, GameData& gameData, Direction dir, int32 subType, const String& bringItems);
 
 		~EnemyChick() override;
 

@@ -83,7 +83,7 @@ namespace Spiceholic
 		inline static constexpr ActorType Type = ActorType::WeaponExplode;
 
 	public:
-		WeaponExplode(const Vec2& pos, double scale, double delay);
+		WeaponExplode(const Vec2& pos, double scale, double delay, bool collidable = true);
 
 		~WeaponExplode() override;
 

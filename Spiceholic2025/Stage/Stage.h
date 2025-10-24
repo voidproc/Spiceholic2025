@@ -18,8 +18,10 @@ namespace Spiceholic
 		// 敵の挙動パターンのバリエーションなど
 		int32 subType;
 
+		// 所持アイテム
+		String bringItems;
 		// 鍵を持っている
-		bool hasKey;
+		//bool hasKey;
 
 		// シークレット
 		bool secretRoute;

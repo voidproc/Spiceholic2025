@@ -280,7 +280,7 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Actor\MakeActor.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Actor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

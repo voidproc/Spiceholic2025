@@ -47,6 +47,9 @@ namespace Spiceholic
 
 		void drawPaused_() const;
 
+		// 敵が全滅したときに1回呼ばれる
+		void onDestroyAllEnemies_();
+
 		// 購読イベント
 		void onGetKey_();
 
@@ -63,6 +66,12 @@ namespace Spiceholic
 
 		// アクターの影
 		Array<Vec2> shadowPosList_;
+
+		// 敵全滅関係
+		// 敵全滅時待機用
+		Stopwatch timeDestroyAllEnemy_;
+		// 初期配置の敵の数
+		int initialEnemyCount_;
 
 		// 鍵取得時待機用
 		Stopwatch timeGetKey_;

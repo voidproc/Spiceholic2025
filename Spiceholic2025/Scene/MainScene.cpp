@@ -20,6 +20,27 @@ namespace Spiceholic
 {
 	namespace
 	{
+		enum class PauseMenuItemType
+		{
+			Back,
+			Retry,
+			Title,
+		};
+
+		struct PauseMenuItem
+		{
+			PauseMenuItemType type;
+			StringView text;
+			StringView desc;
+		};
+
+		constexpr std::array<PauseMenuItem, 3> PauseMenuItemList = { {
+			{ PauseMenuItemType::Back, U"Back to Game"_sv, U"ゲームに戻ります"_sv },
+			{ PauseMenuItemType::Retry, U"Retry This Stage"_sv, U"このステージをやり直します"_sv },
+			{ PauseMenuItemType::Title, U"Quit to Title"_sv, U"タイトル画面に戻ります"_sv },
+		} };
+
+
 		// だいたい a <= b かどうか
 		bool IsLessOrEqualApprox(double a, double b)
 		{
@@ -243,7 +264,10 @@ namespace Spiceholic
 		timeGetKey_{ StartImmediately::No, Clock() },
 		timeStageClear_{ StartImmediately::No, Clock() },
 		timerGaugeMax_{ 0.50s, StartImmediately::No, Clock() },
-		openedSecretRoute_{ false }
+		openedSecretRoute_{ false },
+		selectedPauseMenuIndex_{ 0 },
+		timerPauseMenuDecide_{ 0.80s, StartImmediately::No },
+		timerPauseMenuMoveCursor_{}
 	{
 		// ステージデータ読み込み
 		LoadStage(getData().nextStageID, *getData().stageData);
@@ -327,6 +351,8 @@ namespace Spiceholic
 		if (timeGetKey_.isRunning()) return;
 
 		GlobalClock::Pause();
+
+		selectedPauseMenuIndex_ = 0;
 	}
 
 	void MainScene::updateStageStart_()
@@ -356,6 +382,9 @@ namespace Spiceholic
 		{
 			if (getData().actionInput->down(Action::Decide))
 			{
+				// シーン遷移する前に今のスコアを保存しておく（元に戻す用）
+				getData().stageStartScore = getData().score->currentScore();
+
 				changeScene(U"MainScene", 0);
 			}
 		}
@@ -374,7 +403,59 @@ namespace Spiceholic
 	void MainScene::updatePaused_()
 	{
 		// ◆ ポーズ中
-		//...
+
+		// メニュー選択、項目決定
+		// 項目決定されていたら実行しない
+		if (not timerPauseMenuDecide_.isRunning())
+		{
+			// メニュー選択
+			if (getData().actionInput->down(Action::MoveUp))
+			{
+				selectedPauseMenuIndex_ = (selectedPauseMenuIndex_ + PauseMenuItemList.size() - 1) % PauseMenuItemList.size();
+
+				// 描画用
+				timerPauseMenuMoveCursor_.restart(0.1s);
+			}
+			else if (getData().actionInput->down(Action::MoveDown))
+			{
+				selectedPauseMenuIndex_ = (selectedPauseMenuIndex_ + 1) % PauseMenuItemList.size();
+
+				// 描画用
+				timerPauseMenuMoveCursor_.restart(0.1s);
+			}
+
+			// 項目決定
+			if (getData().actionInput->down(Action::Decide))
+			{
+				timerPauseMenuDecide_.start();
+			}
+		}
+
+		if (timerPauseMenuDecide_.reachedZero())
+		{
+			timerPauseMenuDecide_.reset();
+
+			if (const auto& selected = PauseMenuItemList[selectedPauseMenuIndex_];
+				selected.type == PauseMenuItemType::Back)
+			{
+				// ゲームに戻る
+			}
+			else if (selected.type == PauseMenuItemType::Retry)
+			{
+				// このステージをやり直す
+				getData().score->set(getData().stageStartScore, true);
+				getData().nextStageID = getData().stageData->stageID;
+				changeScene(U"MainScene", 0);
+			}
+			else if (selected.type == PauseMenuItemType::Title)
+			{
+				// タイトルに戻る
+				changeScene(U"TitleScene", 0);
+			}
+
+			// ポーズ解除
+			togglePause_();
+		}
 	}
 
 	void MainScene::updateMain_()
@@ -557,9 +638,6 @@ namespace Spiceholic
 		DrawText(U"px7812m", U"{:08d}"_fmt(getData().score->displayScore()), Arg::center = regionHudU.center(), ColorF{ 0.3 }.lerp(Palette::Darkred, 0.2), AlphaF(0));
 		DrawText(U"px7812m", U"{:-8d}"_fmt(getData().score->displayScore()), Arg::center = regionHudU.center(), scoreColor, shadowColor);
 
-		// 経過時間
-		//FontAsset(U"px7812m")(U"{:02d}:{:02d}"_fmt(time_.min(), time_.s() % 60)).draw(Arg::rightCenter = regionHudU.rightCenter() + Vec2{ -1, 0 }, Palette::Gray);
-
 		// ゲージ枠、ゲージ
 		getData().gauge->draw();
 	}
@@ -596,12 +674,39 @@ namespace Spiceholic
 	void MainScene::drawPaused_() const
 	{
 		// 背景を暗くする
-		SceneRect.draw(ColorF{ 0, 0.5 });
+		SceneRect.draw(ColorF{ 0, 0.9 });
 
-		// 帯
-		RectF{ Arg::center = SceneCenter, SizeF{ SceneSize.x, 24 } }.draw(Palette::Darkred);
+		constexpr int LineHeight = 22;
 
-		DrawText(U"px7812", U"PAUSED - 休憩中", Arg::center = SceneCenter, Palette::White);
+		for (const auto [index, item] : Indexed(PauseMenuItemList))
+		{
+			const Vec2 itemCenter = SceneCenter + Vec2{ 0, ((PauseMenuItemList.size() - 1) / -2.0 + index) * LineHeight };
+			const bool selected = (index == selectedPauseMenuIndex_);
+
+			// 選択行
+			if (selected)
+			{
+				const Vec2 vibrate{ 0, timerPauseMenuMoveCursor_.isRunning() * 2 * Periodic::Sine1_1(0.01s) };
+				const double alpha = (0.2 + 0.2 * Periodic::Jump0_1(0.75s)) * (0.8 + 0.2 * Periodic::Square0_1(32ms));
+				RectF{ Arg::rightCenter = itemCenter + vibrate, SizeF{ SceneSize.x / 2, 16 } }.draw(Arg::left = ColorF{ 1, 0 }, Arg::right = ColorF{ 1, alpha });
+				RectF{ Arg::leftCenter = itemCenter + vibrate, SizeF{ SceneSize.x / 2, 16 } }.draw(Arg::left = ColorF{ 1, alpha }, Arg::right = ColorF{ 1, 0 });
+			}
+
+			const ColorF textColor = (selected && timerPauseMenuDecide_.isRunning()) ?
+				(LightYellow.lerp(Palette::Gray, Periodic::Square0_1(0.12s))) :
+				(selected ? Palette::White : Palette::Silver);
+			DrawText(U"px7812", item.text, Arg::center = itemCenter, textColor);
+		}
+
+		const Vec2 titleCenter = SceneRect.center().withY(LineHeight * 1);
+		RectF{ Arg::center = titleCenter, SizeF{ SceneSize.x, 16 } }.draw(Palette::Black);
+		DrawText(U"px7812", U"PAUSED - 休憩中", Arg::center = titleCenter, Palette::White);
+
+		const Vec2 descCenter = SceneRect.center().withY(SceneSize.y - LineHeight * 1);
+		RectF{ Arg::center = descCenter, SizeF{ SceneSize.x, 16 } }.draw(Palette::Black);
+		DrawText(U"px7812", PauseMenuItemList[selectedPauseMenuIndex_].desc, Arg::center = descCenter, Palette::Silver);
+
+		SceneRect.stretched(-4).drawFrame(2.0, Palette::Gray);
 	}
 
 	void MainScene::onGetKey_()

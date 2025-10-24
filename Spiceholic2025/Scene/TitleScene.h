@@ -21,11 +21,9 @@ namespace Spiceholic
 		void selectNext_();
 		void selectPrevious_();
 
+
 		Stopwatch time_;
-
 		Stopwatch timeDecide_;
-
-		//Timer timerSceneChange_;
 
 		// 選択中の項目
 		size_t selectedMenuIndex_;
@@ -35,5 +33,9 @@ namespace Spiceholic
 		// 描画用
 		Timer timerMoveCursorLeft_;
 		Timer timerMoveCursorRight_;
+		Stopwatch timeDescText_;
+
+		// フェードイン
+		Timer timerFadeIn_;
 	};
 }

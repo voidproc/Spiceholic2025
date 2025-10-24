@@ -8,7 +8,7 @@ namespace Spiceholic
 		[[nodiscard]]
 		Score();
 
-		void set(int32 value);
+		void set(int32 value, bool force = false);
 
 		void add(int32 value);
 

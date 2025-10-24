@@ -73,5 +73,12 @@ namespace Spiceholic
 		Timer timerGaugeMax_;
 		// シークレット関連
 		bool openedSecretRoute_;
+
+		// ポーズメニュー
+		size_t selectedPauseMenuIndex_;
+		Timer timerPauseMenuDecide_;
+		Timer timerPauseMenuMoveCursor_;
+
+
 	};
 }

@@ -20,6 +20,7 @@ namespace Spiceholic
 		nextStageID{ U"1" },
 		gauge{ std::make_unique<Gauge>() },
 		score{ std::make_unique<Score>() },
+		stageStartScore{ 0 },
 		player{},
 		blocks{ Arg::reserve = 128 },
 		actors{ Arg::reserve = 128 },

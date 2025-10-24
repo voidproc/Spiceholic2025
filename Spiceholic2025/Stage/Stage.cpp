@@ -109,6 +109,7 @@ namespace Spiceholic
 		auto stageJson = JSON::Load(Resource(U"stage/stage_{}.tmj"_fmt(stageID)));
 
 		stageData.name = U"STAGE {}"_fmt(stageID);
+		stageData.stageID = stageID;
 
 		// StageName プロパティがあったら使う
 		if (stageJson.hasElement(U"properties"))

@@ -16,9 +16,12 @@ namespace Spiceholic
 	{
 	}
 
-	void Score::set(int32 value)
+	void Score::set(int32 value, bool force)
 	{
-		startAnimation_(currentScore_);
+		if (not force)
+		{
+			startAnimation_(currentScore_);
+		}
 
 		currentScore_ = value;
 

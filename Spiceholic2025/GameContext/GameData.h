@@ -34,6 +34,7 @@ namespace Spiceholic
 
 		// スコア
 		std::unique_ptr<Score> score;
+		uint32 stageStartScore;
 
 		// プレイヤー
 		std::unique_ptr<Player> player;

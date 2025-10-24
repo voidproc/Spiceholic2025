@@ -30,6 +30,9 @@ namespace Spiceholic
 		// ステージ名
 		String name;
 
+		// このステージのステージID
+		String stageID;
+
 		// 次のステージID
 		String nextStageID;
 

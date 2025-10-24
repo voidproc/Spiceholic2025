@@ -22,13 +22,14 @@ namespace Spiceholic
 		{
 			TitleMenuItemType type;
 			StringView text;
+			StringView desc;
 		};
 
 		constexpr std::array<TitleMenuItem, 4> TitleMenuItemList = { {
-			{ TitleMenuItemType::Start, U"Game Start"_sv },
-			{ TitleMenuItemType::Option, U"Option"_sv },
-			{ TitleMenuItemType::InputSetting, U"Input Setting"_sv },
-			{ TitleMenuItemType::Quit, U"Quit"_sv },
+			{ TitleMenuItemType::Start, U"Game Start"_sv, U"ゲームをはじめます"_sv },
+			{ TitleMenuItemType::Option, U"Option"_sv, U"画面や音量などの設定をします"_sv  },
+			{ TitleMenuItemType::InputSetting, U"Input Setting"_sv, U"キーボード・ゲームコントローラの設定をします"_sv  },
+			{ TitleMenuItemType::Quit, U"Quit"_sv, U"ゲームを終了します"_sv  },
 		} };
 	}
 
@@ -39,7 +40,9 @@ namespace Spiceholic
 		timeDecide_{ StartImmediately::No },
 		//timerSceneChange_{ 0.7s, StartImmediately::No },
 		selectedMenuIndex_{ 0 },
-		randomCharaTexName_{ U"DragonGirl" }
+		randomCharaTexName_{ U"DragonGirl" },
+		timeDescText_{ StartImmediately::Yes },
+		timerFadeIn_{ 0.50s, StartImmediately::Yes }
 	{
 		if (getData().titleCharacterShown)
 		{
@@ -77,6 +80,7 @@ namespace Spiceholic
 
 				// 描画用
 				timerMoveCursorLeft_.restart(0.1s);
+				timeDescText_.restart();
 			}
 			else if (getData().actionInput->down(Action::MoveRight))
 			{
@@ -84,6 +88,7 @@ namespace Spiceholic
 
 				// 描画用
 				timerMoveCursorRight_.restart(0.1s);
+				timeDescText_.restart();
 			}
 
 			// 選択項目に対する決定操作
@@ -206,12 +211,22 @@ namespace Spiceholic
 				TextureAsset(U"WhiteArrow")(0, 0, 16).drawAt(menuCenter - Vec2{ 75 + vibrateX_l, 0 }, color);
 				TextureAsset(U"WhiteArrow")(16, 0, 16).drawAt(menuCenter + Vec2{ 75 + vibrateX_r, 0 }, color);
 			}
+
+			// 説明
+			StringView desc = TitleMenuItemList[selectedMenuIndex_].desc;
+			DrawText(U"px7812", desc.substr(0, Min(999.0, timeDescText_.sF() * 40.0)), Arg::center = SceneRect.center().withY(SceneSize.y - 24), ColorF{ 1, 0.8 });
 		}
 
-		// フェード
+		// フェードアウト
 		{
 			const double alpha = Saturate((timeDecide_.sF() - 0.65) / 0.30);
 			SceneRect.draw(ColorF{ Palette::Whitesmoke, EaseOutQuad(alpha) });
+		}
+
+		// フェードイン
+		{
+			const double alpha = timerFadeIn_.progress1_0();
+			SceneRect.draw(ColorF{ Palette::Whitesmoke, EaseInQuad(alpha) });
 		}
 	}
 

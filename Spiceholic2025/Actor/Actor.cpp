@@ -8,7 +8,7 @@ namespace Spiceholic
 		moveAmount_{},
 		active_{ true },
 		life_{ 1.0 },
-		timerDamaged_{ 0.24s, StartImmediately::No, Clock() }
+		timerDamaged_{ 0.15s, StartImmediately::No, Clock() }
 	{
 	}
 

@@ -60,11 +60,11 @@ namespace Spiceholic
 			}
 
 			// 炎を吐く
-			if (gameData_.actionInput->pressed(Action::Attack))
+			if (gameData_.actionInput->pressed(Action::Attack) && gameData_.gauge->getValue() > 0.09)
 			{
 				// ゲージ量に応じて射程変化
 				// ゲージ半分以上ならMAX射程
-				const int nFire = gameData_.gauge->isPoweredUp() ? 7 : 3;
+				const int nFire = gameData_.gauge->isPoweredUp() ? 4 : 2;
 
 				const Circular fireDir{ 14, DirectionToAngle(moveDirection_) };
 				gameData_.actors.push_back(std::make_unique<WeaponFire>(position().currentPos() + Vec2{ 0, 0 } + fireDir.fastToVec2() * 0.8, fireDir, nFire, gameData_));
@@ -73,7 +73,7 @@ namespace Spiceholic
 				timerFire_.restart(0.5s);
 
 				// すこしゲージ消費
-				gameData_.gauge->add(-0.02);
+				gameData_.gauge->add(-0.10);
 			}
 
 			drawOffset_ = Vec2::Zero();
@@ -155,7 +155,7 @@ namespace Spiceholic
 				timerTr_.restart();
 
 				// ゲージ消費
-				gameData_.gauge->add(-0.20);
+				gameData_.gauge->add(-0.10);
 			}
 		}
 		else if (other->tag() == ActorTag::Item)

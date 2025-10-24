@@ -191,16 +191,22 @@ namespace Spiceholic
 	{
 		if (not time_.isRunning()) return;
 
-		const double alpha = 0.8 + 0.2 * Periodic::Square0_1(0.08s, ClockTime());
-		const double t = Saturate(time_.sF() / Explode::LifeTime);
-		const double r = (6 + 14 * EaseOutCubic(t)) * scale_;
+		// 白
+		const double tWhite = EaseInCubic(Saturate(time_.sF() / 0.12));
+		ScopedColorMul2D mul{ tWhite, 1 };
+		ScopedColorAdd2D add{ 1 - tWhite, 0 };
 
-		const ColorF innerColor = Palette::Orange.lerp(Palette::Red, 0.5 * Periodic::Sine0_1(0.14s, ClockTime()));
-		const ColorF outerColor = Palette::Darkorange.lerp(Palette::Darkred, 0.5 * Periodic::Sine0_1(0.14s, ClockTime()));
+		const double alpha = 1 - ((time_.sF() - (Explode::LifeTime - 0.095)) > 0 ? 0.8 * Periodic::Square0_1(0.03s) : 0);
+		const double t = Saturate(time_.sF() / Explode::LifeTime);
+		const double r = (6 + 14 * EaseOutCubic(t)) * scale_ + (1 - tWhite) * 6;
+
+		const ColorF innerColor = Palette::Yellow.lerp(Palette::Red, 0.5 * Periodic::Sine0_1(0.08s, ClockTime()));
+		const ColorF outerColor = Palette::Orange.lerp(Palette::Red, 0.4 * Periodic::Sine0_1(0.08s, ClockTime()));
+		const ColorF edgeColor = Palette::Darkorange.lerp(Palette::Red, 0.5 * Periodic::Sine0_1(0.08s, ClockTime()));
 
 		Circle{ position().currentPos().asPoint(), Math::Floor(r) }
-			.draw(ColorF{ innerColor, alpha })
-			.drawFrame((8 - 4 * EaseInOutCubic(t)) * scale_, ColorF{ outerColor, alpha });
+			.draw(ColorF{ innerColor, alpha }, ColorF{ outerColor, alpha })
+			.drawFrame((8 - 5 * EaseInOutCubic(t)) * scale_, ColorF{ edgeColor, alpha });
 	}
 
 	void WeaponExplode::onCollide(Actor* other)

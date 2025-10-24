@@ -165,7 +165,7 @@ namespace Spiceholic
 		// 各設定項目を描画
 		for (const auto [iField, field] : Indexed(SettingFieldList))
 		{
-			const double fieldCenterY = Layout::LineHeight * (3.0 + iField);
+			const double fieldCenterY = Layout::LineHeight * (3.0 + iField + (iField == SettingFieldList.size() - 1 ? 0.5 : 0));
 			const bool selected = (iField == selectedFieldIndex_);
 
 			// 選択行

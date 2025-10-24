@@ -201,7 +201,7 @@ namespace Spiceholic
 		{
 			const bool selected = (index == selectedFieldIndex_);
 
-			const double posY = Layout::LineHeight * (3.0 + index);
+			const double posY = Layout::LineHeight * (3.0 + index + (index > 0 ? 0.5 : 0) + (index == SettingFieldList.size() - 1 ? 0.5 : 0));
 			const auto itemCenter = SceneRect.center().withY(posY);
 			ColorF keyColor = Theme::ValueColor;
 			ColorF buttonColor = Theme::ValueColor;

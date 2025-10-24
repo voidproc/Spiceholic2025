@@ -6,6 +6,7 @@
 #include "Actor/Player.h"
 #include "Actor/MakeActor.h"
 #include "Config/GameConfig.h"
+#include "Core/Color.h"
 #include "Core/DrawText.h"
 #include "Core/DrawSprite.h"
 #include "Core/Gauge.h"
@@ -571,7 +572,7 @@ namespace Spiceholic
 		const String text = (timeStageStart_ < 1.5s) ? getData().stageData->name : U"Ready";
 		const Vec2 textPos = SceneCenter + Vec2{ 400 * (1 - EaseOutExpo(Saturate(timeStageStart_.sF() / 1.0))), 0 };
 
-		DrawText(U"px7812", text, Arg::center = textPos, ColorF{ 1.0 - 0.3 * Periodic::Square0_1(0.25s, ClockTime()) });
+		DrawText(U"px7812", text, Arg::center = textPos, Palette::Whitesmoke.lerp(Palette::Indianred, 0.4 * Periodic::Square0_1(0.25s, ClockTime())));
 	}
 
 	void MainScene::drawStageClear_() const
@@ -583,7 +584,7 @@ namespace Spiceholic
 		// テキスト
 		const String text = U"{}  Clear!  ({:02d}:{:02d})"_fmt(getData().stageData->name, (int)(stageClearTime_) / 60, (int)stageClearTime_ % 60);
 		const Vec2 textPos = SceneCenter + Vec2{ 400 * (1 - EaseOutExpo(Saturate(timeStageClear_.sF() / 1.0))), 0 };
-		DrawText(U"px7812", text, Arg::center = textPos, Palette::Yellow.lerp(Palette::Black, 0.2 * Periodic::Square0_1(0.25s, ClockTime())));
+		DrawText(U"px7812", text, Arg::center = textPos, LightYellow.lerp(Palette::Black, 0.2 * Periodic::Square0_1(0.25s, ClockTime())));
 
 		// 入力待ち表示
 		if (timeStageClear_ > 1.5s)

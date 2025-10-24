@@ -1,5 +1,6 @@
 ﻿#include "TitleScene.h"
 #include "Config/GameConfig.h"
+#include "Core/Color.h"
 #include "Core/DrawText.h"
 #include "Input/ActionInput.h"
 
@@ -195,8 +196,8 @@ namespace Spiceholic
 			const double vibrateX_r = timerMoveCursorRight_.isRunning() ? 2 * Periodic::Sine1_1(0.01s) : 0;
 			RectF{ Arg::center = menuCenter, SizeF{ SceneSize.x, 20 } }.draw(ColorF{ Palette::Darkred, 0.5 });
 			const ColorF color = (not timeDecide_.isRunning()) ?
-				Palette::White.lerp(Palette::Darkred, 0.2 * Periodic::Square0_1(0.5s)) :
-				Palette::Yellow.lerp(Palette::Darkred, 0.8 * Periodic::Square0_1(0.15s));
+				Palette::White.lerp(Palette::Indianred, 0.4 * Periodic::Square0_1(0.5s)) :
+				LightYellow.lerp(Palette::Darkred, 0.8 * Periodic::Square0_1(0.15s));
 			DrawText(U"px7812", TitleMenuItemList[selectedMenuIndex_].text, Arg::center = menuCenter + Vec2{ Max(vibrateX_l, vibrateX_r), 0 }, color);
 
 			// メニュー矢印

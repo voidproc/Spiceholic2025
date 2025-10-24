@@ -4,6 +4,7 @@
 #include "Actor/Enemy.h"
 #include "Actor/Item.h"
 #include "Actor/Player.h"
+#include "Actor/MakeActor.h"
 #include "Config/GameConfig.h"
 #include "Core/DrawText.h"
 #include "Core/DrawSprite.h"
@@ -65,9 +66,7 @@ namespace Spiceholic
 				// 敵のスポーン時エフェクト
 				if (actor->tag() == ActorTag::Enemy && spawn.time > 1e-3)
 				{
-					gameData.actors.push_back(std::make_unique<FxSmoke>(spawn.position + Vec2{}, nullptr, Random(0.8, 1.3), 0.00));
-					gameData.actors.push_back(std::make_unique<FxSmoke>(spawn.position + Vec2{ Random(4, 7), Random(-8, 0) }, nullptr, Random(0.8, 1.3), 0.08));
-					gameData.actors.push_back(std::make_unique<FxSmoke>(spawn.position + Vec2{ -Random(4, 7), Random(-8, 0) }, nullptr, Random(0.8, 1.3), 0.16));
+					MakeSmokeFxN(gameData.actors, spawn.position, 3, {4,7}, {-8,0}, {0.8,1.3}, 0.3, 0.08);
 				}
 			}
 
@@ -238,8 +237,8 @@ namespace Spiceholic
 		CustomScene{ init },
 		time_{ StartImmediately::No, Clock() },
 		stageClearTime_{ 0 },
-		timeStartReady_{ StartImmediately::Yes, Clock() },
-		timerGaugeRecovery_{ 0.8s, StartImmediately::Yes, Clock() },
+		timeStageStart_{ StartImmediately::Yes, Clock() },
+		shadowPosList_{ Arg::reserve = 128 },
 		timeGetKey_{ StartImmediately::No, Clock() },
 		timeStageClear_{ StartImmediately::No, Clock() },
 		timerGaugeMax_{ 0.50s, StartImmediately::No, Clock() },
@@ -277,17 +276,81 @@ namespace Spiceholic
 
 	void MainScene::update()
 	{
-		// ステージ開始時の "Ready" 表示待ち
-		if (timeStartReady_.isRunning())
+		// ポーズの切替
+		if (getData().actionInput->down(Action::Pause))
 		{
-			if (timeStartReady_ > 2.5s)
+			togglePause_();
+		}
+
+		if (timeStageStart_.isRunning())
+		{
+			// ◆ シーン開始～Ready表示
+			updateStageStart_();
+		}
+		else if (timeGetKey_.isRunning())
+		{
+			// ◆ 鍵取得～ステージクリア表示～シーン遷移
+			updateStageClear_();
+		}
+		else
+		{
+			// シーン開始表示中でなく、鍵取得状態でもない通常状態
+
+			if (GlobalClock::IsPaused())
 			{
-				timeStartReady_.reset();
-				time_.start();
+				// ◆ ポーズ中
+				updatePaused_();
+			}
+			else
+			{
+				// ◆ メインシーンの通常状態の更新
+				updateMain_();
 			}
 		}
 
-		// ステージクリア時の入力待ち
+		// アクターの影のリストを作成
+		makeCharacterShadows_();
+	}
+
+	void MainScene::togglePause_()
+	{
+		// ポーズ解除は優先的に行う
+		if (GlobalClock::IsPaused())
+		{
+			GlobalClock::Start();
+			return;
+		}
+
+		// ※ステージ開始時と、鍵取得～シーン遷移まではポーズしない
+		if (timeStageStart_.isRunning()) return;
+		if (timeGetKey_.isRunning()) return;
+
+		GlobalClock::Pause();
+	}
+
+	void MainScene::updateStageStart_()
+	{
+		// ◆ シーン開始～Ready表示
+
+		// ステージ開始時の "Ready" 表示
+		if (timeStageStart_ > 2.5s)
+		{
+			timeStageStart_.reset();
+			time_.start();
+		}
+	}
+
+	void MainScene::updateStageClear_()
+	{
+		// ◆ 鍵取得～ステージクリア表示～シーン遷移
+
+		// 鍵取得→少し待ってからクリア表示
+		if (timeGetKey_ > 1.5s)
+		{
+			timeStageClear_.start();
+		}
+
+		// ステージクリア時の入力待ち→シーン遷移
 		if (timeStageClear_ > 1.5s)
 		{
 			if (getData().actionInput->down(Action::Decide))
@@ -296,104 +359,106 @@ namespace Spiceholic
 			}
 		}
 
-		// ポーズ
-		// ステージ開始時と、鍵取得～シーン遷移まではポーズ状態を変更しない
-		if (getData().actionInput->down(Action::Pause) &&
-			not timeStartReady_.isRunning() &&
-			not timeGetKey_.isRunning())
+		// アクターのうちエフェクトは更新
+		for (size_t i = 0; i < getData().actors.size(); ++i)
 		{
-			if (GlobalClock::IsPaused())
+			if (auto& actor = getData().actors[i];
+				actor->tag() == ActorTag::Effect)
 			{
-				GlobalClock::Start();
-			}
-			else
-			{
-				GlobalClock::Pause();
+				actor->update();
 			}
 		}
+	}
 
+	void MainScene::updatePaused_()
+	{
+		// ◆ ポーズ中
+		//...
+	}
+
+	void MainScene::updateMain_()
+	{
+		// ◆ メインシーンの通常状態の更新
+
+		// プレイヤーを更新
 		auto& player = *getData().player;
+		player.update();
 
-		if (timeStartReady_.isRunning())
+		// アクター生成
+		SpawnActors(time_.sF(), *getData().stageData, getData());
+
+		// ブロックを更新
+		auto& blocks = getData().blocks;
+		for (auto& block : blocks)
 		{
+			block->update();
 		}
-		else if (timeGetKey_.isRunning())
-		{
-			// 鍵取得～シーン遷移
-			if (timeGetKey_ > 1.5s)
-			{
-				// ステージクリア表示
-				timeStageClear_.start();
-			}
 
-			// エフェクトを更新
-			for (size_t i = 0; i < getData().actors.size(); ++i)
-			{
-				if (getData().actors[i]->tag() == ActorTag::Effect)
-				{
-					getData().actors[i]->update();
-				}
-			}
+		// その他アクターを更新
+		auto& actors = getData().actors;
+		for (size_t i = 0; i < actors.size(); ++i)
+		{
+			actors[i]->update();
 		}
-		else if (not GlobalClock::IsPaused())
+
+		// プレイヤーの位置を調整
+		UpdateActorPos(player, blocks);
+
+		// 敵の位置を調整
+		for (auto& actor : actors)
 		{
-			// 鍵取得状態でなく、かつポーズ状態ではないので、シーンを更新
-
-			// プレイヤーを更新
-			player.update();
-
-			// アクター生成
-			SpawnActors(time_.sF(), *getData().stageData, getData());
-
-			// ブロックを更新
-			for (auto& block : getData().blocks)
+			// TODO: 位置調整の必要があるEnemyなどを列挙
+			if (actor->type() == ActorType::EnemyChick ||
+				actor->tag() == ActorTag::Item)
 			{
-				block->update();
-			}
-
-			// その他アクターを更新
-			for (size_t i = 0; i < getData().actors.size(); ++i)
-			{
-				getData().actors[i]->update();
-			}
-
-			// プレイヤーの位置を調整
-			UpdateActorPos(player, getData().blocks);
-
-			// 敵の位置を調整
-			for (auto& actor : getData().actors)
-			{
-				if (actor->type() == ActorType::EnemyChick)
-				{
-					UpdateActorPos(*actor, getData().blocks);
-				}
-			}
-
-			// アクター同士の衝突判定
-			CheckCollision(player, getData().actors, getData().blocks);
-
-			// アクターの破棄
-			getData().actors.remove_if([](const auto& a) { return not a->active(); });
-			getData().blocks.remove_if([](const auto& a) { return not a->active(); });
-
-			// 炎ゲージ更新
-			getData().gauge->update();
-
-			// 炎ゲージ自動回復
-			// しない
-			//recoverGaugeAuto_();
-
-			// ゲージマックス時ブロック破壊
-			// ブロックを更新
-			if (timerGaugeMax_.reachedZero())
-			{
-				timerGaugeMax_.reset();
-				onTimerGaugeMax_();
+				UpdateActorPos(*actor, blocks);
 			}
 		}
 
-		// アクターの影のリストを作成
-		makeCharacterShadows_();
+		// アクター同士の衝突判定
+		CheckCollision(player, actors, blocks);
+
+		// アクターの破棄
+		actors.remove_if([](const auto& actor) { return not actor->active(); });
+		blocks.remove_if([](const auto& block) { return not block->active(); });
+
+		// 炎ゲージ更新
+		getData().gauge->update();
+
+		// ゲージマックス時ブロック破壊
+		if (timerGaugeMax_.reachedZero())
+		{
+			timerGaugeMax_.reset();
+			onTimerGaugeMax_();
+		}
+	}
+
+	void MainScene::onTimerGaugeMax_()
+	{
+		// ブロックのうち SecretRoute プロパティが設定されているものを破壊
+		for (size_t i = 0; i < getData().blocks.size(); ++i)
+		{
+			getData().blocks[i]->setInactiveIfSecret();
+		}
+	}
+
+	void MainScene::makeCharacterShadows_()
+	{
+		shadowPosList_.clear();
+
+		// プレイヤーの影
+		shadowPosList_.push_back(getData().player->position().currentPos() + getData().player->shadowOffset());
+
+		// 敵・アイテムの影
+		for (size_t i = 0; i < getData().actors.size(); ++i)
+		{
+			const auto& actor = getData().actors[i];
+			if (actor->tag() == ActorTag::Enemy ||
+				actor->tag() == ActorTag::Item)
+			{
+				shadowPosList_.push_back(actor->position().currentPos() + actor->shadowOffset());
+			}
+		}
 	}
 
 	void MainScene::draw() const
@@ -401,111 +466,57 @@ namespace Spiceholic
 		// BG
 		SceneRect.draw(Palette::Darkolivegreen.lerp(Palette::Cyan, 0.5));
 
-		{
-			const ScopedViewport2D viewport{ ActorsFieldViewportRect };
-
-			const auto trans = cameraTransform_();
-
-			// アクターの影
-			for (const auto& shadowPos : shadowPosList_)
-			{
-				TextureAsset(U"Shadow").drawAt(shadowPos);
-			}
-
-			// ブロック
-			for (const auto& block : getData().blocks)
-			{
-				block->draw();
-			}
-
-			// その他アクター
-			for (const auto& actor : getData().actors)
-			{
-				actor->draw();
-			}
-
-			// プレイヤー
-			getData().player->draw();
-		}
+		drawMain_();
 
 		// HUD
-		{
-			// BG (0, 0), (0, 176)
-			const auto regionHudU = Rect{ 0, 0, Size{ SceneSize.x, TileSize } }.draw(ColorF{ 0.1 });
-			const auto regionHudD = Rect{ 0, 176, Size{ SceneSize.x, TileSize } }.draw(ColorF{ 0.1 });
-
-			// スコア
-			const ColorF scoreColor = (getData().score->animating()) ? ColorF{ Palette::White.lerp(Palette::Red, 0.8 * Periodic::Square0_1(0.06s, ClockTime())) } : ColorF{ 0.9 - 0.1 * Periodic::Square0_1(0.25s, ClockTime()) };
-			DrawText(U"px7812m", U"{:08d}"_fmt(getData().score->displayScore()), Arg::center = regionHudU.center(), ColorF{ 0.3 });
-			DrawText(U"px7812m", U"{:-8d}"_fmt(getData().score->displayScore()), Arg::center = regionHudU.center(), scoreColor, ColorF{ Palette::Darkred, 0.6 - 0.1 * Periodic::Square0_1(0.25s, ClockTime()) });
-
-			// 経過時間
-			//FontAsset(U"px7812m")(U"{:02d}:{:02d}"_fmt(time_.min(), time_.s() % 60)).draw(Arg::rightCenter = regionHudU.rightCenter() + Vec2{ -1, 0 }, Palette::Gray);
-
-			// ゲージ枠、ゲージ
-			getData().gauge->draw();
-
-		}
+		drawHUD_();
 
 		// ステージ開始時
-		if (timeStartReady_.isRunning())
+		if (timeStageStart_.isRunning())
 		{
-			const double height = 24 * EaseInQuad(Saturate(timeStartReady_.sF() / 0.3));
-			RectF{ Arg::center = SceneCenter, SizeF{ SceneSize.x, height } }.draw(ColorF{ Palette::Darkred, 0.9 });
-
-			const String text = (timeStartReady_ < 1.5s) ? getData().stageData->name : U"Ready";
-			const Vec2 textPos = SceneCenter + Vec2{ 400 * (1 - EaseOutExpo(Saturate(timeStartReady_.sF() / 1.0))), 0 };
-
-			DrawText(U"px7812", text, Arg::center = textPos, ColorF{ 1.0 - 0.3  * Periodic::Square0_1(0.25s, ClockTime()) });
+			drawStageStart_();
 		}
 
 		// ステージクリア時
 		if (timeStageClear_.isRunning())
 		{
-			const double height = 24 * EaseInQuad(Saturate(timeStageClear_.sF() / 0.3));
-			RectF{ Arg::center = SceneCenter, SizeF{ SceneSize.x, height } }.draw(ColorF{ Palette::Darkred, 0.9 });
-
-			const String text = U"{}  Clear!  ({:02d}:{:02d})"_fmt(getData().stageData->name, (int)(stageClearTime_) / 60, (int)stageClearTime_ % 60);
-			const Vec2 textPos = SceneCenter + Vec2{ 400 * (1 - EaseOutExpo(Saturate(timeStageClear_.sF() / 1.0))), 0 };
-			DrawText(U"px7812", text, Arg::center = textPos, Palette::Yellow.lerp(Palette::Black, 0.2 * Periodic::Square0_1(0.25s, ClockTime())));
-
-			// 入力待ち表示
-			if (timeStageClear_ > 1.5s)
-			{
-				DrawSprite(*getData().appSetting, U"WhiteArrowDown", 0.5s, false, SceneCenter + Vec2{ SceneSize.x / 2 - 16 , 4 + 1 * Periodic::Square0_1(0.5s, ClockTime()) });
-			}
+			drawStageClear_();
 		}
 
 		// ポーズ中
 		if (GlobalClock::IsPaused())
 		{
-			SceneRect.draw(ColorF{ 0, 0.5 });
-			RectF{ Arg::center = SceneCenter, SizeF{ SceneSize.x, 24 } }.draw(Palette::Darkred);
-			DrawText(U"px7812", U"PAUSED - 休憩中", Arg::center = SceneCenter, Palette::White);
+			drawPaused_();
 		}
 	}
 
-	void MainScene::recoverGaugeAuto_()
+	void MainScene::drawMain_() const
 	{
-		if (timerGaugeRecovery_.reachedZero())
-		{
-			getData().gauge->add(0.008);
-			timerGaugeRecovery_.restart();
-		}
-	}
+		const ScopedViewport2D viewport{ ActorsFieldViewportRect };
 
-	void MainScene::makeCharacterShadows_()
-	{
-		shadowPosList_.clear();
-		shadowPosList_.push_back(getData().player->position().currentPos() + getData().player->shadowOffset());
-		for (size_t i = 0; i < getData().actors.size(); ++i)
+		// プレイヤー位置に追従するカメラ
+		const auto camera = cameraTransform_();
+
+		// アクターの影
+		for (const auto& shadowPos : shadowPosList_)
 		{
-			const auto& actor = getData().actors[i];
-			if (actor->tag() == ActorTag::Enemy || actor->tag() == ActorTag::Item)
-			{
-				shadowPosList_.push_back(actor->position().currentPos() + actor->shadowOffset());
-			}
+			TextureAsset(U"Shadow").drawAt(shadowPos);
 		}
+
+		// ブロック
+		for (const auto& block : getData().blocks)
+		{
+			block->draw();
+		}
+
+		// その他アクター
+		for (const auto& actor : getData().actors)
+		{
+			actor->draw();
+		}
+
+		// プレイヤー
+		getData().player->draw();
 	}
 
 	Transformer2D MainScene::cameraTransform_() const
@@ -527,6 +538,65 @@ namespace Spiceholic
 
 		const Vec2 cameraMove = -cameraRect.pos;
 		return Transformer2D{ Mat3x2::Translate(cameraMove) };
+	}
+
+	void MainScene::drawHUD_() const
+	{
+		// BG
+		const ColorF bgColor{ 0.1 };
+		const auto regionHudU = Rect{ Arg::topLeft = SceneRect.tl(), Size{ SceneSize.x, TileSize } }.draw(bgColor);
+		const auto regionHudD = Rect{ Arg::bottomRight = SceneRect.br(), Size{ SceneSize.x, TileSize } }.draw(bgColor);
+
+		// スコア
+		const ColorF scoreColor = (getData().score->animating()) ? ColorF{ Palette::White.lerp(Palette::Red, 0.8 * Periodic::Square0_1(0.06s, ClockTime())) } : ColorF{ 0.9 - 0.1 * Periodic::Square0_1(0.25s, ClockTime()) };
+		DrawText(U"px7812m", U"{:08d}"_fmt(getData().score->displayScore()), Arg::center = regionHudU.center(), ColorF{ 0.3 });
+		DrawText(U"px7812m", U"{:-8d}"_fmt(getData().score->displayScore()), Arg::center = regionHudU.center(), scoreColor, ColorF{ Palette::Darkred, 0.6 - 0.1 * Periodic::Square0_1(0.25s, ClockTime()) });
+
+		// 経過時間
+		//FontAsset(U"px7812m")(U"{:02d}:{:02d}"_fmt(time_.min(), time_.s() % 60)).draw(Arg::rightCenter = regionHudU.rightCenter() + Vec2{ -1, 0 }, Palette::Gray);
+
+		// ゲージ枠、ゲージ
+		getData().gauge->draw();
+	}
+
+	void MainScene::drawStageStart_() const
+	{
+		const double height = 24 * EaseInQuad(Saturate(timeStageStart_.sF() / 0.3));
+		RectF{ Arg::center = SceneCenter, SizeF{ SceneSize.x, height } }.draw(ColorF{ Palette::Darkred, 0.9 });
+
+		const String text = (timeStageStart_ < 1.5s) ? getData().stageData->name : U"Ready";
+		const Vec2 textPos = SceneCenter + Vec2{ 400 * (1 - EaseOutExpo(Saturate(timeStageStart_.sF() / 1.0))), 0 };
+
+		DrawText(U"px7812", text, Arg::center = textPos, ColorF{ 1.0 - 0.3 * Periodic::Square0_1(0.25s, ClockTime()) });
+	}
+
+	void MainScene::drawStageClear_() const
+	{
+		// 帯
+		const double height = 24 * EaseInQuad(Saturate(timeStageClear_.sF() / 0.3));
+		RectF{ Arg::center = SceneCenter, SizeF{ SceneSize.x, height } }.draw(ColorF{ Palette::Darkred, 0.9 });
+
+		// テキスト
+		const String text = U"{}  Clear!  ({:02d}:{:02d})"_fmt(getData().stageData->name, (int)(stageClearTime_) / 60, (int)stageClearTime_ % 60);
+		const Vec2 textPos = SceneCenter + Vec2{ 400 * (1 - EaseOutExpo(Saturate(timeStageClear_.sF() / 1.0))), 0 };
+		DrawText(U"px7812", text, Arg::center = textPos, Palette::Yellow.lerp(Palette::Black, 0.2 * Periodic::Square0_1(0.25s, ClockTime())));
+
+		// 入力待ち表示
+		if (timeStageClear_ > 1.5s)
+		{
+			DrawSprite(*getData().appSetting, U"WhiteArrowDown", 0.5s, false, SceneCenter + Vec2{ SceneSize.x / 2 - 16 , 4 + 1 * Periodic::Square0_1(0.5s, ClockTime()) });
+		}
+	}
+
+	void MainScene::drawPaused_() const
+	{
+		// 背景を暗くする
+		SceneRect.draw(ColorF{ 0, 0.5 });
+
+		// 帯
+		RectF{ Arg::center = SceneCenter, SizeF{ SceneSize.x, 24 } }.draw(Palette::Darkred);
+
+		DrawText(U"px7812", U"PAUSED - 休憩中", Arg::center = SceneCenter, Palette::White);
 	}
 
 	void MainScene::onGetKey_()
@@ -551,14 +621,6 @@ namespace Spiceholic
 
 			// 時間差でブロック破壊
 			timerGaugeMax_.start();
-		}
-	}
-
-	void MainScene::onTimerGaugeMax_()
-	{
-		for (size_t i = 0; i < getData().blocks.size(); ++i)
-		{
-			getData().blocks[i]->setInactiveIfSecret();
 		}
 	}
 }

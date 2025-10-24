@@ -276,6 +276,12 @@
     <ClCompile Include="Core\Score.cpp">
       <Filter>Core</Filter>
     </ClCompile>
+    <ClCompile Include="Core\Color.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Actor\MakeActor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">
@@ -1063,6 +1069,12 @@
     </ClInclude>
     <ClInclude Include="Core\Score.h">
       <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Color.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Actor\MakeActor.h">
+      <Filter>Actor</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

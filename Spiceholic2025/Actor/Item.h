@@ -44,6 +44,7 @@ namespace Spiceholic
 
 		// 跳ねながら出現用
 		Timer timerJumping_;
+		double jumpHeight_;
 
 		// キラキラエフェクト生成
 		Timer timerMakeFx_;

@@ -16,33 +16,62 @@ namespace Spiceholic
 
 		void update() override;
 
+	private:
+		void togglePause_();
+
+		void updateStageStart_();
+
+		void updateStageClear_();
+
+		void updatePaused_();
+
+		void updateMain_();
+		void onTimerGaugeMax_();
+
+		void makeCharacterShadows_();
+
+	public:
 		void draw() const override;
 
 	private:
-		void recoverGaugeAuto_();
-		void makeCharacterShadows_();
-		Transformer2D cameraTransform_() const;
-		void onGetKey_();
-		void onGaugeMax_();
-		void onTimerGaugeMax_();
+		void drawMain_() const;
 
+		// プレイヤー位置に追従するカメラ
+		Transformer2D cameraTransform_() const;
+
+		void drawHUD_() const;
+
+		void drawStageStart_() const;
+
+		void drawStageClear_() const;
+
+		void drawPaused_() const;
+
+		// 購読イベント
+		void onGetKey_();
+
+		// 購読イベント
+		void onGaugeMax_();
+
+		// ステージプレイ時間
 		Stopwatch time_;
+		// クリアタイム
 		double stageClearTime_;
 
-		Stopwatch timeStartReady_;
-
-		// 炎ゲージ自動回復用タイマー
-		Timer timerGaugeRecovery_;
+		// ステージ開始時待機用
+		Stopwatch timeStageStart_;
 
 		// アクターの影
 		Array<Vec2> shadowPosList_;
 
-		// 鍵をとった
+		// 鍵取得時待機用
 		Stopwatch timeGetKey_;
+		// 鍵取得時待機後のステージクリア表示→シーン遷移
 		Stopwatch timeStageClear_;
 
-		// シークレット
+		// シークレット関連
 		Timer timerGaugeMax_;
+		// シークレット関連
 		bool openedSecretRoute_;
 	};
 }

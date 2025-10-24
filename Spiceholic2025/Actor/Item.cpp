@@ -27,6 +27,7 @@ namespace Spiceholic
 		appearJumping_{ appearJumping },
 		timerDelay_{ Duration{ delay }, StartImmediately::Yes, Clock() },
 		timerJumping_{ 999s, StartImmediately::No, Clock() },
+		jumpHeight_{ Random(4.0, 7.0) },
 		timerMakeFx_{ 1.1s, StartImmediately::No, Clock() }
 	{
 	}
@@ -45,7 +46,7 @@ namespace Spiceholic
 
 			if (appearJumping_)
 			{
-				timerJumping_.restart(TimeAppear);
+				timerJumping_.restart(TimeAppear * Random(0.60, 1.5));
 			}
 			else
 			{
@@ -72,7 +73,7 @@ namespace Spiceholic
 	void Item::draw() const
 	{
 		// 跳ねる
-		const Vec2 jump{ 0, timerJumping_.isRunning() ? -6.0 * Periodic::Jump0_1(TimeAppear, timerJumping_.progress0_1() * TimeAppearSec) : 0 };
+		const Vec2 jump{ 0, timerJumping_.isRunning() ? -jumpHeight_ * Periodic::Jump0_1(TimeAppear, timerJumping_.progress0_1() * TimeAppearSec) : 0 };
 
 		const Vec2 pos = position().currentPos()
 			+ ((type() == ActorType::ItemKey) ? Vec2{} : Vec2{ 0, 1.0 * Periodic::Sine1_1(1.5s, time_.sF()) })

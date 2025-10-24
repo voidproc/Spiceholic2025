@@ -124,10 +124,12 @@
     <ClCompile Include="Actor\Enemy.cpp" />
     <ClCompile Include="Actor\ICollidable.cpp" />
     <ClCompile Include="Actor\Item.cpp" />
+    <ClCompile Include="Actor\MakeActor.cpp" />
     <ClCompile Include="Actor\Player.cpp" />
     <ClCompile Include="Actor\Weapon.cpp" />
     <ClCompile Include="Audio\AudioVolume.cpp" />
     <ClCompile Include="Core\Collision.cpp" />
+    <ClCompile Include="Core\Color.cpp" />
     <ClCompile Include="Core\DrawSprite.cpp" />
     <ClCompile Include="Core\DrawText.cpp" />
     <ClCompile Include="Core\GameClock.cpp" />
@@ -370,12 +372,14 @@
     <ClInclude Include="Actor\Enemy.h" />
     <ClInclude Include="Actor\ICollidable.h" />
     <ClInclude Include="Actor\Item.h" />
+    <ClInclude Include="Actor\MakeActor.h" />
     <ClInclude Include="Actor\Player.h" />
     <ClInclude Include="Actor\Weapon.h" />
     <ClInclude Include="App.h" />
     <ClInclude Include="Audio\AudioVolume.h" />
     <ClInclude Include="Config\GameConfig.h" />
     <ClInclude Include="Core\Collision.h" />
+    <ClInclude Include="Core\Color.h" />
     <ClInclude Include="Core\DrawSprite.h" />
     <ClInclude Include="Core\DrawText.h" />
     <ClInclude Include="Core\GameClock.h" />

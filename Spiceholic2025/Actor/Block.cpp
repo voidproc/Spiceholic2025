@@ -1,6 +1,7 @@
 ﻿#include "Block.h"
 #include "Effect.h"
 #include "Item.h"
+#include "MakeActor.h"
 #include "Config/GameConfig.h"
 
 namespace Spiceholic
@@ -84,9 +85,7 @@ namespace Spiceholic
 
 	void Block::explode()
 	{
-		gameData_.actors.push_back(std::make_unique<FxSmoke>(position().currentPos() + Vec2{}, nullptr, Random(0.9, 1.5), 0.00));
-		gameData_.actors.push_back(std::make_unique<FxSmoke>(position().currentPos() + Vec2{ Random(6, 12), Random(-8, 0) }, nullptr, Random(0.9, 1.5), 0.08));
-		gameData_.actors.push_back(std::make_unique<FxSmoke>(position().currentPos() + Vec2{ -Random(6, 12), Random(-8, 0) }, nullptr, Random(0.9, 1.5), 0.16));
+		MakeSmokeFxN(gameData_.actors, position().currentPos(), 3, { 6,12 }, { -8,0 }, { 0.9,1.5 }, 0.3, 0.08);
 
 		gameData_.actors.push_back(std::make_unique<FxBlockBreak>(position().currentPos(), secretRoute_));
 	}

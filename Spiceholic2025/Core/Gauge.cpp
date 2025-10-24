@@ -1,4 +1,5 @@
 ﻿#include "Gauge.h"
+#include "Core/Color.h"
 
 namespace Spiceholic
 {
@@ -35,30 +36,36 @@ namespace Spiceholic
 		const double gaugeLength = 95 * displayValue();
 
 		{
-			const double t = (Abs(currentValue_ - displayValue_) < 1e-3) ? 1 : 0.6 * Periodic::Square0_1(0.07s, ClockTime());
+			const double t = (Abs(currentValue_ - displayValue_) < 1e-3) ? 1 : 0.6 * Periodic::Pulse0_1(0.06s, 0.8, ClockTime());
 			ScopedColorMul2D mul{ t, 1 };
-			ScopedColorAdd2D add{ 1-t, 0};
+			ScopedColorAdd2D add{ 1 - t, 0 };
 			TextureAsset(U"Gauge")(0, 0, gaugeLength, 6).draw(gaugePos + Vec2{ 21, 7 }, ColorF{ 1 - 0.08 * Periodic::Jump0_1(0.3s, ClockTime()) });
 		}
 
+		// ゲージMAXエフェクト中
+		const bool onMaxEffect = (timeMaxEffect_.isRunning() && timeMaxEffect_ < 0.95s);
+		const double tMaxEffect = Saturate(timeMaxEffect_.sF() / 0.95);
+
 		// ゲージ枠
-		TextureAsset(U"GaugeFrame").draw(gaugePos, ColorF{ 1 - 0.08 * Periodic::Sine0_1(0.2s, ClockTime()) });
+		const ColorF gaugeFrameColor = onMaxEffect ? GaugeMaxEffectColor().lerp(Palette::White, tMaxEffect) : ColorF{ 1 - 0.08 * Periodic::Sine0_1(0.2s, ClockTime()) };
+		TextureAsset(U"GaugeFrame").draw(gaugePos, gaugeFrameColor);
 
 		// ゲージMAXエフェクト
-		if (timeMaxEffect_.isRunning() && timeMaxEffect_ < 0.95s)
+		if (onMaxEffect)
 		{
-			const double t = Saturate(timeMaxEffect_.sF() / 0.95);
-			const double r = 4 + 24 * EaseOutCubic(t);
-			const double alpha = (timeMaxEffect_ > 0.5s) ? Periodic::Square0_1(0.05s, ClockTime()) : 1.0;
 			const Vec2 pos{ 60 + 21 + 95, 174 + 7 + 6 / 2 };
-			const ColorF color{ Palette::Red.lerp(Palette::Yellow, 0.5 * Periodic::Square0_1(0.07s, ClockTime())), alpha };
-			Circle{ pos, r }.drawFrame(8 - 7 * EaseOutSine(t), color);
+			const double r = 4 + 32 * EaseOutExpo(Saturate(tMaxEffect * 1.1));
+			const double alpha = (timeMaxEffect_ > 0.5s) ? Periodic::Square0_1(0.05s, ClockTime()) : 1.0;
+			const ColorF color{ GaugeMaxEffectColor(), alpha };
+			Circle{ pos, r }.drawFrame(8 - 7 * EaseOutCubic(tMaxEffect), color);
 
-			Line{ pos, pos + Circular{ 400, 10_deg + 15_deg * t } }.draw(7 - 6.5 * EaseInOutQuad(t), color);
-			Line{ pos, pos + Circular{ 400, -40_deg + 24_deg * t } }.draw(4 - 3.5 * EaseInOutCubic(t), color);
-			Line{ pos, pos + Circular{ 400, 60_deg + 13_deg * t } }.draw(5 - 4.5 * EaseInOutCirc(t), color);
-			Line{ pos, pos + Circular{ 400, -90_deg + 20_deg * t } }.draw(7 - 7.5 * EaseInOutQuad(t), color);
-
+			for (int i = 0; i < 2; ++i)
+			{
+				Line{ pos, pos + Circular{ 400, i * 180_deg + 10_deg + 15_deg * tMaxEffect } }.draw(7 - 6.5 * EaseInOutQuad(tMaxEffect), color);
+				Line{ pos, pos + Circular{ 400, i * 180_deg + -40_deg + 44_deg * tMaxEffect } }.draw(4 - 3.5 * EaseInOutCubic(tMaxEffect), color);
+				Line{ pos, pos + Circular{ 400, i * 180_deg + 60_deg + 13_deg * tMaxEffect } }.draw(5 - 4.5 * EaseInOutCirc(tMaxEffect), color);
+				Line{ pos, pos + Circular{ 400, i * 180_deg + -90_deg + 58_deg * tMaxEffect } }.draw(7 - 7.5 * EaseInOutQuad(tMaxEffect), color);
+			}
 		}
 	}
 

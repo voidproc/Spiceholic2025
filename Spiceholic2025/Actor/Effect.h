@@ -81,7 +81,7 @@ namespace Spiceholic
 		inline static constexpr ActorType Type = ActorType::None;
 
 	public:
-		FxSmoke(const Vec2& pos, const Actor* target, double scale, double delay = 0);
+		FxSmoke(const Vec2& pos, const Actor* target, double scale, double vel = 1.0, double delay = 0);
 
 		~FxSmoke() override;
 
@@ -92,6 +92,7 @@ namespace Spiceholic
 	private:
 		const Actor* target_;
 		const double scale_;
+		const double vel_;//12に対する倍率
 		Timer timerDelay_;
 		const Vec2 offset_;
 		Timer timer_;

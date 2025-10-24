@@ -7,11 +7,6 @@ namespace Spiceholic
 {
 	namespace
 	{
-		namespace Theme
-		{
-			constexpr ColorF BgColor = Palette::Indianred.lerp(Palette::Darkred, 0.3);
-		}
-
 		enum class TitleMenuItemType
 		{
 			Start,
@@ -40,11 +35,12 @@ namespace Spiceholic
 		time_{ StartImmediately::Yes },
 		timerSceneChange_{ 1.0s, StartImmediately::No },
 		selectedMenuIndex_{ 0 },
-		randomCharaTexName_{ Random() < 0.8 ? U"DragonGirl" : U"DragonGirl2" }
+		randomCharaTexName_{ U"DragonGirl" }
 	{
 		if (getData().titleCharacterShown)
 		{
 			time_.set(3.5s);
+			randomCharaTexName_ = Random() < 0.8 ? U"DragonGirl" : U"DragonGirl2";
 		}
 	}
 
@@ -125,39 +121,45 @@ namespace Spiceholic
 	{
 		// BG
 		{
-			// 背景アルファ (1.3～2.1s)
-			const double alpha = Saturate((time_.sF() - 1.3) / 0.8);
-			SceneRect.draw(Palette::White.lerp(Theme::BgColor, alpha));
-			RectF{ Arg::topCenter = SceneRect.topCenter(), SizeF{ SceneSize.x, SceneSize.y / 3 } }.draw(Arg::top = ColorF{ Palette::Darkred, 0.3 * alpha }, Arg::bottom = ColorF{ Palette::Darkred, 0 });
-			RectF{ Arg::bottomCenter = SceneRect.bottomCenter(), SizeF{ SceneSize.x, SceneSize.y / 3 } }.draw(Arg::top = ColorF{ Palette::Darkred, 0 }, Arg::bottom = ColorF{ Palette::Darkred, 0.3 * alpha });
+			// 背景色
+			const ColorF bgColor = Palette::Indianred.lerp(Palette::Darkred, 0.3);
+			// 背景色・背景グラデアルファ (1.3～2.1s)
+			const double t = Saturate((time_.sF() - 1.3) / 0.8);
+			SceneRect.draw(Palette::White.lerp(bgColor, t));
+			// 背景グラデ
+			const ColorF bgGradA0{ Palette::Darkred, 0.0 };
+			const ColorF bgGradA1{ Palette::Darkred, 0.3 * t };
+			const SizeF gradRectSize{ SceneSize.x, SceneSize.y / 3 };
+			RectF{ Arg::topCenter = SceneRect.topCenter(), gradRectSize}.draw(Arg::top = bgGradA1, Arg::bottom = bgGradA0);
+			RectF{ Arg::bottomCenter = SceneRect.bottomCenter(), gradRectSize }.draw(Arg::top = bgGradA0, Arg::bottom = bgGradA1);
 		}
 
 		// キャラクター
 		{
-			{
-				// おまけのエフェクト（メニュー選択時の反応）
-				const double tMoveCursor = Saturate(1 - (timerMoveCursorLeft_.progress1_0() + timerMoveCursorRight_.progress1_0()));
-				const Vec2 jump{ 0, Periodic::Jump0_1(0.1s, tMoveCursor * 0.1) };
-				const Vec2 scale{ 1 + 0.03 * jump.y, 1 + 0.05 * jump.y };
-				// 縦揺れ (3.0s～)
-				const Vec2 wave{ 0, -5 * Periodic::Sine1_1(6.0s) * Saturate((time_.sF() - 3.0) / 1.0) };
-				// 横移動 (0.0～1.1s, 0.9～2.0s)
-				const double t1a = Saturate(time_.sF() / 1.1);
-				const double t1b = Saturate((time_.sF() - 0.9) / 1.1);
-				const Vec2 basePos = SceneRect.bottomCenter() + Vec2{ -40, -64 };
-				const Vec2 moveX{ 300 * (1 - (0.85 * EaseOutCubic(t1a) + 0.15 * EaseOutBack(t1b))), 0 };
-				const Vec2 pos = basePos + moveX + wave - jump * 4;
-				// 登場時拡大～縮小 (0.0～0.85s)
-				const Vec2 scale2 = Vec2::One() * 0.2 * (1 - EaseInOutQuad(Saturate(time_.sF() / 0.85)));
-				// アルファ (1.8～2.3s)
-				const double alphaMul = 1.0 - 0.65 * Saturate((time_.sF() - 1.8) / 0.5);
-				ScopedColorMul2D mul{ 1, alphaMul };
+			// おまけのエフェクト（メニュー選択時の反応）
+			const double tMoveCursor = Saturate(1 - (timerMoveCursorLeft_.progress1_0() + timerMoveCursorRight_.progress1_0()));
+			const Vec2 jump{ 0, Periodic::Jump0_1(0.1s, tMoveCursor * 0.1) };
+			const Vec2 scale{ 1 + 0.03 * jump.y, 1 + 0.05 * jump.y };
+			// 縦揺れ (3.0s～)
+			const Vec2 wave{ 0, -5 * Periodic::Sine1_1(6.0s) * Saturate((time_.sF() - 3.0) / 1.0) };
+			// 横移動 (0.0～1.1s, 0.9～2.0s)
+			const double t1a = Saturate(time_.sF() / 1.1);
+			const double t1b = Saturate((time_.sF() - 0.9) / 1.1);
+			const Vec2 basePos = SceneRect.bottomCenter() + Vec2{ -40, -64 };
+			const Vec2 moveX{ 300 * (1 - (0.85 * EaseOutCubic(t1a) + 0.15 * EaseOutBack(t1b))), 0 };
+			const Vec2 pos = basePos + moveX + wave - jump * 4;
+			// 登場時拡大～縮小 (0.0～0.85s)
+			const Vec2 scale2 = Vec2::One() * 0.2 * (1 - EaseInOutQuad(Saturate(time_.sF() / 0.85)));
+			// アルファ (1.8～2.3s)
+			const double alphaMul = 1.0 - 0.65 * Saturate((time_.sF() - 1.8) / 0.5);
+			ScopedColorMul2D mul{ 1, alphaMul };
 
-				TextureAsset(randomCharaTexName_).scaled(scale + scale2).drawAt(pos + Vec2::One() * 4, ColorF{Palette::Darkred, 0.3});
-				TextureAsset(randomCharaTexName_).scaled(scale + scale2).drawAt(pos);
-			}
+			TextureAsset(randomCharaTexName_).scaled(scale + scale2).drawAt(pos + Vec2::One() * 4, ColorF{ Palette::Darkred, 0.3 });
+			TextureAsset(randomCharaTexName_).scaled(scale + scale2).drawAt(pos);
+		}
 
-			// 登場時 目線用
+		// キャラ登場時 目線用の帯
+		{
 			// 目線幅 (0.0～0.5s)
 			const double barHeight = 22 * EaseOutCirc(Saturate(time_.sF() / 0.5));
 			// 白矩形アルファ 1.2～1.5s)

@@ -3,6 +3,7 @@
 #include "Item.h"
 #include "Player.h"
 #include "Block.h"
+#include "MakeActor.h"
 #include "Config/GameConfig.h"
 #include "Core/DrawSprite.h"
 #include "Core/Periodic.h"
@@ -76,7 +77,7 @@ namespace Spiceholic
 			for (int i = 0, n = 3; i < n; ++i)
 			{
 				const Vec2 pos = position().currentPos() + Circular{ 12, a + 120_deg * i };
-				gameData_.actors.push_back(std::make_unique<Item>(pos, ActorType::ItemChilipepper, gameData_, true, 0.04 * i));
+				gameData_.actors.push_back(std::make_unique<Item>(pos, ActorType::ItemChilipepper, gameData_, true, 0.06 * i));
 			}
 		}
 	}
@@ -106,9 +107,7 @@ namespace Spiceholic
 
 	void Enemy::explode_()
 	{
-		gameData_.actors.push_back(std::make_unique<FxSmoke>(position().currentPos() + Vec2{}, nullptr, Random(0.9, 1.5), 0.00));
-		gameData_.actors.push_back(std::make_unique<FxSmoke>(position().currentPos() + Vec2{Random(6, 12), Random(-8, 0)}, nullptr, Random(0.9, 1.5), 0.08));
-		gameData_.actors.push_back(std::make_unique<FxSmoke>(position().currentPos() + Vec2{-Random(6, 12), Random(-8, 0) }, nullptr, Random(0.9, 1.5), 0.16));
+		MakeSmokeFxN(gameData_.actors, position().currentPos(), 3, { 6, 12 }, { -8, 0 }, { 0.9, 1.5 }, 0.3, 0.08);
 
 		gameData_.actors.push_back(std::make_unique<FxBlockBreak>(position().currentPos()));
 	}

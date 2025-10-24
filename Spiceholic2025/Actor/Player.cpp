@@ -89,8 +89,8 @@ namespace Spiceholic
 				if (gameData_.gauge->isPoweredUp())
 				{
 					const Vec2 smokeOffset{ 6.0 * ((moveDirection_ == Direction::Left) ? -1 : ((moveDirection_ == Direction::Right) ? 1 : 0)), -6.0 };
-					gameData_.actors.push_back(std::make_unique<FxSmoke>(position().currentPos() + smokeOffset + RandomVec2(2.0), this, 1.0));
-					gameData_.actors.push_back(std::make_unique<FxSmoke>(position().currentPos() + smokeOffset + Vec2{ Random(-5.0, 5.0), Random(1.0, 2.0) }, this, 0.5));
+					gameData_.actors.push_back(std::make_unique<FxSmoke>(position().currentPos() + smokeOffset + RandomVec2(2.0), this, 1.0, 1.0));
+					gameData_.actors.push_back(std::make_unique<FxSmoke>(position().currentPos() + smokeOffset + Vec2{ Random(-5.0, 5.0), Random(1.0, 2.0) }, this, 0.7, 0.5, 0.05));
 				}
 			}
 		}

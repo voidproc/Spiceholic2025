@@ -101,6 +101,7 @@ namespace Spiceholic
 		:
 		Enemy{ pos, gameData, bringItems },
 		subType_{ subType },
+		dirType_{ dir },
 		dir_{},
 		currentSpeed_{ 0, 0 }
 	{
@@ -125,10 +126,13 @@ namespace Spiceholic
 			// 0: ひたすら直進
 
 			// 進行方向上のちょっと先にブロックがあったら振り向く
-			const Vec2 nextPos = position().currentPos() + dir_ * 8.0;
-			if (IntersectsAnyBlock(*this, nextPos, gameData_.blocks))
+			if (dirType_ != Direction::None)
 			{
-				dir_.x = -dir_.x;
+				const Vec2 nextPos = position().currentPos() + dir_ * 8.0;
+				if (IntersectsAnyBlock(*this, nextPos, gameData_.blocks))
+				{
+					dir_.x = -dir_.x;
+				}
 			}
 
 			spriteMirror_ = (dir_.x < 0);
@@ -140,10 +144,12 @@ namespace Spiceholic
 			dir_.x = spriteMirror_ ? -1 : 1;
 		}
 
-		currentSpeed_ = currentSpeed_ + (dir_ * 24 * Scene::DeltaTime());
-		currentSpeed_.x = Clamp(currentSpeed_.x, -16.0, 16.0);
-
-		setMoveAmount(currentSpeed_ * Scene::DeltaTime());
+		if (dirType_ != Direction::None)
+		{
+			currentSpeed_ = currentSpeed_ + (dir_ * 24 * Scene::DeltaTime());
+			currentSpeed_.x = Clamp(currentSpeed_.x, -16.0, 16.0);
+			setMoveAmount(currentSpeed_ * Scene::DeltaTime());
+		}
 	}
 
 	void EnemyChick::draw() const

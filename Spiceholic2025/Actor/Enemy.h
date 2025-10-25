@@ -69,6 +69,7 @@ namespace Spiceholic
 
 	private:
 		int32 subType_;
+		Direction dirType_;
 		Vec2 dir_;
 		Vec2 currentSpeed_;
 	};

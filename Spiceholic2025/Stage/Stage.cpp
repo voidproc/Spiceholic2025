@@ -46,6 +46,7 @@ namespace Spiceholic
 				const int x = obj[U"x"].get<int>();
 				const int y = obj[U"y"].get<int>();
 				spawn.position = Vec2{ x + TileSize / 2.0, y - TileSize / 2.0 };
+				spawn.direction = Direction::None;
 
 				// プロパティ?
 				if (obj.hasElement(U"properties"))

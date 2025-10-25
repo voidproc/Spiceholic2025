@@ -56,6 +56,7 @@ namespace Spiceholic
 			{
 			case ActorType::BlockSteel:
 			case ActorType::BlockCanBreak:
+			case ActorType::BlockCanBreakGray:
 			case ActorType::BlockGiftbox:
 				gameData.blocks.push_back(std::make_unique<Block>(spawn.position, spawn.type, gameData, spawn.bringItems, spawn.secretRoute));
 				actor = gameData.blocks.back().get();

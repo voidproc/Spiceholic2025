@@ -28,6 +28,7 @@ namespace Spiceholic
 		// Block:
 		BlockSteel,
 		BlockCanBreak,
+		BlockCanBreakGray,
 		BlockGiftbox,
 		//...
 

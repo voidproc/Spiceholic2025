@@ -36,14 +36,17 @@ namespace Spiceholic
 		{
 			TextureAsset(U"Block")(0, 0, 16).drawAt(position());
 		}
-		else if (type() == ActorType::BlockCanBreak)
+		else if (type() == ActorType::BlockCanBreak ||
+			     type() == ActorType::BlockCanBreakGray)
 		{
 			const double t = (timerDamaged_.isRunning()) ? Periodic::Square0_1(0.06s, ClockTime()) : 1;
 
 			ScopedColorMul2D mul{ t, 1 };
 			ScopedColorAdd2D add{ 1 - t, 0 };
 
-			TextureAsset(U"Block")(16, 0, 16).drawAt(position());
+			const int textureX = 16 + 16 * (type() == ActorType::BlockCanBreakGray);
+
+			TextureAsset(U"Block")(textureX, 0, 16).drawAt(position());
 		}
 	}
 

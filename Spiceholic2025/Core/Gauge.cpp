@@ -32,8 +32,8 @@ namespace Spiceholic
 	void Gauge::draw() const
 	{
 		// ゲージ
-		const Vec2 gaugePos{ 60, 174 };
-		const double gaugeLength = 95 * displayValue() / 100;
+		const Vec2 gaugePos{ 60 - 4, 174 };
+		const double gaugeLength = 100 * displayValue() / 100;
 
 		{
 			const double t = (Abs(currentValue_ - displayValue_) < 1e-3) ? 1 : 0.6 * Periodic::Pulse0_1(0.06s, 0.8, ClockTime());

@@ -39,7 +39,6 @@ namespace Spiceholic
 		CustomScene{ init },
 		time_{ StartImmediately::Yes },
 		timeDecide_{ StartImmediately::No },
-		//timerSceneChange_{ 0.7s, StartImmediately::No },
 		selectedMenuIndex_{ 0 },
 		randomCharaTexName_{ U"DragonGirl" },
 		timeDescText_{ StartImmediately::Yes },

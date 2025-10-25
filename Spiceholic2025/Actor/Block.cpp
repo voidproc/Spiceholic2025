@@ -4,6 +4,7 @@
 #include "MakeActor.h"
 #include "Audio/AudioPlay.h"
 #include "Config/GameConfig.h"
+#include "Core/DrawSprite.h"
 
 namespace Spiceholic
 {
@@ -59,6 +60,10 @@ namespace Spiceholic
 			const int textureX = 16 + 16 * (type() == ActorType::BlockCanBreakGray);
 
 			TextureAsset(U"Block")(textureX, 0, 16).drawAt(position());
+		}
+		else if (type() == ActorType::BlockSpike)
+		{
+			DrawSprite(*gameData_.appSetting, U"BlockSpike", 1s, false, position().currentPos());
 		}
 	}
 

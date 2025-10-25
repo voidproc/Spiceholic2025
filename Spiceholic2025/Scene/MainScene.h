@@ -72,6 +72,8 @@ namespace Spiceholic
 		Stopwatch timeDestroyAllEnemy_;
 		// 初期配置の敵の数
 		int initialEnemyCount_;
+		// 初期配置に鍵がある
+		int initialKeyCount_;
 
 		// 鍵取得時待機用
 		Stopwatch timeGetKey_;

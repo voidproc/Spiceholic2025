@@ -29,6 +29,7 @@ namespace Spiceholic
 		BlockSteel,
 		BlockCanBreak,
 		BlockCanBreakGray,
+		BlockSpike,
 		BlockGiftbox,
 		//...
 

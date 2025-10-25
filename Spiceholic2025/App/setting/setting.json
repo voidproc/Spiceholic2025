@@ -58,6 +58,12 @@
       "Count": 1,
       "Size": 16,
       "Pos": [48, 0]
+    },
+    "BlockSpike": {
+      "Texture": "Block",
+      "Count": 1,
+      "Size": 16,
+      "Pos": [48, 0]
     }
   }
 }

@@ -21,13 +21,13 @@ namespace Spiceholic
 		void selectNext_();
 		void selectPrevious_();
 
-
 		Stopwatch time_;
 		Stopwatch timeDecide_;
 
 		// 選択中の項目
 		size_t selectedMenuIndex_;
 
+		// キャラクタをランダムに変更
 		String randomCharaTexName_;
 
 		// 描画用

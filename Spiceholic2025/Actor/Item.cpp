@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "Config/GameConfig.h"
 #include "Core/DrawSprite.h"
+#include "Core/Periodic.h"
 
 namespace Spiceholic
 {
@@ -28,7 +29,8 @@ namespace Spiceholic
 		timerDelay_{ Duration{ delay }, StartImmediately::Yes, Clock() },
 		timerJumping_{ 999s, StartImmediately::No, Clock() },
 		jumpHeight_{ Random(4.0, 7.0) },
-		timerMakeFx_{ 1.1s, StartImmediately::No, Clock() }
+		timerMakeFx_{ 1.1s, StartImmediately::No, Clock() },
+		timeJumpToPlayer_{ StartImmediately::No, Clock() }
 	{
 	}
 
@@ -62,6 +64,15 @@ namespace Spiceholic
 			timerJumping_.reset();
 		}
 
+		// プレイヤーに向かっている
+		if (timeJumpToPlayer_.isRunning())
+		{
+			const auto playerPos = gameData_.player->position().currentPos();
+			const auto direction = playerPos - position().currentPos() - Vec2{ 0, 20 } * (1 - EaseOutQuad(Saturate(timeJumpToPlayer_.sF() / 0.5)));
+			setMoveAmount(direction.limitLength(60.0 * 2 * Scene::DeltaTime() * (0.7 + 1.0 * EaseInSine(Saturate(timeJumpToPlayer_.sF() / 0.5)))), true);
+			confirmPosition();
+		}
+
 		// きらきら
 		if (timerMakeFx_.reachedZero())
 		{
@@ -72,6 +83,13 @@ namespace Spiceholic
 
 	void Item::draw() const
 	{
+		// プレイヤーに向かい中
+		if (timeJumpToPlayer_.isRunning())
+		{
+			const int frame = PeriodicStair(Duration{ 0.4 }, 0, 7, timeJumpToPlayer_.sF());
+			TextureAsset(U"BurningLoop1")(frame * 24, 0, 24, 32).drawAt(position().currentPos() - Vec2{0,4}, ColorF{ 1, 0.7 * Periodic::Square0_1(0.07s, ClockTime()) });
+		}
+
 		// 跳ねる
 		const Vec2 jump{ 0, timerJumping_.isRunning() ? -jumpHeight_ * Periodic::Jump0_1(TimeAppear, timerJumping_.progress0_1() * TimeAppearSec) : 0 };
 
@@ -95,10 +113,18 @@ namespace Spiceholic
 		}
 	}
 
-	void Item::onCollide(Actor* /*other*/)
+	void Item::onCollide(Actor* other)
 	{
-		// 破棄待ちの状態へ
-		setInactive();
+		if (other->tag() == ActorTag::Player)
+		{
+			// 破棄待ちの状態へ
+			setInactive();
+		}
+		else if (other->tag() == ActorTag::Weapon && not timeJumpToPlayer_.isRunning())
+		{
+			// プレイヤーに吸収
+			timeJumpToPlayer_.start();
+		}
 	}
 
 	const Vec2& Item::getCollisionPos() const

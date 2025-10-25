@@ -127,6 +127,9 @@ namespace Spiceholic
 
 	bool IsCollidable(const Actor& actor1, const Actor& actor2)
 	{
+		if (actor1.tag() == ActorTag::Weapon && actor2.type() == ActorType::BlockSpike) return false;
+		if (actor2.tag() == ActorTag::Weapon && actor1.type() == ActorType::BlockSpike) return false;
+
 		auto tag1 = actor1.tag();
 		auto tag2 = actor2.tag();
 
@@ -135,7 +138,8 @@ namespace Spiceholic
 				((tagA == ActorTag::Player) && (tagB == ActorTag::Enemy)) ||
 				((tagA == ActorTag::Player) && (tagB == ActorTag::Item)) ||
 				((tagA == ActorTag::Weapon) && (tagB == ActorTag::Enemy)) ||
-				((tagA == ActorTag::Weapon) && (tagB == ActorTag::Block))
+				((tagA == ActorTag::Weapon) && (tagB == ActorTag::Block)) ||
+				((tagA == ActorTag::Weapon) && (tagB == ActorTag::Item))
 				;
 			};
 

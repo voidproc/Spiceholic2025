@@ -46,6 +46,9 @@ namespace Spiceholic
 		Timer timerJumping_;
 		double jumpHeight_;
 
+		// プレイヤーに向かう
+		Stopwatch timeJumpToPlayer_;
+
 		// キラキラエフェクト生成
 		Timer timerMakeFx_;
 	};

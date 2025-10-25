@@ -87,11 +87,6 @@ namespace Spiceholic
 
 			RectF{ Arg::center = SceneRect.center().withY(posY), SizeF{ SceneSize.x, Layout::LineHeight } }.draw(ColorF{ 1, alpha });
 		}
-
-		void ApplyAudioSettings(UserSetting& setting)
-		{
-			SetAudioVolume(setting.get().seVolume * 0.01, setting.get().bgmVolume * 0.01);
-		}
 	}
 
 	OptionScene::OptionScene(const InitData& init)
@@ -158,7 +153,7 @@ namespace Spiceholic
 		{
 			ChangeSettingValue(*getData().userSetting, selectedField, valueDiff);
 
-			SetAudioVolume(getData().userSetting->get().seVolume * 0.01, getData().userSetting->get().bgmVolume * 0.01);
+			SetAudioVolume(*getData().userSetting);
 
 			// 描画用
 			timerChangeValue_.restart(0.2s);

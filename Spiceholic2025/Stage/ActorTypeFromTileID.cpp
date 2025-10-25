@@ -14,7 +14,7 @@ namespace Spiceholic
 			ActorType::BlockSteel,
 			ActorType::BlockCanBreak,
 			ActorType::BlockCanBreakGray,
-			ActorType::None,
+			ActorType::BlockSpike,
 			ActorType::None,
 			ActorType::CameraTopLeft,
 			ActorType::CameraBottomRight,

@@ -106,7 +106,7 @@ void Main()
 	gameData->appSetting->load();
 	gameData->userSetting->load(UserSettingFilePath);
 
-	SetAudioVolume(gameData->userSetting->get().seVolume * 0.01, gameData->userSetting->get().bgmVolume * 0.01);
+	SetAudioVolume(*gameData->userSetting);
 
 #ifdef DEBUG_MODE
 	gameData->nextStageID = gameData->appSetting->get().debug.startStageID;

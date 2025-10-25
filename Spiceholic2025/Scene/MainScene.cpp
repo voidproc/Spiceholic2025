@@ -58,6 +58,7 @@ namespace Spiceholic
 			case ActorType::BlockSteel:
 			case ActorType::BlockCanBreak:
 			case ActorType::BlockCanBreakGray:
+			case ActorType::BlockSpike:
 			case ActorType::BlockGiftbox:
 				gameData.blocks.push_back(std::make_unique<Block>(spawn.position, spawn.type, gameData, spawn.bringItems, spawn.secretRoute));
 				actor = gameData.blocks.back().get();
@@ -115,6 +116,8 @@ namespace Spiceholic
 		{
 			for (const auto& block : blocks)
 			{
+				if (actor.tag() == ActorTag::Weapon && block->type() == ActorType::BlockSpike) continue;
+
 				if (actor.isCollidingWith(*block))
 				{
 					return true;
@@ -268,6 +271,21 @@ namespace Spiceholic
 
 			return enemyCount;
 		}
+
+		int KeyCount(const Array<std::unique_ptr<Actor>>& actors)
+		{
+			int keyCount = 0;
+
+			for (const auto& actor : actors)
+			{
+				if (actor->type() == ActorType::ItemKey)
+				{
+					++keyCount;
+				}
+			}
+
+			return keyCount;
+		}
 	}
 
 	MainScene::MainScene(const InitData& init)
@@ -279,6 +297,7 @@ namespace Spiceholic
 		shadowPosList_{ Arg::reserve = 128 },
 		timeDestroyAllEnemy_{ StartImmediately::No, Clock() },
 		initialEnemyCount_{},
+		initialKeyCount_{},
 		timeGetKey_{ StartImmediately::No, Clock() },
 		timeStageClear_{ StartImmediately::No, Clock() },
 		timerGaugeMax_{ 0.50s, StartImmediately::No, Clock() },
@@ -304,6 +323,7 @@ namespace Spiceholic
 		// アクターの初期配置
 		SpawnActors(0, *getData().stageData, getData());
 		initialEnemyCount_ = EnemyCount(getData().actors);
+		initialKeyCount_ = KeyCount(getData().actors);
 
 		// ゲージ初期化
 		getData().gauge = std::make_unique<Gauge>();
@@ -538,7 +558,7 @@ namespace Spiceholic
 		blocks.remove_if([](const auto& block) { return not block->active(); });
 
 		// 敵全滅判定
-		if (EnemyCount(getData().actors) == 0 && initialEnemyCount_ != 0)
+		if (EnemyCount(getData().actors) == 0 && initialEnemyCount_ != 0 && initialKeyCount_ == 0)
 		{
 			onDestroyAllEnemies_();
 		}

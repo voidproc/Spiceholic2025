@@ -18,6 +18,7 @@ namespace Spiceholic
 			String title;
 			String version;
 			HashTable<String, SpriteInfo> sprite;
+			HashTable<String, String> stageSubtitles;
 
 			struct
 			{
@@ -35,7 +36,6 @@ namespace Spiceholic
 		Settings& get();
 
 	private:
-
 		Settings settings_;
 	};
 }

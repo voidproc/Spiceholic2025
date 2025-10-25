@@ -29,6 +29,16 @@ namespace Spiceholic
 
 			settings_.sprite[s.key] = sprite;
 		}
+
+		Array<String> subtitles;
+		for (auto&& [index, object] : json[U"StageSubtitle"])
+		{
+			subtitles.push_back(object.getString());
+		}
+		for (const auto& object : json[U"StageSubtitleMap"])
+		{
+			settings_.stageSubtitles[object.key] = subtitles[object.value.get<int>()];
+		}
 	}
 
 	const AppSetting::Settings& AppSetting::get() const

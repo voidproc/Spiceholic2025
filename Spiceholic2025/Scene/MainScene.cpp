@@ -16,6 +16,7 @@
 #include "Event/Events.h"
 #include "Input/ActionInput.h"
 #include "Stage/Stage.h"
+#include "Setting/AppSetting.h"
 
 namespace Spiceholic
 {
@@ -694,15 +695,10 @@ namespace Spiceholic
 		const auto regionHudU = Rect{ Arg::topLeft = SceneRect.tl(), Size{ SceneSize.x, TileSize } }.draw(bgColor);
 		const auto regionHudD = Rect{ Arg::bottomRight = SceneRect.br(), Size{ SceneSize.x, TileSize } }.draw(bgColor);
 
-		// スコア
-		const ColorF scoreColor = (getData().score->animating()) ?
-			ColorF{ Palette::White.lerp(Palette::Darkred, 0.8 * Periodic::Square0_1(0.06s, ClockTime())) } :
-			ColorF{ Palette::Seashell.lerp(Palette::Red, 0.1 * Periodic::Square0_1(0.25s, ClockTime())) };
-		const ColorF shadowColor = (getData().score->animating()) ?
-			ColorF{ Palette::Darkred, 0.5 - 0.3 * Periodic::Square0_1(0.25s, ClockTime())} :
-			ColorF{ Palette::Crimson.lerp(Palette::Silver, 0.3), 0.8 - 0.1 * Periodic::Square0_1(0.25s, ClockTime()) };
-		DrawText(U"px7812m", U"{:08d}"_fmt(getData().score->displayScore()), Arg::center = regionHudU.center(), ColorF{ 0.3 }.lerp(Palette::Darkred, 0.2), AlphaF(0));
-		DrawText(U"px7812m", U"{:-8d}"_fmt(getData().score->displayScore()), Arg::center = regionHudU.center(), scoreColor, shadowColor);
+		// ステージ名
+		const ColorF textColor{ Palette::Seashell.lerp(Palette::Red, 0.1 * Periodic::Square0_1(0.25s, ClockTime())) };
+		const ColorF shadowColor{ Palette::Crimson.lerp(Palette::Silver, 0.3), 0.8 - 0.1 * Periodic::Square0_1(0.25s, ClockTime()) };
+		DrawText(U"px7812", U"ステージ {} {}"_fmt(getData().stageData->stageID, getData().appSetting->get().stageSubtitles[getData().stageData->stageID]), Arg::center = regionHudU.center(), textColor, shadowColor);
 
 		// ゲージ枠、ゲージ
 		getData().gauge->draw();

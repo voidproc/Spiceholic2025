@@ -1,5 +1,6 @@
 ﻿# include <Siv3D.hpp> // Siv3D v0.6.16
 
+#include "Audio/AudioVolume.h"
 #include "Config/GameConfig.h"
 #include "Core/LowResolution.h"
 #include "Event/Dispatch.h"
@@ -73,6 +74,19 @@ namespace
 
 	void LoadAudio()
 	{
+		AudioAsset::Register(U"Select1", Resource(U"audio/select1.wav"));
+		AudioAsset::Register(U"Select2", Resource(U"audio/select2.wav"));
+		AudioAsset::Register(U"Pick1", Resource(U"audio/pick1.wav"));
+		AudioAsset::Register(U"Walk1", Resource(U"audio/walk1.wav"));
+		AudioAsset::Register(U"Explosion1", Resource(U"audio/explosion1.wav"));
+		AudioAsset::Register(U"Explosion2", Resource(U"audio/explosion2.wav"));
+		AudioAsset::Register(U"Fire1", Resource(U"audio/fire1.wav"));
+		AudioAsset::Register(U"Powerup1", Resource(U"audio/powerup1.wav"));
+		AudioAsset::Register(U"Damage1", Resource(U"audio/damage1.wav"));
+		AudioAsset::Register(U"Damage1Loop", Audio::Stream, Resource(U"audio/damage1_loop.ogg"), Loop::Yes);
+		AudioAsset::Register(U"Decide1", Resource(U"audio/decide1.ogg"));
+
+		//Load
 		//...
 	}
 }
@@ -91,6 +105,8 @@ void Main()
 	auto gameData = std::make_shared<GameData>();
 	gameData->appSetting->load();
 	gameData->userSetting->load(UserSettingFilePath);
+
+	SetAudioVolume(gameData->userSetting->get().seVolume * 0.01, gameData->userSetting->get().bgmVolume * 0.01);
 
 #ifdef DEBUG_MODE
 	gameData->nextStageID = gameData->appSetting->get().debug.startStageID;

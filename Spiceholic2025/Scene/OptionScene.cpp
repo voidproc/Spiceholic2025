@@ -1,4 +1,5 @@
 ﻿#include "OptionScene.h"
+#include "Audio/AudioPlay.h"
 #include "Audio/AudioVolume.h"
 #include "Config/GameConfig.h"
 #include "Core/DrawText.h"
@@ -116,6 +117,9 @@ namespace Spiceholic
 
 			// 描画用
 			timerMoveCursor_.restart(0.1s);
+
+			// SE
+			PlayAudioOneShot(U"Select2");
 		}
 		else if (getData().actionInput->down(Action::MoveDown))
 		{
@@ -123,6 +127,9 @@ namespace Spiceholic
 
 			// 描画用
 			timerMoveCursor_.restart(0.1s);
+
+			// SE
+			PlayAudioOneShot(U"Select2");
 		}
 
 		// 操作対象
@@ -133,6 +140,9 @@ namespace Spiceholic
 		{
 			if (selectedField.field == UserSettingField::Back)
 			{
+				// SE
+				PlayAudioOneShot(U"Decide1");
+
 				// 設定保存
 				getData().userSetting->save(UserSettingFilePath);
 
@@ -148,9 +158,14 @@ namespace Spiceholic
 		{
 			ChangeSettingValue(*getData().userSetting, selectedField, valueDiff);
 
+			SetAudioVolume(getData().userSetting->get().seVolume * 0.01, getData().userSetting->get().bgmVolume * 0.01);
+
 			// 描画用
 			timerChangeValue_.restart(0.2s);
 			valueChangedIndex_ = selectedFieldIndex_;
+
+			// SE
+			PlayAudioOneShot(U"Select1");
 		}
 	}
 

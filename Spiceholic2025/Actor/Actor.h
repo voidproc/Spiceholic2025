@@ -94,6 +94,7 @@ namespace Spiceholic
 
 	protected:
 		Timer timerDamaged_;
+		Timer timerDamagedSE_;
 	};
 
 	// アクターどうしが衝突判定の対象かどうか

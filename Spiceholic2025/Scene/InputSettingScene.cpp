@@ -1,4 +1,5 @@
 ﻿#include "InputSettingScene.h"
+#include "Audio/AudioPlay.h"
 #include "Config/GameConfig.h"
 #include "Core/DrawText.h"
 #include "Input/ActionInput.h"
@@ -116,6 +117,9 @@ namespace Spiceholic
 
 			// 描画用
 			timerChangeMenuIndex_.restart(0.1s);
+
+			// SE
+			PlayAudioOneShot(U"Select2");
 		}
 		else if (getData().actionInput->down(Action::MoveDown))
 		{
@@ -123,6 +127,9 @@ namespace Spiceholic
 
 			// 描画用
 			timerChangeMenuIndex_.restart(0.1s);
+
+			// SE
+			PlayAudioOneShot(U"Select2");
 		}
 
 		// 操作対象
@@ -133,6 +140,9 @@ namespace Spiceholic
 		{
 			if (selectedField.type == InputSettingField::Type::Back)
 			{
+				// SE
+				PlayAudioOneShot(U"Decide1");
+
 				// "Back"が選択されたので設定を保存してシーン変更
 				saveSetting_();
 				changeScene(U"TitleScene", 0);
@@ -151,6 +161,9 @@ namespace Spiceholic
 				// 描画用
 				timerSetBinding_.restart(0.2s);
 				timerSetKey_[selectedFieldIndex_].restart(0.3s);
+
+				// SE
+				PlayAudioOneShot(U"Select1");
 			}
 		}
 
@@ -331,6 +344,9 @@ namespace Spiceholic
 		// 描画用
 		timerSetBinding_.restart(0.2s);
 		startTimerSetKey_(action, 0.3s);
+
+		// SE
+		PlayAudioOneShot(U"Select1");
 	}
 
 	void InputSettingScene::assignButton_(Action action)
@@ -364,6 +380,9 @@ namespace Spiceholic
 		// 描画用
 		timerSetBinding_.restart(0.2s);
 		startTimerSetButton_(action, 0.3s);
+
+		// SE
+		PlayAudioOneShot(U"Select1");
 	}
 
 	void InputSettingScene::saveSetting_()

@@ -1,4 +1,5 @@
 ﻿#include "TitleScene.h"
+#include "Audio/AudioPlay.h"
 #include "Config/GameConfig.h"
 #include "Core/Color.h"
 #include "Core/DrawText.h"
@@ -81,6 +82,9 @@ namespace Spiceholic
 				// 描画用
 				timerMoveCursorLeft_.restart(0.1s);
 				timeDescText_.restart();
+
+				// SE
+				PlayAudioOneShot(U"Select2");
 			}
 			else if (getData().actionInput->down(Action::MoveRight))
 			{
@@ -89,12 +93,18 @@ namespace Spiceholic
 				// 描画用
 				timerMoveCursorRight_.restart(0.1s);
 				timeDescText_.restart();
+
+				// SE
+				PlayAudioOneShot(U"Select2");
 			}
 
 			// 選択項目に対する決定操作
 			if (getData().actionInput->down(Action::Decide))
 			{
 				timeDecide_.start();
+
+				// SE
+				PlayAudioOneShot(U"Decide1");
 			}
 		}
 

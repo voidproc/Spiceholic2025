@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "Block.h"
 #include "MakeActor.h"
+#include "Audio/AudioPlay.h"
 #include "Config/GameConfig.h"
 #include "Core/DrawSprite.h"
 #include "Core/Periodic.h"
@@ -48,6 +49,17 @@ namespace Spiceholic
 
 	void Enemy::update()
 	{
+		if (timerDamagedSE_.isRunning())
+		{
+			if (not AudioAsset(U"Damage1Loop").isPlaying())
+			{
+				AudioAsset(U"Damage1Loop").play();
+			}
+		}
+		else
+		{
+			AudioAsset(U"Damage1Loop").stop();
+		}
 	}
 
 	void Enemy::draw() const
@@ -65,6 +77,9 @@ namespace Spiceholic
 
 		// アイテム放出
 		MakeItems(bringItems_, gameData_, position().currentPos());
+
+		// SE
+		PlayAudioOneShot(U"Explosion2");
 	}
 
 	const Vec2& Enemy::getCollisionPos() const

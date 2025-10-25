@@ -5,6 +5,7 @@
 #include "Actor/Item.h"
 #include "Actor/Player.h"
 #include "Actor/MakeActor.h"
+#include "Audio/AudioPlay.h"
 #include "Config/GameConfig.h"
 #include "Core/Color.h"
 #include "Core/DrawText.h"
@@ -439,6 +440,9 @@ namespace Spiceholic
 
 				// 描画用
 				timerPauseMenuMoveCursor_.restart(0.1s);
+
+				// SE
+				PlayAudioOneShot(U"Select2");
 			}
 			else if (getData().actionInput->down(Action::MoveDown))
 			{
@@ -446,12 +450,18 @@ namespace Spiceholic
 
 				// 描画用
 				timerPauseMenuMoveCursor_.restart(0.1s);
+
+				// SE
+				PlayAudioOneShot(U"Select2");
 			}
 
 			// 項目決定
 			if (getData().actionInput->down(Action::Decide))
 			{
 				timerPauseMenuDecide_.start();
+
+				// SE
+				PlayAudioOneShot(U"Decide1");
 			}
 		}
 
@@ -550,6 +560,9 @@ namespace Spiceholic
 		for (size_t i = 0; i < getData().blocks.size(); ++i)
 		{
 			getData().blocks[i]->setInactiveIfSecret();
+
+			// 今回呼ばないonDeadのなかででSEを鳴らしているため
+			PlayAudioOneShot(U"Explosion2");
 		}
 	}
 

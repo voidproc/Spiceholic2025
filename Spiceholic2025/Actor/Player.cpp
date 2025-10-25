@@ -1,6 +1,7 @@
 ﻿#include "Player.h"
 #include "Effect.h"
 #include "Weapon.h"
+#include "Audio/AudioPlay.h"
 #include "Config/GameConfig.h"
 #include "Core/Gauge.h"
 #include "Core/Periodic.h"
@@ -32,7 +33,8 @@ namespace Spiceholic
 		moveDirectionText_{ U"" },
 		spriteName_{ U"PlayerStand" },
 		spriteMirror_{ false },
-		drawOffset_{}
+		drawOffset_{},
+		timerWalk_{ 0.4s, StartImmediately::Yes, Clock() }
 	{
 		collision_.set(RectF{ Arg::center = Vec2{ 0, 4 }, SizeF{ 16 - 2, 16 - 2 } });
 	}
@@ -57,6 +59,12 @@ namespace Spiceholic
 				};
 
 				setMoveAmount(playerMoveAmount.limitLength(MoveSpeed) * Scene::DeltaTime());
+
+				if (playerMoveAmount.length() > 0.1 && timerWalk_.reachedZero())
+				{
+					PlayAudioOneShot(U"Walk1");
+					timerWalk_.restart(gameData_.gauge->isPoweredUp() ? 0.5s/2 : 0.8s/2);
+				}
 			}
 
 			// 炎を吐く
@@ -156,6 +164,9 @@ namespace Spiceholic
 
 				// ゲージ消費
 				gameData_.gauge->add(-10);
+
+				//SE
+				PlayAudioOneShot(U"Select1");//暫定
 			}
 		}
 		else if (other->tag() == ActorTag::Item)
@@ -164,12 +175,21 @@ namespace Spiceholic
 
 			if (other->type() == ActorType::ItemChilipepper)
 			{
+				const auto oldGauge = gameData_.gauge->getValue();
+
 				// ゲージ回復
 				// ゲージMAXイベント発行
-				if (const double gaugeVal = gameData_.gauge->add(20);
-					gaugeVal == 100)
+				const auto gaugeVal = gameData_.gauge->add(20);
+
+				if (gaugeVal == 100)
 				{
 					GetDispatch().publish(GaugeMaxEvent{});
+				}
+
+				// いまパワーアップした: SE
+				if (oldGauge < 50 && gaugeVal >= 50)
+				{
+					PlayAudioOneShot(U"Powerup1");
 				}
 
 				// スコア加算
@@ -185,6 +205,9 @@ namespace Spiceholic
 				// スコア加算
 				gameData_.score->add(other->score());
 			}
+
+			//SE
+			PlayAudioOneShot(U"Pick1");
 		}
 	}
 

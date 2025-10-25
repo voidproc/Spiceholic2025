@@ -294,7 +294,7 @@
         {
          "name":"NextStageID",
          "type":"string",
-         "value":"4"
+         "value":"5"
         }],
  "renderorder":"right-down",
  "tiledversion":"1.11.0",

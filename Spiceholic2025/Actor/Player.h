@@ -59,5 +59,8 @@ namespace Spiceholic
 		String spriteName_;
 		bool spriteMirror_;
 		Vec2 drawOffset_;
+
+		// SE
+		Timer timerWalk_;
 	};
 }

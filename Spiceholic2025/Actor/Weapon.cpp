@@ -1,5 +1,6 @@
 ﻿#include "Weapon.h"
 #include "Actor/Player.h"
+#include "Audio/AudioPlay.h"
 #include "Config/GameConfig.h"
 #include "Core/Periodic.h"
 
@@ -84,6 +85,9 @@ namespace Spiceholic
 		makeNextFire_{ false }
 	{
 		collision_.set(RectF{ Arg::center = Vec2{ 0, 4 }, SizeF{ 14, 14 } });
+
+		// SE
+		PlayAudioOneShot(U"Fire1");
 	}
 
 	WeaponFire::~WeaponFire()
@@ -171,6 +175,12 @@ namespace Spiceholic
 		{
 			collision_.set(Circle{ Vec2{}, 22 * scale });
 		}
+
+		// SE
+		if (delay < 1e-6)
+		{
+			//PlayAudioOneShot(U"Explosion1");
+		}
 	}
 
 	WeaponExplode::~WeaponExplode()
@@ -183,6 +193,7 @@ namespace Spiceholic
 		if (delay_.reachedZero() && not time_.isRunning())
 		{
 			time_.start();
+			PlayAudioOneShot(U"Explosion1");
 		}
 
 		if (time_.sF() > Explode::LifeTime)

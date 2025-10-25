@@ -8,7 +8,8 @@ namespace Spiceholic
 		moveAmount_{},
 		active_{ true },
 		life_{ 1.0 },
-		timerDamaged_{ 0.15s, StartImmediately::No, Clock() }
+		timerDamaged_{ 0.15s, StartImmediately::No, Clock() },
+		timerDamagedSE_{ 0.15s*5, StartImmediately::No, Clock() }
 	{
 	}
 
@@ -116,6 +117,11 @@ namespace Spiceholic
 			{
 				setInactive();
 			}
+		}
+
+		if (not timerDamagedSE_.isRunning() && not invincible())
+		{
+			timerDamagedSE_.restart();
 		}
 	}
 

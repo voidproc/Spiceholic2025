@@ -2,6 +2,7 @@
 #include "Effect.h"
 #include "Item.h"
 #include "MakeActor.h"
+#include "Audio/AudioPlay.h"
 #include "Config/GameConfig.h"
 
 namespace Spiceholic
@@ -28,6 +29,17 @@ namespace Spiceholic
 
 	void Block::update()
 	{
+		if (timerDamagedSE_.isRunning())
+		{
+			if (not AudioAsset(U"Damage1Loop").isPlaying())
+			{
+				AudioAsset(U"Damage1Loop").play();
+			}
+		}
+		else
+		{
+			AudioAsset(U"Damage1Loop").stop();
+		}
 	}
 
 	void Block::draw() const
@@ -61,6 +73,9 @@ namespace Spiceholic
 
 		// アイテム放出
 		MakeItems(bringItems_, gameData_, position().currentPos());
+
+		// SE
+		PlayAudioOneShot(U"Explosion2");
 	}
 
 	const Vec2& Block::getCollisionPos() const

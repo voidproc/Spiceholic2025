@@ -282,6 +282,9 @@
     <ClCompile Include="Actor\MakeActor.cpp">
       <Filter>Actor</Filter>
     </ClCompile>
+    <ClCompile Include="Audio\AudioPlay.cpp">
+      <Filter>Audio</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">
@@ -1075,6 +1078,9 @@
     </ClInclude>
     <ClInclude Include="Actor\MakeActor.h">
       <Filter>Actor</Filter>
+    </ClInclude>
+    <ClInclude Include="Audio\AudioPlay.h">
+      <Filter>Audio</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

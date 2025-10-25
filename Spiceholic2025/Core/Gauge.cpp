@@ -47,7 +47,7 @@ namespace Spiceholic
 		const double tMaxEffect = Saturate(timeMaxEffect_.sF() / 0.95);
 
 		// ゲージ枠
-		const ColorF gaugeFrameColor = onMaxEffect ? GaugeMaxEffectColor().lerp(Palette::White, tMaxEffect) : ColorF{ 1 - 0.08 * Periodic::Sine0_1(0.2s, ClockTime()) };
+		const ColorF gaugeFrameColor = onMaxEffect ? GaugeMaxEffectColor().lerp(Palette::White, tMaxEffect) : ((currentValue_ >= 50) ? ColorF{1}.lerp(Palette::Orange, 0.5 * Periodic::Pulse0_1(0.20s, 0.3)) : ColorF{ 1 - 0.08 * Periodic::Sine0_1(0.2s, ClockTime()) });
 		TextureAsset(U"GaugeFrame").draw(gaugePos, gaugeFrameColor);
 
 		// ゲージMAXエフェクト

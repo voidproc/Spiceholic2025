@@ -283,6 +283,7 @@ namespace Spiceholic
 		timerGaugeMax_{ 0.50s, StartImmediately::No, Clock() },
 		openedSecretRoute_{ false },
 		selectedPauseMenuIndex_{ 0 },
+		timePause_{ StartImmediately::No },
 		timerPauseMenuDecide_{ 0.80s, StartImmediately::No },
 		timerPauseMenuMoveCursor_{}
 	{
@@ -373,6 +374,7 @@ namespace Spiceholic
 		GlobalClock::Pause();
 
 		selectedPauseMenuIndex_ = 0;
+		timePause_.restart();
 	}
 
 	void MainScene::updateStageStart_()
@@ -706,35 +708,41 @@ namespace Spiceholic
 
 		constexpr int LineHeight = 22;
 
-		for (const auto [index, item] : Indexed(PauseMenuItemList))
 		{
-			const Vec2 itemCenter = SceneCenter + Vec2{ 0, ((PauseMenuItemList.size() - 1) / -2.0 + index) * LineHeight };
-			const bool selected = (index == selectedPauseMenuIndex_);
+			const double t = Saturate(timePause_.sF() / 0.25);
+			const double ease = 0.6 * EaseOutBack(t) + 0.4 * EaseOutQuad(t);
+			Transformer2D trans{ Mat3x2::Translate(0, 500 * (1 - ease)) };
 
-			// 選択行
-			if (selected)
+			for (const auto [index, item] : Indexed(PauseMenuItemList))
 			{
-				const Vec2 vibrate{ 0, timerPauseMenuMoveCursor_.isRunning() * 2 * Periodic::Sine1_1(0.01s) };
-				const double alpha = (0.2 + 0.2 * Periodic::Jump0_1(0.75s)) * (0.8 + 0.2 * Periodic::Square0_1(32ms));
-				RectF{ Arg::rightCenter = itemCenter + vibrate, SizeF{ SceneSize.x / 2, 16 } }.draw(Arg::left = ColorF{ 1, 0 }, Arg::right = ColorF{ 1, alpha });
-				RectF{ Arg::leftCenter = itemCenter + vibrate, SizeF{ SceneSize.x / 2, 16 } }.draw(Arg::left = ColorF{ 1, alpha }, Arg::right = ColorF{ 1, 0 });
+				const Vec2 itemCenter = SceneCenter + Vec2{ 0, ((PauseMenuItemList.size() - 1) / -2.0 + index) * LineHeight };
+				const bool selected = (index == selectedPauseMenuIndex_);
+
+				// 選択行
+				if (selected)
+				{
+					const Vec2 vibrate{ 0, timerPauseMenuMoveCursor_.isRunning() * 2 * Periodic::Sine1_1(0.01s) };
+					const double alpha = (0.2 + 0.2 * Periodic::Jump0_1(0.75s)) * (0.8 + 0.2 * Periodic::Square0_1(32ms));
+					RectF{ Arg::rightCenter = itemCenter + vibrate, SizeF{ SceneSize.x / 2, 16 } }.draw(Arg::left = ColorF{ 1, 0 }, Arg::right = ColorF{ 1, alpha });
+					RectF{ Arg::leftCenter = itemCenter + vibrate, SizeF{ SceneSize.x / 2, 16 } }.draw(Arg::left = ColorF{ 1, alpha }, Arg::right = ColorF{ 1, 0 });
+				}
+
+				const ColorF textColor = (selected && timerPauseMenuDecide_.isRunning()) ?
+					(LightYellow.lerp(Palette::Gray, Periodic::Square0_1(0.12s))) :
+					(selected ? Palette::White : Palette::Silver);
+				DrawText(U"px7812", item.text, Arg::center = itemCenter, textColor);
 			}
 
-			const ColorF textColor = (selected && timerPauseMenuDecide_.isRunning()) ?
-				(LightYellow.lerp(Palette::Gray, Periodic::Square0_1(0.12s))) :
-				(selected ? Palette::White : Palette::Silver);
-			DrawText(U"px7812", item.text, Arg::center = itemCenter, textColor);
+			const Vec2 titleCenter = SceneRect.center().withY(LineHeight * 1);
+			RectF{ Arg::center = titleCenter, SizeF{ SceneSize.x, 16 } }.draw(Palette::Black);
+			DrawText(U"px7812", U"PAUSED - 休憩中", Arg::center = titleCenter, Palette::White);
+
+			const Vec2 descCenter = SceneRect.center().withY(SceneSize.y - LineHeight * 1);
+			RectF{ Arg::center = descCenter, SizeF{ SceneSize.x, 16 } }.draw(Palette::Black);
+			DrawText(U"px7812", PauseMenuItemList[selectedPauseMenuIndex_].desc, Arg::center = descCenter, Palette::Silver);
+
+			SceneRect.stretched(-4).drawFrame(2.0, Palette::Gray);
 		}
-
-		const Vec2 titleCenter = SceneRect.center().withY(LineHeight * 1);
-		RectF{ Arg::center = titleCenter, SizeF{ SceneSize.x, 16 } }.draw(Palette::Black);
-		DrawText(U"px7812", U"PAUSED - 休憩中", Arg::center = titleCenter, Palette::White);
-
-		const Vec2 descCenter = SceneRect.center().withY(SceneSize.y - LineHeight * 1);
-		RectF{ Arg::center = descCenter, SizeF{ SceneSize.x, 16 } }.draw(Palette::Black);
-		DrawText(U"px7812", PauseMenuItemList[selectedPauseMenuIndex_].desc, Arg::center = descCenter, Palette::Silver);
-
-		SceneRect.stretched(-4).drawFrame(2.0, Palette::Gray);
 	}
 
 	void MainScene::onDestroyAllEnemies_()

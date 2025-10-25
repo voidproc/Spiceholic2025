@@ -85,6 +85,7 @@ namespace Spiceholic
 
 		// ポーズメニュー
 		size_t selectedPauseMenuIndex_;
+		Stopwatch timePause_;
 		Timer timerPauseMenuDecide_;
 		Timer timerPauseMenuMoveCursor_;
 

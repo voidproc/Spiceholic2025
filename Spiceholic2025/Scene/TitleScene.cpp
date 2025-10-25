@@ -49,6 +49,9 @@ namespace Spiceholic
 			time_.set(TimeEnableMenu);
 			randomCharaTexName_ = Random() < 0.8 ? U"DragonGirl" : U"DragonGirl2";
 		}
+
+		// タイトルに戻ったら次のステージIDを初期化
+		getData().nextStageID = U"1";
 	}
 
 	TitleScene::~TitleScene()

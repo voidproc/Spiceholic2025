@@ -120,7 +120,9 @@ namespace Spiceholic
 			// 破棄待ちの状態へ
 			setInactive();
 		}
-		else if (other->tag() == ActorTag::Weapon && not timeJumpToPlayer_.isRunning())
+		else if (other->tag() == ActorTag::Weapon &&
+			not timeJumpToPlayer_.isRunning() &&
+			time_ > 1s)
 		{
 			// プレイヤーに吸収
 			timeJumpToPlayer_.start();

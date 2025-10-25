@@ -81,10 +81,11 @@ namespace
 		AudioAsset::Register(U"Explosion1", Resource(U"audio/explosion1.wav"));
 		AudioAsset::Register(U"Explosion2", Resource(U"audio/explosion2.wav"));
 		AudioAsset::Register(U"Fire1", Resource(U"audio/fire1.wav"));
-		AudioAsset::Register(U"Powerup1", Resource(U"audio/powerup1.wav"));
+		AudioAsset::Register(U"Powerup1", Resource(U"audio/powerup.ogg"));
 		AudioAsset::Register(U"Damage1", Resource(U"audio/damage1.wav"));
 		AudioAsset::Register(U"Damage1Loop", Audio::Stream, Resource(U"audio/damage1_loop.ogg"), Loop::Yes);
 		AudioAsset::Register(U"Decide1", Resource(U"audio/decide1.ogg"));
+		AudioAsset::Register(U"Pause1", Resource(U"audio/pause1.wav"));
 
 		//Load
 		//...

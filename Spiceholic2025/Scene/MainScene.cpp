@@ -396,6 +396,9 @@ namespace Spiceholic
 
 		selectedPauseMenuIndex_ = 0;
 		timePause_.restart();
+
+		//SE
+		PlayAudioOneShot(U"Pause1");
 	}
 
 	void MainScene::updateStageStart_()

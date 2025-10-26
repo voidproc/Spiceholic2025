@@ -2,6 +2,7 @@
 
 #include "CustomScene.h"
 #include "Stage/Stage.h"
+#include "Core/Menu.h"
 
 namespace Spiceholic
 {
@@ -84,17 +85,17 @@ namespace Spiceholic
 
 		// 鍵取得時待機用
 		Stopwatch timeGetKey_;
-		// 鍵取得時待機後のステージクリア表示→シーン遷移
+		// ステージクリア表示→シーン遷移
 		Stopwatch timeStageClear_;
+		size_t selectedClearMenuIndex_;
 
 		// シークレット関連
 		Timer timerGaugeMax_;
 
-		// ポーズメニュー
-		size_t selectedPauseMenuIndex_;
+		// ポーズ関連
 		Stopwatch timePause_;
-		Timer timerPauseMenuDecide_;
-		Timer timerPauseMenuMoveCursor_;
+		// ポーズメニュー
+		Menu pauseMenu_;
 
 		// 画面揺れ
 		double cameraShakeIntensity_;

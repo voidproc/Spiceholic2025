@@ -310,11 +310,10 @@ namespace Spiceholic
 		initialKeyCount_{},
 		timeGetKey_{ StartImmediately::No, Clock() },
 		timeStageClear_{ StartImmediately::No, Clock() },
+		selectedClearMenuIndex_{ 0 },
 		timerGaugeMax_{ 0.50s, StartImmediately::No, Clock() },
-		selectedPauseMenuIndex_{ 0 },
 		timePause_{ StartImmediately::No },
-		timerPauseMenuDecide_{ 0.80s, StartImmediately::No },
-		timerPauseMenuMoveCursor_{},
+		pauseMenu_{ PauseMenuItemList.size() },
 		cameraShakeIntensity_{ 1.0 },
 		timerCameraShake_{ 0.08s, StartImmediately::No, Clock() },
 		snow_{ Arg::reserve = 256 },
@@ -404,7 +403,7 @@ namespace Spiceholic
 
 		GlobalClock::Pause();
 
-		selectedPauseMenuIndex_ = 0;
+		pauseMenu_.setSelectedIndex(0);
 		timePause_.restart();
 
 		//SE
@@ -466,25 +465,19 @@ namespace Spiceholic
 
 		// メニュー選択、項目決定、ポーズ解除
 		// 項目決定されていたら実行しない
-		if (not timerPauseMenuDecide_.isRunning())
+		if (not pauseMenu_.decideTimer().isRunning())
 		{
 			// メニュー選択
 			if (getData().actionInput->down(Action::MoveUp))
 			{
-				selectedPauseMenuIndex_ = (selectedPauseMenuIndex_ + PauseMenuItemList.size() - 1) % PauseMenuItemList.size();
-
-				// 描画用
-				timerPauseMenuMoveCursor_.restart(0.1s);
+				pauseMenu_.selectPrevious();
 
 				// SE
 				PlayAudioOneShot(U"Select2");
 			}
 			else if (getData().actionInput->down(Action::MoveDown))
 			{
-				selectedPauseMenuIndex_ = (selectedPauseMenuIndex_ + 1) % PauseMenuItemList.size();
-
-				// 描画用
-				timerPauseMenuMoveCursor_.restart(0.1s);
+				pauseMenu_.selectNext();
 
 				// SE
 				PlayAudioOneShot(U"Select2");
@@ -493,7 +486,7 @@ namespace Spiceholic
 			// 項目決定
 			if (getData().actionInput->down(Action::Decide))
 			{
-				timerPauseMenuDecide_.start();
+				pauseMenu_.decide();
 
 				// SE
 				PlayAudioOneShot(U"Decide1");
@@ -503,20 +496,19 @@ namespace Spiceholic
 			if (getData().actionInput->down(Action::Pause))
 			{
 				// ゲームに戻る を選択
-				selectedPauseMenuIndex_ = 0;
-
-				timerPauseMenuDecide_.start();
+				pauseMenu_.setSelectedIndex(0);
+				pauseMenu_.decide();
 
 				// SE
 				PlayAudioOneShot(U"Decide1");
 			}
 		}
 
-		if (timerPauseMenuDecide_.reachedZero())
+		if (pauseMenu_.decideTimer().reachedZero())
 		{
-			timerPauseMenuDecide_.reset();
+			pauseMenu_.resetDecideTimer();
 
-			if (const auto& selected = PauseMenuItemList[selectedPauseMenuIndex_];
+			if (const auto& selected = PauseMenuItemList[pauseMenu_.selectedIndex()];
 				selected.type == PauseMenuItemType::Back)
 			{
 				// ゲームに戻る
@@ -819,18 +811,18 @@ namespace Spiceholic
 			for (const auto [index, item] : Indexed(PauseMenuItemList))
 			{
 				const Vec2 itemCenter = SceneCenter + Vec2{ 0, ((PauseMenuItemList.size() - 1) / -2.0 + index) * LineHeight };
-				const bool selected = (index == selectedPauseMenuIndex_);
+				const bool selected = (index == pauseMenu_.selectedIndex());
 
 				// 選択行
 				if (selected)
 				{
-					const Vec2 vibrate{ 0, timerPauseMenuMoveCursor_.isRunning() * 2 * Periodic::Sine1_1(0.01s) };
+					const Vec2 vibrate = MenuMoveCursorVibrateVertical(pauseMenu_);
 					const double alpha = (0.2 + 0.2 * Periodic::Jump0_1(0.75s)) * (0.8 + 0.2 * Periodic::Square0_1(32ms));
 					RectF{ Arg::rightCenter = itemCenter + vibrate, SizeF{ SceneSize.x / 2, 16 } }.draw(Arg::left = ColorF{ 1, 0 }, Arg::right = ColorF{ 1, alpha });
 					RectF{ Arg::leftCenter = itemCenter + vibrate, SizeF{ SceneSize.x / 2, 16 } }.draw(Arg::left = ColorF{ 1, alpha }, Arg::right = ColorF{ 1, 0 });
 				}
 
-				const ColorF textColor = (selected && timerPauseMenuDecide_.isRunning()) ?
+				const ColorF textColor = (selected && pauseMenu_.decideTimer().isRunning()) ?
 					(LightYellow.lerp(Palette::Gray, Periodic::Square0_1(0.12s))) :
 					(selected ? Palette::White : Palette::Silver);
 				DrawText(U"px7812", item.text, Arg::center = itemCenter, textColor);
@@ -842,7 +834,7 @@ namespace Spiceholic
 
 			const Vec2 descCenter = SceneRect.center().withY(SceneSize.y - LineHeight * 1);
 			RectF{ Arg::center = descCenter, SizeF{ SceneSize.x, 16 } }.draw(Palette::Black);
-			DrawText(U"px7812", PauseMenuItemList[selectedPauseMenuIndex_].desc, Arg::center = descCenter, Palette::Silver);
+			DrawText(U"px7812", PauseMenuItemList[pauseMenu_.selectedIndex()].desc, Arg::center = descCenter, Palette::Silver);
 
 			SceneRect.stretched(-4).drawFrame(2.0, Palette::Gray);
 		}

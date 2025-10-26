@@ -51,15 +51,15 @@ namespace Spiceholic
 	{
 	public:
 		inline static constexpr ActorTag Tag = ActorTag::Enemy;
-		inline static constexpr ActorType Type = ActorType::EnemyChick;
+		//inline static constexpr ActorType Type = ActorType::EnemyChick;
 
 	public:
-		EnemyChick(const Vec2& pos, GameData& gameData, Direction dir, int32 subType, const String& bringItems);
+		EnemyChick(const Vec2& pos, GameData& gameData, Direction dir, int32 subType, const String& bringItems, bool fly);
 
 		~EnemyChick() override;
 
 		ActorTag tag() const override { return Tag; }
-		ActorType type() const override { return Type; }
+		ActorType type() const override;
 
 		void update() override;
 
@@ -72,6 +72,7 @@ namespace Spiceholic
 		Direction dirType_;
 		Vec2 dir_;
 		Vec2 currentSpeed_;
+		bool fly_;
 	};
 
 }

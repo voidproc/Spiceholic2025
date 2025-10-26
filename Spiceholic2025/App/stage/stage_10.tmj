@@ -1,39 +1,26 @@
 { "class":"Map",
  "compressionlevel":-1,
- "height":23,
+ "height":10,
  "infinite":false,
  "layers":[
         {
-         "data":[2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-            2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2,
-            2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2,
-            2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2,
-            2, 2, 2, 2, 2, 0, 2, 2, 2, 0, 2, 2, 2, 2, 2,
-            2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2,
-            2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2,
-            2, 2, 2, 2, 2, 5, 0, 0, 0, 5, 2, 2, 2, 2, 2,
-            2, 2, 2, 2, 2, 5, 0, 0, 0, 5, 2, 2, 2, 2, 2,
-            2, 2, 2, 2, 2, 2, 0, 0, 0, 2, 2, 2, 2, 2, 2,
-            2, 2, 2, 2, 2, 2, 0, 0, 0, 2, 2, 2, 2, 2, 2,
-            2, 2, 0, 2, 2, 2, 0, 0, 0, 2, 2, 2, 2, 2, 2,
-            0, 0, 0, 0, 5, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2,
-            2, 2, 0, 2, 2, 2, 0, 0, 0, 2, 2, 2, 2, 2, 2,
-            2, 2, 2, 2, 2, 2, 0, 0, 0, 2, 2, 2, 2, 2, 2,
-            2, 2, 2, 2, 2, 2, 0, 0, 0, 2, 2, 2, 0, 2, 2,
-            2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 5, 0, 0, 0, 0,
-            2, 2, 2, 2, 2, 2, 0, 0, 0, 2, 2, 2, 0, 2, 2,
-            2, 2, 2, 2, 2, 2, 0, 0, 0, 2, 2, 2, 2, 2, 2,
-            2, 2, 2, 2, 2, 2, 0, 0, 0, 2, 2, 2, 2, 2, 2,
-            2, 2, 2, 2, 2, 2, 0, 0, 0, 2, 2, 2, 2, 2, 2,
-            2, 2, 2, 2, 2, 2, 0, 0, 0, 2, 2, 2, 2, 2, 2,
-            2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
-         "height":23,
+         "data":[2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+            2, 2, 2, 5, 0, 2, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 2,
+            2, 2, 2, 5, 0, 5, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 2,
+            2, 2, 2, 5, 0, 2, 0, 5, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 0, 2, 2, 2, 2, 2, 2, 2, 0, 0, 2, 2,
+            2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 2, 2, 0, 0, 0, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 2,
+            2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 2,
+            2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 2,
+            2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2,
+            2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2,
+            2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+         "height":10,
          "id":1,
          "name":"\u30bf\u30a4\u30eb\u30ec\u30a4\u30e4\u30fc1",
          "opacity":1,
          "type":"tilelayer",
          "visible":true,
-         "width":15,
+         "width":30,
          "x":0,
          "y":0
         }, 
@@ -51,8 +38,8 @@
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":112,
-                 "y":336
+                 "x":32,
+                 "y":112
                 }, 
                 {
                  "gid":7,
@@ -75,11 +62,97 @@
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":224,
-                 "y":368
+                 "x":304,
+                 "y":160
                 }, 
                 {
-                 "gid":18,
+                 "gid":17,
+                 "height":16,
+                 "id":46,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"BringItems",
+                         "propertytype":"BringItems",
+                         "type":"string",
+                         "value":"Chilipepper1"
+                        }, 
+                        {
+                         "name":"Direction",
+                         "propertytype":"Direction",
+                         "type":"string",
+                         "value":"None"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":64,
+                 "y":48
+                }, 
+                {
+                 "gid":9,
+                 "height":16,
+                 "id":52,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":64,
+                 "y":112
+                }, 
+                {
+                 "gid":9,
+                 "height":16,
+                 "id":53,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":96,
+                 "y":112
+                }, 
+                {
+                 "gid":9,
+                 "height":16,
+                 "id":54,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":128,
+                 "y":112
+                }, 
+                {
+                 "gid":17,
+                 "height":16,
+                 "id":55,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"BringItems",
+                         "propertytype":"BringItems",
+                         "type":"string",
+                         "value":"Chilipepper1"
+                        }, 
+                        {
+                         "name":"Direction",
+                         "propertytype":"Direction",
+                         "type":"string",
+                         "value":"None"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":96,
+                 "y":48
+                }, 
+                {
+                 "gid":17,
                  "height":16,
                  "id":56,
                  "name":"",
@@ -95,35 +168,54 @@
                          "propertytype":"Direction",
                          "type":"string",
                          "value":"Left"
-                        }, 
-                        {
-                         "name":"SubType",
-                         "type":"int",
-                         "value":0
                         }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":104,
-                 "y":272
+                 "x":192,
+                 "y":112
                 }, 
                 {
-                 "gid":10,
+                 "gid":5,
                  "height":16,
-                 "id":68,
+                 "id":57,
                  "name":"",
+                 "properties":[
+                        {
+                         "name":"SecretRoute",
+                         "type":"bool",
+                         "value":true
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":112,
+                 "x":224,
+                 "y":32
+                }, 
+                {
+                 "gid":5,
+                 "height":16,
+                 "id":58,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"SecretRoute",
+                         "type":"bool",
+                         "value":true
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":224,
                  "y":48
                 }, 
                 {
                  "gid":5,
                  "height":16,
-                 "id":69,
+                 "id":62,
                  "name":"",
                  "properties":[
                         {
@@ -135,13 +227,13 @@
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":144,
-                 "y":80
+                 "x":240,
+                 "y":32
                 }, 
                 {
                  "gid":5,
                  "height":16,
-                 "id":73,
+                 "id":63,
                  "name":"",
                  "properties":[
                         {
@@ -153,178 +245,27 @@
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":80,
-                 "y":80
+                 "x":240,
+                 "y":48
                 }, 
                 {
                  "gid":3,
                  "height":16,
-                 "id":74,
+                 "id":65,
                  "name":"",
                  "properties":[
                         {
                          "name":"BringItems",
                          "propertytype":"BringItems",
                          "type":"string",
-                         "value":"Chilipepper1"
+                         "value":"Key"
                         }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":192,
-                 "y":256
-                }, 
-                {
-                 "gid":3,
-                 "height":16,
-                 "id":75,
-                 "name":"",
-                 "properties":[
-                        {
-                         "name":"BringItems",
-                         "propertytype":"BringItems",
-                         "type":"string",
-                         "value":"Chilipepper1"
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":32,
-                 "y":192
-                }, 
-                {
-                 "gid":18,
-                 "height":16,
-                 "id":76,
-                 "name":"",
-                 "properties":[
-                        {
-                         "name":"BringItems",
-                         "propertytype":"BringItems",
-                         "type":"string",
-                         "value":"Chilipepper1"
-                        }, 
-                        {
-                         "name":"Direction",
-                         "propertytype":"Direction",
-                         "type":"string",
-                         "value":"Right"
-                        }, 
-                        {
-                         "name":"SpawnTime",
-                         "type":"float",
-                         "value":3
-                        }, 
-                        {
-                         "name":"SubType",
-                         "type":"int",
-                         "value":0
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":120,
-                 "y":208
-                }, 
-                {
-                 "gid":3,
-                 "height":16,
-                 "id":77,
-                 "name":"",
-                 "properties":[
-                        {
-                         "name":"BringItems",
-                         "propertytype":"BringItems",
-                         "type":"string",
-                         "value":"Chilipepper1"
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":192,
-                 "y":288
-                }, 
-                {
-                 "gid":3,
-                 "height":16,
-                 "id":78,
-                 "name":"",
-                 "properties":[
-                        {
-                         "name":"BringItems",
-                         "propertytype":"BringItems",
-                         "type":"string",
-                         "value":"Chilipepper1"
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":32,
-                 "y":224
-                }, 
-                {
-                 "gid":18,
-                 "height":16,
-                 "id":79,
-                 "name":"",
-                 "properties":[
-                        {
-                         "name":"BringItems",
-                         "propertytype":"BringItems",
-                         "type":"string",
-                         "value":"Chilipepper2"
-                        }, 
-                        {
-                         "name":"Direction",
-                         "propertytype":"Direction",
-                         "type":"string",
-                         "value":"Right"
-                        }, 
-                        {
-                         "name":"SpawnTime",
-                         "type":"float",
-                         "value":3
-                        }, 
-                        {
-                         "name":"SubType",
-                         "type":"int",
-                         "value":0
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":112,
-                 "y":136
-                }, 
-                {
-                 "gid":2,
-                 "height":16,
-                 "id":80,
-                 "name":"",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":232,
-                 "y":272
-                }, 
-                {
-                 "gid":2,
-                 "height":16,
-                 "id":81,
-                 "name":"",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":-8,
-                 "y":208
+                 "x":424,
+                 "y":40
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -333,13 +274,13 @@
          "y":0
         }],
  "nextlayerid":3,
- "nextobjectid":82,
+ "nextobjectid":66,
  "orientation":"orthogonal",
  "properties":[
         {
          "name":"NextStageID",
          "type":"string",
-         "value":"10"
+         "value":"1"
         }],
  "renderorder":"right-down",
  "tiledversion":"1.11.0",
@@ -352,5 +293,5 @@
  "tilewidth":16,
  "type":"map",
  "version":"1.10",
- "width":15
+ "width":30
 }

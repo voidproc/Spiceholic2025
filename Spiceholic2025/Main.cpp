@@ -42,6 +42,7 @@ namespace
 		TextureAsset::Register(U"Shadow", Resource(U"image/shadow.png"));
 		TextureAsset::Register(U"WhiteArrow", Resource(U"image/white_arrow.png"));
 		TextureAsset::Register(U"EnemyChick", Resource(U"image/enemy_chick.png"));
+		TextureAsset::Register(U"EnemyChickFly", Resource(U"image/enemy_chick_fly.png"));
 		TextureAsset::Register(U"DragonGirl", Resource(U"image/dragon_girl.png"));
 		TextureAsset::Register(U"DragonGirl2", Resource(U"image/dragon_girl_2.png"));
 		TextureAsset::Register(U"Ground1", Resource(U"image/ground_1.png"));

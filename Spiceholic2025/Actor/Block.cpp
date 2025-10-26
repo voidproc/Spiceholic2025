@@ -69,7 +69,7 @@ namespace Spiceholic
 		}
 	}
 
-	void Block::onCollide(Actor* other)
+	void Block::onCollide(Actor* /*other*/)
 	{
 	}
 

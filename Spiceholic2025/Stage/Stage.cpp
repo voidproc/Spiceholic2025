@@ -131,8 +131,8 @@ namespace Spiceholic
 
 		stageData.gridSize.x = stageJson[U"width"].get<int>();
 		stageData.gridSize.y = stageJson[U"height"].get<int>();
-
 		stageData.actorSpawns.clear();
+		stageData.openedSecretRoute = false;
 
 		if (stageJson[U"layers"].isEmpty()) return;
 

@@ -29,7 +29,7 @@ namespace Spiceholic
 			ActorType::None,
 
 			ActorType::EnemyChick,
-			ActorType::None,
+			ActorType::EnemyChickFly,
 			ActorType::None,
 			ActorType::None,
 			ActorType::None,

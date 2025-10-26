@@ -87,8 +87,6 @@ namespace Spiceholic
 
 		// シークレット関連
 		Timer timerGaugeMax_;
-		// シークレット関連
-		bool openedSecretRoute_;
 
 		// ポーズメニュー
 		size_t selectedPauseMenuIndex_;

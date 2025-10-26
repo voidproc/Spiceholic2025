@@ -7,6 +7,7 @@
 #include "Actor/MakeActor.h"
 #include "Audio/AudioPlay.h"
 #include "Config/GameConfig.h"
+#include "Core/Camera.h"
 #include "Core/Color.h"
 #include "Core/DrawText.h"
 #include "Core/DrawSprite.h"
@@ -72,7 +73,8 @@ namespace Spiceholic
 				break;
 
 			case ActorType::EnemyChick:
-				gameData.actors.push_back(std::make_unique<EnemyChick>(spawn.position, gameData, spawn.direction, spawn.subType, spawn.bringItems));
+			case ActorType::EnemyChickFly:
+				gameData.actors.push_back(std::make_unique<EnemyChick>(spawn.position, gameData, spawn.direction, spawn.subType, spawn.bringItems, spawn.type == ActorType::EnemyChickFly));
 				actor = gameData.actors.back().get();
 				break;
 
@@ -118,6 +120,7 @@ namespace Spiceholic
 			for (const auto& block : blocks)
 			{
 				if (actor.tag() == ActorTag::Weapon && block->type() == ActorType::BlockSpike) continue;
+				if (actor.type() == ActorType::EnemyChickFly && block->type() == ActorType::BlockSpike) continue;
 
 				if (actor.isCollidingWith(*block))
 				{
@@ -308,7 +311,6 @@ namespace Spiceholic
 		timeGetKey_{ StartImmediately::No, Clock() },
 		timeStageClear_{ StartImmediately::No, Clock() },
 		timerGaugeMax_{ 0.50s, StartImmediately::No, Clock() },
-		openedSecretRoute_{ false },
 		selectedPauseMenuIndex_{ 0 },
 		timePause_{ StartImmediately::No },
 		timerPauseMenuDecide_{ 0.80s, StartImmediately::No },
@@ -576,7 +578,8 @@ namespace Spiceholic
 		for (auto& actor : actors)
 		{
 			// TODO: 位置調整の必要があるEnemyなどを列挙
-			if (actor->type() == ActorType::EnemyChick)
+			if ((actor->type() == ActorType::EnemyChick) ||
+				(actor->type() == ActorType::EnemyChickFly))
 			{
 				UpdateActorPos(*actor, blocks);
 			}
@@ -705,23 +708,7 @@ namespace Spiceholic
 
 	Transformer2D MainScene::cameraScrollTransform_() const
 	{
-		const SizeF mapSize = getData().stageData->gridSize * TileSize;
-		const Vec2 playerPos = getData().player->position().currentPos();
-		RectF cameraRect{ Arg::center = playerPos, ActorsFieldViewportSize };
-
-		if (openedSecretRoute_)
-		{
-			cameraRect.x = Clamp(cameraRect.x, 0.0, mapSize.x - ActorsFieldViewportSize.x);
-			cameraRect.y = Clamp(cameraRect.y, 0.0, mapSize.y - ActorsFieldViewportSize.y);
-		}
-		else
-		{
-			cameraRect.x = Clamp(cameraRect.x, getData().stageData->cameraTopLeft.x, getData().stageData->cameraBottomRight.x - ActorsFieldViewportSize.x);
-			cameraRect.y = Clamp(cameraRect.y, getData().stageData->cameraTopLeft.y, getData().stageData->cameraBottomRight.y - ActorsFieldViewportSize.y);
-		}
-
-		const Vec2 cameraMove = -cameraRect.pos;
-		return Transformer2D{ Mat3x2::Translate(cameraMove) };
+		return CameraTransform(getData());
 	}
 
 	void MainScene::drawHUD_() const
@@ -839,9 +826,9 @@ namespace Spiceholic
 
 	void MainScene::onGaugeMax_()
 	{
-		if (not openedSecretRoute_)
+		if (not getData().stageData->openedSecretRoute)
 		{
-			openedSecretRoute_ = true;
+			getData().stageData->openedSecretRoute = true;
 
 			// ゲージマックス時ゲージエフェクト
 			getData().gauge->startDrawMaxEffect();

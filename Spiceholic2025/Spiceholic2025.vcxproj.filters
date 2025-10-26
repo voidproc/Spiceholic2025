@@ -285,6 +285,9 @@
     <ClCompile Include="Audio\AudioPlay.cpp">
       <Filter>Audio</Filter>
     </ClCompile>
+    <ClCompile Include="Core\Camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">
@@ -1081,6 +1084,9 @@
     </ClInclude>
     <ClInclude Include="Audio\AudioPlay.h">
       <Filter>Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\Camera.h">
+      <Filter>Core</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

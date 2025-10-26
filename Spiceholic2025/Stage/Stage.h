@@ -50,6 +50,8 @@ namespace Spiceholic
 
 		// アクター生成情報
 		Array<ActorSpawnInfo> actorSpawns;
+
+		bool openedSecretRoute;
 	};
 
 	// 指定されたステージ番号のステージデータを読み込む

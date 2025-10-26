@@ -129,6 +129,7 @@
     <ClCompile Include="Actor\Weapon.cpp" />
     <ClCompile Include="Audio\AudioPlay.cpp" />
     <ClCompile Include="Audio\AudioVolume.cpp" />
+    <ClCompile Include="Core\Camera.cpp" />
     <ClCompile Include="Core\Collision.cpp" />
     <ClCompile Include="Core\Color.cpp" />
     <ClCompile Include="Core\DrawSprite.cpp" />
@@ -380,6 +381,7 @@
     <ClInclude Include="Audio\AudioPlay.h" />
     <ClInclude Include="Audio\AudioVolume.h" />
     <ClInclude Include="Config\GameConfig.h" />
+    <ClInclude Include="Core\Camera.h" />
     <ClInclude Include="Core\Collision.h" />
     <ClInclude Include="Core\Color.h" />
     <ClInclude Include="Core\DrawSprite.h" />

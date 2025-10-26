@@ -348,6 +348,9 @@ namespace Spiceholic
 		// ゲージ初期化
 		getData().gauge = std::make_unique<Gauge>();
 
+		// カメラ位置
+		smoothCameraRect_ = CameraRect(getData());
+
 		// イベント購読
 		GetDispatch().subscribe<GetKeyEvent, &MainScene::onGetKey_>(this);
 		GetDispatch().subscribe<GaugeMaxEvent, &MainScene::onGaugeMax_>(this);

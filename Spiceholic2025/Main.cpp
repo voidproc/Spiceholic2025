@@ -48,6 +48,7 @@ namespace
 		TextureAsset::Register(U"Ground1", Resource(U"image/ground_1.png"));
 		TextureAsset::Register(U"Ground2", Resource(U"image/ground_2.png"));
 		TextureAsset::Register(U"Ground3", Resource(U"image/ground_3.png"));
+		TextureAsset::Register(U"Snow", Resource(U"image/snow.png"));
 
 		//Load
 		//...

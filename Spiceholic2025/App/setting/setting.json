@@ -70,6 +70,12 @@
       "Count": 1,
       "Size": 16,
       "Pos": [48, 0]
+    },
+    "Snow": {
+      "Texture": "Snow",
+      "Count": 8,
+      "Size": 8,
+      "Pos": [0, 0]
     }
   },
   "StageGroupInfo": [

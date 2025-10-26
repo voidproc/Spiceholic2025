@@ -34,6 +34,7 @@ namespace Spiceholic
 		for (auto&& [index, object] : json[U"StageGroupInfo"])
 		{
 			StageGroupInfo info;
+			info.group = ToEnum<StageGroupType>(stageGroups.size());
 			info.subtitle = object[U"Subtitle"].getString();
 			info.groundTexture = object[U"Ground"].getString();
 			stageGroups.push_back(info);

@@ -30,6 +30,8 @@ namespace Spiceholic
 		void updateMain_();
 		void onTimerGaugeMax_();
 
+		void updateSnow_();
+
 		void makeCharacterShadows_();
 
 	public:
@@ -98,5 +100,15 @@ namespace Spiceholic
 		double cameraShakeIntensity_;
 		Timer timerCameraShake_;
 
+		// 雪
+		struct Snow
+		{
+			Vec2 pos;
+			double noisePos;
+			bool active;
+		};
+		Array<Snow> snow_;
+		PerlinNoise noise_;
+		Timer timerSnow_;
 	};
 }

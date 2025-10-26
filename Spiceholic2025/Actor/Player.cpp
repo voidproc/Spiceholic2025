@@ -143,7 +143,7 @@ namespace Spiceholic
 			// アイテム取得時点滅
 			const double t = (timerGetItem_.isRunning()) ? Periodic::Square0_1(0.06s, ClockTime()) : 1;
 			ScopedColorMul2D mul{ t, 1 };
-			ScopedColorAdd2D add{ (1 - t) * 0.8, (1 - t) * 0.8, (1 - t) * 0, 0 };
+			ScopedColorAdd2D add{ (1 - t) * 0.9, (1 - t) * 0.85, (1 - t) * 0.4, 0 };
 
 			TextureAsset(sprite.textureName)(sprite.pos + Vec2{ animFrame * sprite.size, 0 }, sprite.size, sprite.size)
 				.mirrored(spriteMirror_)
@@ -153,9 +153,11 @@ namespace Spiceholic
 
 	void Player::onCollide(Actor* other)
 	{
-		// TODO: 敵に触れると...
 		if (other->tag() == ActorTag::Enemy && not timerTr_.isRunning())
 		{
+			// 敵に触れた
+			// かつ透過状態でない
+
 			// ノックバック、無敵、ゲージ消費
 			if (not timerKnockback_.isRunning())
 			{
@@ -174,6 +176,8 @@ namespace Spiceholic
 		}
 		else if (other->tag() == ActorTag::Item)
 		{
+			// アイテムに触れた
+
 			timerGetItem_.restart();
 
 			if (other->type() == ActorType::ItemChilipepper)

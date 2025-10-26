@@ -48,6 +48,7 @@ namespace Spiceholic
 
 		// 敵に当たった
 		Timer timerKnockback_;
+		// 透過状態
 		Timer timerTr_;
 
 		// パワーアップ時

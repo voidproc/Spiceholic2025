@@ -346,12 +346,6 @@ namespace Spiceholic
 
 	void MainScene::update()
 	{
-		// ポーズの切替
-		if (getData().actionInput->down(Action::Pause))
-		{
-			togglePause_();
-		}
-
 		if (timeStageStart_.isRunning())
 		{
 			// ◆ シーン開始～Ready表示
@@ -457,7 +451,7 @@ namespace Spiceholic
 	{
 		// ◆ ポーズ中
 
-		// メニュー選択、項目決定
+		// メニュー選択、項目決定、ポーズ解除
 		// 項目決定されていたら実行しない
 		if (not timerPauseMenuDecide_.isRunning())
 		{
@@ -486,6 +480,18 @@ namespace Spiceholic
 			// 項目決定
 			if (getData().actionInput->down(Action::Decide))
 			{
+				timerPauseMenuDecide_.start();
+
+				// SE
+				PlayAudioOneShot(U"Decide1");
+			}
+
+			// ポーズ解除
+			if (getData().actionInput->down(Action::Pause))
+			{
+				// ゲームに戻る を選択
+				selectedPauseMenuIndex_ = 0;
+
 				timerPauseMenuDecide_.start();
 
 				// SE
@@ -523,6 +529,12 @@ namespace Spiceholic
 	void MainScene::updateMain_()
 	{
 		// ◆ メインシーンの通常状態の更新
+
+		// ポーズの切替
+		if (getData().actionInput->down(Action::Pause))
+		{
+			togglePause_();
+		}
 
 		// プレイヤーを更新
 		auto& player = *getData().player;

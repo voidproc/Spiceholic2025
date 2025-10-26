@@ -811,6 +811,8 @@ namespace Spiceholic
 		const auto regionHudU = Rect{ Arg::topLeft = SceneRect.tl(), Size{ SceneSize.x, TileSize } }.draw(bgColor);
 		const auto regionHudD = Rect{ Arg::bottomRight = SceneRect.br(), Size{ SceneSize.x, TileSize } }.draw(bgColor);
 
+		TextureAsset(U"Head")(0, (int)getData().appSetting->get().stageGroupInfo[getData().stageData->stageID].group * 16, 50, 16).draw(1, 0);
+
 		// ステージ名
 		const ColorF textColor{ Palette::Seashell.lerp(Palette::Red, 0.1 * Periodic::Square0_1(0.25s, ClockTime())) };
 		const ColorF shadowColor{ Palette::Crimson.lerp(Palette::Silver, 0.3), 0.8 - 0.1 * Periodic::Square0_1(0.25s, ClockTime()) };

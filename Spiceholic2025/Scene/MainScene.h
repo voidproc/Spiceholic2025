@@ -87,7 +87,9 @@ namespace Spiceholic
 		Stopwatch timeGetKey_;
 		// ステージクリア表示→シーン遷移
 		Stopwatch timeStageClear_;
-		size_t selectedClearMenuIndex_;
+		// クリア表示メニュー
+		Menu clearMenu_;
+		//size_t selectedClearMenuIndex_;
 
 		// シークレット関連
 		Timer timerGaugeMax_;

@@ -23,24 +23,30 @@ namespace Spiceholic
 {
 	namespace
 	{
-		enum class PauseMenuItemType
+		enum class MenuItemType
 		{
 			Back,
 			Retry,
 			Title,
+			Next,
 		};
 
-		struct PauseMenuItem
+		struct MenuItem
 		{
-			PauseMenuItemType type;
+			MenuItemType type;
 			StringView text;
 			StringView desc;
 		};
 
-		constexpr std::array<PauseMenuItem, 3> PauseMenuItemList = { {
-			{ PauseMenuItemType::Back, U"Back to Game"_sv, U"ゲームに戻ります"_sv },
-			{ PauseMenuItemType::Retry, U"Retry This Stage"_sv, U"このステージをやり直します"_sv },
-			{ PauseMenuItemType::Title, U"Quit to Title"_sv, U"タイトル画面に戻ります"_sv },
+		constexpr std::array<MenuItem, 3> PauseMenuItemList = { {
+			{ MenuItemType::Back, U"Back to Game"_sv, U"ゲームに戻ります"_sv },
+			{ MenuItemType::Retry, U"Retry This Stage"_sv, U"このステージをやり直します"_sv },
+			{ MenuItemType::Title, U"Quit to Title"_sv, U"タイトル画面に戻ります"_sv },
+		} };
+
+		constexpr std::array<MenuItem, 2> ClearMenuItemList = { {
+			{ MenuItemType::Next, U"To Next Stage"_sv, U"次のステージに進みます"_sv },
+			{ MenuItemType::Retry, U"Retry This Stage"_sv, U"このステージをやり直します"_sv },
 		} };
 
 
@@ -310,7 +316,7 @@ namespace Spiceholic
 		initialKeyCount_{},
 		timeGetKey_{ StartImmediately::No, Clock() },
 		timeStageClear_{ StartImmediately::No, Clock() },
-		selectedClearMenuIndex_{ 0 },
+		clearMenu_{ ClearMenuItemList.size() },
 		timerGaugeMax_{ 0.50s, StartImmediately::No, Clock() },
 		timePause_{ StartImmediately::No },
 		pauseMenu_{ PauseMenuItemList.size() },
@@ -433,14 +439,50 @@ namespace Spiceholic
 			timeStageClear_.start();
 		}
 
-		// ステージクリア時の入力待ち→シーン遷移
-		if (timeStageClear_ > 1.5s)
+		// ステージクリア時の入力待ち→メニュー表示
+		if (timeStageClear_ > 1.5s && not clearMenu_.decideTimer().isRunning())
 		{
+			if (getData().actionInput->down(Action::MoveUp))
+			{
+				clearMenu_.selectPrevious();
+
+				// SE
+				PlayAudioOneShot(U"Select2");
+			}
+			else if (getData().actionInput->down(Action::MoveDown))
+			{
+				clearMenu_.selectNext();
+
+				// SE
+				PlayAudioOneShot(U"Select2");
+			}
+
 			if (getData().actionInput->down(Action::Decide))
+			{
+				clearMenu_.decide();
+
+				// SE
+				PlayAudioOneShot(U"Decide1");
+			}
+		}
+
+		if (clearMenu_.decideTimer().reachedZero())
+		{
+			clearMenu_.resetDecideTimer();
+
+			if (const auto& selected = ClearMenuItemList[clearMenu_.selectedIndex()];
+				selected.type == MenuItemType::Next)
 			{
 				// シーン遷移する前に今のスコアを保存しておく（元に戻す用）
 				getData().stageStartScore = getData().score->currentScore();
 
+				changeScene(U"MainScene", 0);
+			}
+			else if (selected.type == MenuItemType::Retry)
+			{
+				// このステージをやり直す
+				getData().score->set(getData().stageStartScore, true);
+				getData().nextStageID = getData().stageData->stageID;
 				changeScene(U"MainScene", 0);
 			}
 		}
@@ -509,18 +551,18 @@ namespace Spiceholic
 			pauseMenu_.resetDecideTimer();
 
 			if (const auto& selected = PauseMenuItemList[pauseMenu_.selectedIndex()];
-				selected.type == PauseMenuItemType::Back)
+				selected.type == MenuItemType::Back)
 			{
 				// ゲームに戻る
 			}
-			else if (selected.type == PauseMenuItemType::Retry)
+			else if (selected.type == MenuItemType::Retry)
 			{
 				// このステージをやり直す
 				getData().score->set(getData().stageStartScore, true);
 				getData().nextStageID = getData().stageData->stageID;
 				changeScene(U"MainScene", 0);
 			}
-			else if (selected.type == PauseMenuItemType::Title)
+			else if (selected.type == MenuItemType::Title)
 			{
 				// タイトルに戻る
 
@@ -780,19 +822,50 @@ namespace Spiceholic
 
 	void MainScene::drawStageClear_() const
 	{
-		// 帯
-		const double height = 24 * EaseInQuad(Saturate(timeStageClear_.sF() / 0.3));
-		RectF{ Arg::center = SceneCenter, SizeF{ SceneSize.x, height } }.draw(ColorF{ Palette::Darkred, 0.9 });
+		{
+			// テキストと帯のY移動
+			const double t = Saturate((timeStageClear_.sF() - 1.0) / 0.5);
 
-		// テキスト
-		const String text = U"{}  Clear!  ({:02d}:{:02d})"_fmt(getData().stageData->name, (int)(stageClearTime_) / 60, (int)stageClearTime_ % 60);
-		const Vec2 textPos = SceneCenter + Vec2{ 400 * (1 - EaseOutExpo(Saturate(timeStageClear_.sF() / 1.0))), 0 };
-		DrawText(U"px7812", text, Arg::center = textPos, LightYellow.lerp(Palette::Black, 0.2 * Periodic::Square0_1(0.25s, ClockTime())));
+			// 帯
+			const double height = 24 * EaseInOutQuad(Saturate(timeStageClear_.sF() / 0.3)) + 56 * EaseInOutQuad(t);
+			RectF{ Arg::center = SceneCenter, SizeF{ SceneSize.x, height } }.draw(ColorF{ Palette::Darkred, 0.9 });
 
-		// 入力待ち表示
+			// テキスト
+			const String text = U"{}  Clear!  ({:02d}:{:02d})"_fmt(getData().stageData->name, (int)(stageClearTime_) / 60, (int)stageClearTime_ % 60);
+			const Vec2 textPos = SceneCenter + Vec2{ 400 * (1 - EaseOutExpo(Saturate(timeStageClear_.sF() / 1.0))), 0 };
+			const Vec2 textPosUp{ 0, -26 * EaseInOutQuad(t) };
+			DrawText(U"px7812", text, Arg::center = textPos + textPosUp, LightYellow.lerp(Palette::Black, 0.2 * Periodic::Square0_1(0.25s, ClockTime())));
+		}
+
+		// メニュー表示
 		if (timeStageClear_ > 1.5s)
 		{
-			DrawSprite(*getData().appSetting, U"WhiteArrowDown", 0.5s, false, SceneCenter + Vec2{ SceneSize.x / 2 - 16 , 4 + 1 * Periodic::Square0_1(0.5s, ClockTime()) });
+			constexpr int LineHeight = 18;
+			constexpr Color TextColor = Palette::Lightcoral.lerp(Palette::White, 0.3);
+			constexpr Color SelectedColor = Palette::Whitesmoke;
+
+			for (const auto [index, item] : Indexed(ClearMenuItemList))
+			{
+				const Vec2 itemCenter = SceneCenter + Vec2{ 0, 10 } + Vec2{ 0, ((ClearMenuItemList.size() - 1) / -2.0 + index) * LineHeight };
+				const bool selected = (index == clearMenu_.selectedIndex());
+
+				// 選択行
+				if (selected)
+				{
+					const Vec2 vibrate = MenuMoveCursorVibrateVertical(clearMenu_);
+					const double alpha = (0.2 + 0.2 * Periodic::Jump0_1(0.75s)) * (0.8 + 0.2 * Periodic::Square0_1(32ms));
+					RectF{ Arg::center = itemCenter + vibrate, SizeF{ SceneSize.x, 16 } }.draw(ColorF{ 1, alpha });
+				}
+
+				const ColorF textColor = (selected && clearMenu_.decideTimer().isRunning()) ?
+					(LightYellow.lerp(Palette::Darkred, 0.3 * Periodic::Square0_1(0.12s))) :
+					(selected ? SelectedColor : TextColor);
+				DrawText(U"px7812", item.text, Arg::center = itemCenter, textColor);
+			}
+
+			const Vec2 descCenter = SceneRect.center().withY(SceneSize.y - LineHeight * 1);
+			RectF{ Arg::center = descCenter, SizeF{ SceneSize.x, 16 } }.draw(Palette::Black);
+			DrawText(U"px7812", ClearMenuItemList[clearMenu_.selectedIndex()].desc, Arg::center = descCenter, Palette::Silver);
 		}
 	}
 

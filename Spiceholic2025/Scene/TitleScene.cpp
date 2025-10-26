@@ -39,7 +39,7 @@ namespace Spiceholic
 		CustomScene{ init },
 		time_{ StartImmediately::Yes },
 		timeDecide_{ StartImmediately::No },
-		selectedMenuIndex_{ 0 },
+		menu_{ TitleMenuItemList.size() },
 		randomCharaTexName_{ U"DragonGirl" },
 		timeDescText_{ StartImmediately::Yes },
 		timerFadeIn_{ 0.50s, StartImmediately::Yes }
@@ -76,7 +76,7 @@ namespace Spiceholic
 			// カーソル移動
 			if (getData().actionInput->down(Action::MoveLeft))
 			{
-				selectPrevious_();
+				menu_.selectPrevious();
 
 				// 描画用
 				timerMoveCursorLeft_.restart(0.1s);
@@ -87,7 +87,7 @@ namespace Spiceholic
 			}
 			else if (getData().actionInput->down(Action::MoveRight))
 			{
-				selectNext_();
+				menu_.selectNext();
 
 				// 描画用
 				timerMoveCursorRight_.restart(0.1s);
@@ -109,7 +109,7 @@ namespace Spiceholic
 
 		if (timeDecide_ > 0.95s)
 		{
-			if (const auto& selected = TitleMenuItemList[selectedMenuIndex_];
+			if (const auto& selected = TitleMenuItemList[menu_.selectedIndex()];
 				selected.type == TitleMenuItemType::Start)
 			{
 				// メインシーンへ
@@ -212,7 +212,7 @@ namespace Spiceholic
 			const ColorF color = (not timeDecide_.isRunning()) ?
 				Palette::White.lerp(Palette::Indianred, 0.4 * Periodic::Square0_1(0.5s)) :
 				LightYellow.lerp(Palette::Darkred, 0.8 * Periodic::Square0_1(0.15s));
-			DrawText(U"px7812", TitleMenuItemList[selectedMenuIndex_].text, Arg::center = menuCenter + Vec2{ Max(vibrateX_l, vibrateX_r), 0 }, color);
+			DrawText(U"px7812", TitleMenuItemList[menu_.selectedIndex()].text, Arg::center = menuCenter + Vec2{ Max(vibrateX_l, vibrateX_r), 0 }, color);
 
 			// メニュー矢印
 			if (not timeDecide_.isRunning())
@@ -222,8 +222,9 @@ namespace Spiceholic
 			}
 
 			// 説明
-			StringView desc = TitleMenuItemList[selectedMenuIndex_].desc;
-			DrawText(U"px7812", desc.substr(0, Min(999.0, timeDescText_.sF() * 40.0)), Arg::center = SceneRect.center().withY(SceneSize.y - 24), ColorF{ 1, 0.8 });
+			StringView desc = TitleMenuItemList[menu_.selectedIndex()].desc;
+			const auto len = static_cast<size_t>(Min(999.0, timeDescText_.sF() * 40.0));
+			DrawText(U"px7812", desc.substr(0, len), Arg::center = SceneRect.center().withY(SceneSize.y - 24), ColorF{ 1, 0.8 });
 		}
 
 		// フェードアウト
@@ -237,15 +238,5 @@ namespace Spiceholic
 			const double alpha = timerFadeIn_.progress1_0();
 			SceneRect.draw(ColorF{ Palette::Whitesmoke, EaseInQuad(alpha) });
 		}
-	}
-
-	void TitleScene::selectNext_()
-	{
-		selectedMenuIndex_ = (selectedMenuIndex_ + 1) % TitleMenuItemList.size();
-	}
-
-	void TitleScene::selectPrevious_()
-	{
-		selectedMenuIndex_ = (selectedMenuIndex_ + TitleMenuItemList.size() - 1) % TitleMenuItemList.size();
 	}
 }

@@ -90,7 +90,7 @@ namespace Spiceholic
 	InputSettingScene::InputSettingScene(const InitData& init)
 		:
 		CustomScene{ init },
-		selectedFieldIndex_{ 0 },
+		menu_{ SettingFieldList.size(), 0.1s },
 		timerChangeMenuIndex_{},
 		timerSetBinding_{},
 		timerSetKey_{ SettingFieldList.size() },
@@ -113,27 +113,21 @@ namespace Spiceholic
 		// カーソル移動
 		if (getData().actionInput->down(Action::MoveUp))
 		{
-			selectPrevious_();
-
-			// 描画用
-			timerChangeMenuIndex_.restart(0.1s);
+			menu_.selectPrevious();
 
 			// SE
 			PlayAudioOneShot(U"Select2");
 		}
 		else if (getData().actionInput->down(Action::MoveDown))
 		{
-			selectNext_();
-
-			// 描画用
-			timerChangeMenuIndex_.restart(0.1s);
+			menu_.selectNext();
 
 			// SE
 			PlayAudioOneShot(U"Select2");
 		}
 
 		// 操作対象
-		const auto& selectedField = SettingFieldList[selectedFieldIndex_];
+		const auto& selectedField = SettingFieldList[menu_.selectedIndex()];
 
 		// 選択項目に対する決定操作
 		if (getData().actionInput->down(Action::Decide))
@@ -160,7 +154,7 @@ namespace Spiceholic
 			{
 				// 描画用
 				timerSetBinding_.restart(0.2s);
-				timerSetKey_[selectedFieldIndex_].restart(0.3s);
+				timerSetKey_[menu_.selectedIndex()].restart(0.3s);
 
 				// SE
 				PlayAudioOneShot(U"Select1");
@@ -188,11 +182,6 @@ namespace Spiceholic
 				RectF{ Arg::center = SceneRect.center().withY(centerY), SizeF{ SceneSize.x, Layout::LineHeight - 4 * timeMoveCursor1_0 }}.draw(color);
 			};
 
-		const auto vibrateY_whenMoveCursor = [](double timer1_0)
-			{
-				return 2 * Periodic::Sine1_1(0.01s) * timer1_0;
-			};
-
 		const auto vibrateX_whenBinding = [](double timer1_0)
 			{
 				return 2 * Periodic::Sine1_1(0.01s) * timer1_0;
@@ -212,7 +201,7 @@ namespace Spiceholic
 		// 各メニュー項目の描画
 		for (const auto [index, item] : Indexed(SettingFieldList))
 		{
-			const bool selected = (index == selectedFieldIndex_);
+			const bool selected = (index == menu_.selectedIndex());
 
 			const double posY = Layout::LineHeight * (3.0 + index + (index > 0 ? 0.5 : 0) + (index == SettingFieldList.size() - 1 ? 0.5 : 0));
 			const auto itemCenter = SceneRect.center().withY(posY);
@@ -224,12 +213,12 @@ namespace Spiceholic
 			{
 				keyColor = buttonColor = Theme::SelectedColor;
 
-				const double vibrateY = vibrateY_whenMoveCursor(timerChangeMenuIndex_.progress1_0());
+				const double vibrateY = MenuMoveCursorVibrateVertical(menu_).y;
 				drawLineHighlight(itemCenter.y + vibrateY, timerSetBinding_.progress0_1(), timerChangeMenuIndex_.progress1_0());
 			}
 
 			// ラベル
-			const double labelShiftX = (index == selectedFieldIndex_) ? EaseOutCubic(timerChangeMenuIndex_.progress0_1()) * 2 : 0;
+			const double labelShiftX = (index == menu_.selectedIndex()) ? EaseOutCubic(timerChangeMenuIndex_.progress0_1()) * 2 : 0;
 			DrawText(U"px7812", item.text, Arg::leftCenter = Vec2{ Layout::LabelColumnLeftCenterX + labelShiftX, posY }, (selected ? Theme::SelectedLabelColor : Theme::LabelColor));
 
 			// 選択されているゲームコントローラ
@@ -305,16 +294,6 @@ namespace Spiceholic
 				tempButtonBindings_[action] = buttons.front();
 			}
 		}
-	}
-
-	void InputSettingScene::selectNext_()
-	{
-		selectedFieldIndex_ = (selectedFieldIndex_ + 1) % SettingFieldList.size();
-	}
-
-	void InputSettingScene::selectPrevious_()
-	{
-		selectedFieldIndex_ = (selectedFieldIndex_ + SettingFieldList.size() - 1) % SettingFieldList.size();
 	}
 
 	void InputSettingScene::assignKey_(Action action)

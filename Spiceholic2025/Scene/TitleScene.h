@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "CustomScene.h"
+#include "Core/Menu.h"
 
 namespace Spiceholic
 {
@@ -18,14 +19,10 @@ namespace Spiceholic
 		void draw() const override;
 
 	private:
-		void selectNext_();
-		void selectPrevious_();
+		Menu menu_;
 
 		Stopwatch time_;
 		Stopwatch timeDecide_;
-
-		// 選択中の項目
-		size_t selectedMenuIndex_;
 
 		// キャラクタをランダムに変更
 		String randomCharaTexName_;

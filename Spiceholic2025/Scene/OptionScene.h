@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "App.h"
+#include "Core/Menu.h"
 
 namespace Spiceholic
 {
@@ -18,17 +19,9 @@ namespace Spiceholic
 		void draw() const override;
 
 	private:
-		// 次の設定項目を選択
-		void selectNext_();
-
-		// 前の設定項目を選択
-		void selectPrevious_();
-
-		// 選択中の設定項目
-		size_t selectedFieldIndex_;
+		Menu menu_;
 
 		// 描画用
-		Timer timerMoveCursor_;
 		Timer timerChangeValue_;
 		size_t valueChangedIndex_;
 	};

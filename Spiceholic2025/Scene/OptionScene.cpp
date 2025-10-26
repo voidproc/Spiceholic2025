@@ -92,8 +92,7 @@ namespace Spiceholic
 	OptionScene::OptionScene(const InitData& init)
 		:
 		App::Scene{ init },
-		selectedFieldIndex_{ 0 },
-		timerMoveCursor_{},
+		menu_{ SettingFieldList.size(), 0.1s },
 		timerChangeValue_{},
 		valueChangedIndex_{ 0 }
 	{
@@ -108,27 +107,21 @@ namespace Spiceholic
 		// カーソル移動
 		if (getData().actionInput->down(Action::MoveUp))
 		{
-			selectPrevious_();
-
-			// 描画用
-			timerMoveCursor_.restart(0.1s);
+			menu_.selectPrevious();
 
 			// SE
 			PlayAudioOneShot(U"Select2");
 		}
 		else if (getData().actionInput->down(Action::MoveDown))
 		{
-			selectNext_();
-
-			// 描画用
-			timerMoveCursor_.restart(0.1s);
+			menu_.selectNext();
 
 			// SE
 			PlayAudioOneShot(U"Select2");
 		}
 
 		// 操作対象
-		const auto& selectedField = SettingFieldList[selectedFieldIndex_];
+		const auto& selectedField = SettingFieldList[menu_.selectedIndex()];
 
 		// 選択項目に対する決定操作
 		if (getData().actionInput->down(Action::Decide))
@@ -157,7 +150,7 @@ namespace Spiceholic
 
 			// 描画用
 			timerChangeValue_.restart(0.2s);
-			valueChangedIndex_ = selectedFieldIndex_;
+			valueChangedIndex_ = menu_.selectedIndex();
 
 			// SE
 			PlayAudioOneShot(U"Select1");
@@ -176,31 +169,20 @@ namespace Spiceholic
 		for (const auto [iField, field] : Indexed(SettingFieldList))
 		{
 			const double fieldCenterY = Layout::LineHeight * (3.0 + iField + (iField == SettingFieldList.size() - 1 ? 0.5 : 0));
-			const bool selected = (iField == selectedFieldIndex_);
+			const bool selected = (iField == menu_.selectedIndex());
 
 			// 選択行
 			if (selected)
 			{
-				const double vibrateY = timerMoveCursor_.isRunning() * 2 * Periodic::Sine1_1(0.01s);
-				DrawSelectedLineHighlight(fieldCenterY + vibrateY);
+				DrawSelectedLineHighlight(fieldCenterY + MenuMoveCursorVibrateVertical(menu_).y);
 			}
 
-			const double labelShiftX = selected ? 4 * EaseOutCubic(timerMoveCursor_.progress0_1()) : 0;
+			const double labelShiftX = selected ? 4 * EaseOutCubic(menu_.moveCursorTimer().progress0_1()) : 0;
 			const ColorF labelColor = selected ? Theme::SelectedLabelColor : Theme::LabelColor;
 			const bool valueChanged = (iField == valueChangedIndex_) && timerChangeValue_.isRunning();
 			const double valueShiftX = valueChanged ? 2 * Periodic::Sine1_1(0.01s) : 0;
 			const ColorF valueColor = valueChanged ? Theme::ValueColor.lerp(Palette::Black, 0.5).lerp(Theme::ValueChangeColor, Periodic::Square0_1(0.034s)) : (selected ? Theme::SelectedColor : Theme::ValueColor);
 			DrawSettingField(*getData().userSetting, field, fieldCenterY, labelShiftX, valueShiftX, labelColor, valueColor);
 		}
-	}
-
-	void OptionScene::selectNext_()
-	{
-		selectedFieldIndex_ = (selectedFieldIndex_ + 1) % SettingFieldList.size();
-	}
-
-	void OptionScene::selectPrevious_()
-	{
-		selectedFieldIndex_ = (selectedFieldIndex_ + SettingFieldList.size() - 1) % SettingFieldList.size();
 	}
 }

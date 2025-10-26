@@ -13,12 +13,9 @@ namespace Spiceholic
 		size_t selectedIndex() const;
 		const Timer& moveCursorTimer() const;
 
-
-
 		void decide();
 		void resetDecideTimer();
 		const Timer& decideTimer() const;
-
 
 	private:
 		size_t itemCount_;

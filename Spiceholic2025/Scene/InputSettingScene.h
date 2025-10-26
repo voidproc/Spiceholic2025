@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include "CustomScene.h"
+#include "Core/Menu.h"
 
 namespace Spiceholic
 {
@@ -23,12 +24,6 @@ namespace Spiceholic
 		// 入力割り当て設定をInputSceneからコピーしてくる
 		void copySettingToTemporaryData_();
 
-		// 次の設定項目を選択
-		void selectNext_();
-
-		// 前の設定項目を選択
-		void selectPrevious_();
-
 		// キー入力割り当て処理
 		void assignKey_(Action action);
 
@@ -42,7 +37,7 @@ namespace Spiceholic
 		void startTimerSetKey_(Action action, const Duration& time);
 		void startTimerSetButton_(Action action, const Duration& time);
 
-		size_t selectedFieldIndex_;
+		Menu menu_;
 
 		// 入力割り当て設定（キー）
 		// このシーン開始時にInputSettingからコピーされ、シーン終了時に書き戻される

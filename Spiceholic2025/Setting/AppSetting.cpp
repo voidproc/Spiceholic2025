@@ -37,8 +37,14 @@ namespace Spiceholic
 		}
 		for (const auto& object : json[U"StageSubtitleMap"])
 		{
-			settings_.stageSubtitles[object.key] = subtitles[object.value.get<int>()];
+			settings_.stageSubtitle[object.key] = subtitles[object.value.get<int>()];
 		}
+
+		for (const auto& object : json[U"StageGroundMap"])
+		{
+			settings_.stageGroundTexture[object.key] = object.value.getString();
+		}
+
 	}
 
 	const AppSetting::Settings& AppSetting::get() const

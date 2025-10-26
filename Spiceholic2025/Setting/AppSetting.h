@@ -18,7 +18,8 @@ namespace Spiceholic
 			String title;
 			String version;
 			HashTable<String, SpriteInfo> sprite;
-			HashTable<String, String> stageSubtitles;
+			HashTable<String, String> stageSubtitle;
+			HashTable<String, String> stageGroundTexture;
 
 			struct
 			{

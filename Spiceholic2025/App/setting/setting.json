@@ -81,5 +81,17 @@
     "8": 1,
     "9": 1,
     "10": 1
+  },
+  "StageGroundMap":{
+    "1": "Ground1",
+    "2": "Ground1",
+    "3": "Ground1",
+    "4": "Ground1",
+    "5": "Ground1",
+    "6": "Ground2",
+    "7": "Ground2",
+    "8": "Ground2",
+    "9": "Ground2",
+    "10": "Ground2"
   }
 }

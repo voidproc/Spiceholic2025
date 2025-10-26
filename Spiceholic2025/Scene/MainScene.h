@@ -43,6 +43,7 @@ namespace Spiceholic
 
 		// プレイヤー位置に追従するカメラ
 		Transformer2D cameraScrollTransform_() const;
+		RectF smoothCameraRect_;
 
 		void drawHUD_() const;
 

@@ -307,6 +307,7 @@ namespace Spiceholic
 	MainScene::MainScene(const InitData& init)
 		:
 		CustomScene{ init },
+		smoothCameraRect_{},
 		time_{ StartImmediately::No, Clock() },
 		stageClearTime_{ 0 },
 		timeStageStart_{ StartImmediately::Yes, Clock() },
@@ -581,6 +582,10 @@ namespace Spiceholic
 	{
 		// ◆ メインシーンの通常状態の更新
 
+		// カメラ位置
+		const auto camRect = CameraRect(getData());
+		smoothCameraRect_.pos += (camRect.pos - smoothCameraRect_.pos).limitLength(4.0 * 60 * Scene::DeltaTime());
+
 		// ポーズの切替
 		if (getData().actionInput->down(Action::Pause))
 		{
@@ -638,7 +643,7 @@ namespace Spiceholic
 		// 炎ゲージ更新
 		getData().gauge->update();
 
-		// ゲージマックス時ブロック破壊
+		// ゲージマックス時ブロック破壊とスクロールロック解除
 		if (timerGaugeMax_.reachedZero())
 		{
 			timerGaugeMax_.reset();
@@ -659,6 +664,9 @@ namespace Spiceholic
 		{
 			getData().blocks[i]->setInactiveIfSecret();
 		}
+
+		// スクロールロック解除
+		getData().stageData->openedSecretRoute = true;
 	}
 
 	void MainScene::updateSnow_()
@@ -789,7 +797,8 @@ namespace Spiceholic
 
 	Transformer2D MainScene::cameraScrollTransform_() const
 	{
-		return CameraTransform(getData());
+		const Vec2 cameraMove = -smoothCameraRect_.pos;
+		return Transformer2D{ Mat3x2::Translate(cameraMove) };
 	}
 
 	void MainScene::drawHUD_() const
@@ -938,9 +947,9 @@ namespace Spiceholic
 
 	void MainScene::onGaugeMax_()
 	{
-		if (not getData().stageData->openedSecretRoute)
+		if (not getData().stageData->openedSecretRoute && not timerGaugeMax_.isStarted())
 		{
-			getData().stageData->openedSecretRoute = true;
+			// スクロールロック解除(openedSecretRoute => true)はブロック破壊と同時に行う
 
 			// ゲージマックス時ゲージエフェクト
 			getData().gauge->startDrawMaxEffect();

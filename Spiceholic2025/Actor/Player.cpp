@@ -165,6 +165,9 @@ namespace Spiceholic
 				// ゲージ消費
 				gameData_.gauge->add(-10);
 
+				// 画面揺れ
+				GetDispatch().publish<CameraShakeEvent>({ 1.0, 0.08s });
+
 				//SE
 				PlayAudioOneShot(U"Select1");//暫定
 			}

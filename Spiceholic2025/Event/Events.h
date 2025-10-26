@@ -9,4 +9,10 @@ namespace Spiceholic
 	struct GaugeMaxEvent
 	{
 	};
+
+	struct CameraShakeEvent
+	{
+		double intensity = 1.0;
+		Duration time = 0.08s;
+	};
 }

@@ -5,6 +5,8 @@
 #include "Audio/AudioPlay.h"
 #include "Config/GameConfig.h"
 #include "Core/DrawSprite.h"
+#include "Event/Dispatch.h"
+#include "Event/Events.h"
 
 namespace Spiceholic
 {
@@ -79,6 +81,9 @@ namespace Spiceholic
 		// アイテム放出
 		MakeItems(bringItems_, gameData_, position().currentPos());
 
+		// 画面揺れ
+		GetDispatch().publish<CameraShakeEvent>({ 1.0, 0.08s });
+
 		// SE
 		PlayAudioOneShot(U"Explosion2");
 	}
@@ -110,7 +115,16 @@ namespace Spiceholic
 		if (secretRoute_)
 		{
 			setInactive(false);
+
+			// 爆発
 			explode();
+
+			// 画面揺れ
+			GetDispatch().publish<CameraShakeEvent>({ 1.5, 0.12s });
+
+			// SE
+			PlayAudioOneShot(U"Explosion2");
+
 		}
 	}
 }

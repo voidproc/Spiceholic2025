@@ -5,6 +5,8 @@
 
 namespace Spiceholic
 {
+	struct CameraShakeEvent;
+
 	class MainScene : public CustomScene
 	{
 	public:
@@ -37,7 +39,7 @@ namespace Spiceholic
 		void drawMain_() const;
 
 		// プレイヤー位置に追従するカメラ
-		Transformer2D cameraTransform_() const;
+		Transformer2D cameraScrollTransform_() const;
 
 		void drawHUD_() const;
 
@@ -55,6 +57,9 @@ namespace Spiceholic
 
 		// 購読イベント
 		void onGaugeMax_();
+
+		// 購読イベント
+		void onCameraShakeEvent_(const CameraShakeEvent& event);
 
 		// ステージプレイ時間
 		Stopwatch time_;
@@ -91,6 +96,9 @@ namespace Spiceholic
 		Timer timerPauseMenuDecide_;
 		Timer timerPauseMenuMoveCursor_;
 
+		// 画面揺れ
+		double cameraShakeIntensity_;
+		Timer timerCameraShake_;
 
 	};
 }

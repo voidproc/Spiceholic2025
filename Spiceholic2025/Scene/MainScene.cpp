@@ -306,7 +306,9 @@ namespace Spiceholic
 		selectedPauseMenuIndex_{ 0 },
 		timePause_{ StartImmediately::No },
 		timerPauseMenuDecide_{ 0.80s, StartImmediately::No },
-		timerPauseMenuMoveCursor_{}
+		timerPauseMenuMoveCursor_{},
+		cameraShakeIntensity_{ 1.0 },
+		timerCameraShake_{ 0.08s, StartImmediately::No, Clock() }
 	{
 		// ステージデータ読み込み
 		LoadStage(getData().nextStageID, *getData().stageData);
@@ -332,12 +334,14 @@ namespace Spiceholic
 		// イベント購読
 		GetDispatch().subscribe<GetKeyEvent, &MainScene::onGetKey_>(this);
 		GetDispatch().subscribe<GaugeMaxEvent, &MainScene::onGaugeMax_>(this);
+		GetDispatch().subscribe<CameraShakeEvent, &MainScene::onCameraShakeEvent_>(this);
 	}
 
 	MainScene::~MainScene()
 	{
 		GetDispatch().unsubscribe<GetKeyEvent>(this);
 		GetDispatch().unsubscribe<GaugeMaxEvent>(this);
+		GetDispatch().unsubscribe<CameraShakeEvent>(this);
 	}
 
 	void MainScene::update()
@@ -584,9 +588,6 @@ namespace Spiceholic
 		for (size_t i = 0; i < getData().blocks.size(); ++i)
 		{
 			getData().blocks[i]->setInactiveIfSecret();
-
-			// 今回呼ばないonDeadのなかででSEを鳴らしているため
-			PlayAudioOneShot(U"Explosion2");
 		}
 	}
 
@@ -643,7 +644,10 @@ namespace Spiceholic
 		const ScopedViewport2D viewport{ ActorsFieldViewportRect };
 
 		// プレイヤー位置に追従するカメラ
-		const auto camera = cameraTransform_();
+		const auto camera = cameraScrollTransform_();
+
+		const Vec2 shakeAmount = timerCameraShake_.isRunning() ? (2.0 * Vec2{ 1, 0 } * cameraShakeIntensity_ * Periodic::Sine1_1(0.04s, ClockTime()) * timerCameraShake_.progress1_0()) : Vec2{};
+		const Transformer2D shake{ Mat3x2::Translate(shakeAmount) };
 
 		// アクターの影
 		for (const auto& shadowPos : shadowPosList_)
@@ -667,7 +671,7 @@ namespace Spiceholic
 		getData().player->draw();
 	}
 
-	Transformer2D MainScene::cameraTransform_() const
+	Transformer2D MainScene::cameraScrollTransform_() const
 	{
 		const SizeF mapSize = getData().stageData->gridSize * TileSize;
 		const Vec2 playerPos = getData().player->position().currentPos();
@@ -813,5 +817,11 @@ namespace Spiceholic
 			// 時間差でブロック破壊
 			timerGaugeMax_.start();
 		}
+	}
+
+	void MainScene::onCameraShakeEvent_(const CameraShakeEvent& event)
+	{
+		cameraShakeIntensity_ = event.intensity;
+		timerCameraShake_.restart(event.time);
 	}
 }

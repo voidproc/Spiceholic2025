@@ -10,6 +10,12 @@ namespace Spiceholic
 		Point pos;
 	};
 
+	struct StageGroupInfo
+	{
+		String subtitle;
+		String groundTexture;
+	};
+
 	class AppSetting
 	{
 	public:
@@ -18,8 +24,9 @@ namespace Spiceholic
 			String title;
 			String version;
 			HashTable<String, SpriteInfo> sprite;
-			HashTable<String, String> stageSubtitle;
-			HashTable<String, String> stageGroundTexture;
+			HashTable<String, StageGroupInfo> stageGroupInfo;
+			//HashTable<String, String> stageSubtitle;
+			//HashTable<String, String> stageGroundTexture;
 
 			struct
 			{

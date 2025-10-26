@@ -30,21 +30,19 @@ namespace Spiceholic
 			settings_.sprite[s.key] = sprite;
 		}
 
-		Array<String> subtitles;
-		for (auto&& [index, object] : json[U"StageSubtitle"])
+		Array<StageGroupInfo> stageGroups;
+		for (auto&& [index, object] : json[U"StageGroupInfo"])
 		{
-			subtitles.push_back(object.getString());
-		}
-		for (const auto& object : json[U"StageSubtitleMap"])
-		{
-			settings_.stageSubtitle[object.key] = subtitles[object.value.get<int>()];
-		}
-
-		for (const auto& object : json[U"StageGroundMap"])
-		{
-			settings_.stageGroundTexture[object.key] = object.value.getString();
+			StageGroupInfo info;
+			info.subtitle = object[U"Subtitle"].getString();
+			info.groundTexture = object[U"Ground"].getString();
+			stageGroups.push_back(info);
 		}
 
+		for (const auto& object : json[U"StageGroupMap"])
+		{
+			settings_.stageGroupInfo[object.key] = stageGroups[object.value.get<int>()];
+		}
 	}
 
 	const AppSetting::Settings& AppSetting::get() const

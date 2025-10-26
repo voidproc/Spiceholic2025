@@ -669,7 +669,8 @@ namespace Spiceholic
 		// 地面
 		{
 			const ScopedRenderStates2D sampler{ SamplerState::RepeatNearest };
-			TextureAsset(getData().appSetting->get().stageGroundTexture[getData().stageData->stageID]).mapped(getData().stageData->gridSize * TileSize).draw();
+			StringView textureName = getData().appSetting->get().stageGroupInfo[getData().stageData->stageID].groundTexture;
+			TextureAsset(textureName).mapped(getData().stageData->gridSize * TileSize).draw();
 		}
 
 		// アクターの影
@@ -725,7 +726,7 @@ namespace Spiceholic
 		// ステージ名
 		const ColorF textColor{ Palette::Seashell.lerp(Palette::Red, 0.1 * Periodic::Square0_1(0.25s, ClockTime())) };
 		const ColorF shadowColor{ Palette::Crimson.lerp(Palette::Silver, 0.3), 0.8 - 0.1 * Periodic::Square0_1(0.25s, ClockTime()) };
-		const String& text = U"ステージ {} {}"_fmt(getData().stageData->stageID, getData().appSetting->get().stageSubtitle[getData().stageData->stageID]);
+		const String& text = U"ステージ {} {}"_fmt(getData().stageData->stageID, getData().appSetting->get().stageGroupInfo[getData().stageData->stageID].subtitle);
 		DrawText(U"px7812", text, Arg::center = regionHudU.center(), textColor, shadowColor);
 
 		// ゲージ枠、ゲージ

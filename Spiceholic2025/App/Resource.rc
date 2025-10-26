@@ -156,6 +156,7 @@ Resource(stage/stage_3.tmj)
 Resource(stage/stage_4.tmj)
 Resource(stage/stage_5.tmj)
 Resource(stage/stage_6.tmj)
+Resource(stage/stage_7.tmj)
 
 Resource(audio/select1.wav)
 Resource(audio/select2.wav)

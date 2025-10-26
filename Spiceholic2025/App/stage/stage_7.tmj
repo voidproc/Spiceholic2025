@@ -10,8 +10,8 @@
             2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2,
             2, 2, 2, 0, 0, 0, 2, 2, 2, 0, 0, 0, 2, 2, 2,
             2, 2, 2, 0, 0, 0, 2, 2, 2, 0, 0, 0, 2, 2, 2,
-            2, 2, 2, 0, 0, 0, 4, 0, 0, 0, 0, 0, 2, 2, 2,
-            2, 2, 2, 0, 0, 0, 4, 0, 0, 0, 0, 0, 2, 2, 2,
+            2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2,
+            2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2,
             2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
             2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
          "height":10,
@@ -38,7 +38,7 @@
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":64,
+                 "x":160,
                  "y":120
                 }, 
                 {
@@ -87,7 +87,7 @@
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":168,
+                 "x":48,
                  "y":56
                 }, 
                 {
@@ -165,8 +165,70 @@
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":168,
+                 "x":48,
                  "y":120
+                }, 
+                {
+                 "gid":5,
+                 "height":16,
+                 "id":38,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":80,
+                 "y":112
+                }, 
+                {
+                 "gid":5,
+                 "height":16,
+                 "id":39,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":80,
+                 "y":128
+                }, 
+                {
+                 "gid":3,
+                 "height":16,
+                 "id":44,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"BringItems",
+                         "propertytype":"BringItems",
+                         "type":"string",
+                         "value":"Chilipepper1"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":128,
+                 "y":112
+                }, 
+                {
+                 "gid":3,
+                 "height":16,
+                 "id":45,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"BringItems",
+                         "propertytype":"BringItems",
+                         "type":"string",
+                         "value":"Chilipepper1"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":128,
+                 "y":128
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -175,13 +237,13 @@
          "y":0
         }],
  "nextlayerid":3,
- "nextobjectid":36,
+ "nextobjectid":46,
  "orientation":"orthogonal",
  "properties":[
         {
          "name":"NextStageID",
          "type":"string",
-         "value":"7"
+         "value":"1"
         }],
  "renderorder":"right-down",
  "tiledversion":"1.11.0",

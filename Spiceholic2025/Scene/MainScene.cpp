@@ -258,6 +258,12 @@ namespace Spiceholic
 			}
 		}
 
+		template <class T>
+		void RemoveInactiveActors(Array<std::unique_ptr<T>>& actors)
+		{
+			actors.remove_if([](const auto& actor) { return not actor->active(); });
+		}
+
 		int EnemyCount(const Array<std::unique_ptr<Actor>>& actors)
 		{
 			int enemyCount = 0;
@@ -445,6 +451,8 @@ namespace Spiceholic
 				actor->update();
 			}
 		}
+
+		RemoveInactiveActors(getData().actors);
 	}
 
 	void MainScene::updatePaused_()
@@ -578,8 +586,8 @@ namespace Spiceholic
 		CheckCollision(player, actors, blocks);
 
 		// アクターの破棄
-		actors.remove_if([](const auto& actor) { return not actor->active(); });
-		blocks.remove_if([](const auto& block) { return not block->active(); });
+		RemoveInactiveActors(actors);
+		RemoveInactiveActors(blocks);
 
 		// 敵全滅判定
 		if (EnemyCount(getData().actors) == 0 && initialEnemyCount_ != 0 && initialKeyCount_ == 0)

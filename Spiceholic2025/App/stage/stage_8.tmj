@@ -5,14 +5,14 @@
  "layers":[
         {
          "data":[2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-            2, 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 2, 2,
-            2, 2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0, 2, 2,
-            2, 2, 4, 0, 4, 2, 0, 0, 0, 2, 4, 0, 4, 2, 2,
-            2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2,
-            2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2,
-            2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2,
-            2, 2, 2, 2, 2, 2, 0, 0, 0, 2, 2, 2, 2, 2, 2,
-            2, 2, 2, 2, 2, 2, 0, 0, 0, 2, 2, 2, 2, 2, 2,
+            2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+            2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2,
+            2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2,
+            2, 2, 2, 0, 0, 0, 2, 2, 2, 0, 0, 0, 2, 2, 2,
+            2, 2, 2, 0, 0, 0, 2, 2, 2, 0, 0, 0, 2, 2, 2,
+            2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2,
+            2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2,
+            2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
             2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
          "height":10,
          "id":1,
@@ -38,83 +38,8 @@
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":112,
-                 "y":96
-                }, 
-                {
-                 "gid":17,
-                 "height":16,
-                 "id":3,
-                 "name":"",
-                 "properties":[
-                        {
-                         "name":"BringItems",
-                         "propertytype":"BringItems",
-                         "type":"string",
-                         "value":"Chilipepper2"
-                        }, 
-                        {
-                         "name":"Direction",
-                         "propertytype":"Direction",
-                         "type":"string",
-                         "value":"Right"
-                        }, 
-                        {
-                         "name":"HasKey",
-                         "type":"bool",
-                         "value":false
-                        }, 
-                        {
-                         "name":"SubType",
-                         "type":"int",
-                         "value":0
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":32,
-                 "y":96
-                }, 
-                {
-                 "gid":17,
-                 "height":16,
-                 "id":4,
-                 "name":"",
-                 "properties":[
-                        {
-                         "name":"BringItems",
-                         "propertytype":"BringItems",
-                         "type":"string",
-                         "value":"Chilipepper2"
-                        }, 
-                        {
-                         "name":"Direction",
-                         "propertytype":"Direction",
-                         "type":"string",
-                         "value":"Left"
-                        }, 
-                        {
-                         "name":"HasKey",
-                         "type":"bool",
-                         "value":false
-                        }, 
-                        {
-                         "name":"SpawnTime",
-                         "type":"float",
-                         "value":3
-                        }, 
-                        {
-                         "name":"SubType",
-                         "type":"int",
-                         "value":0
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":192,
-                 "y":96
+                 "x":160,
+                 "y":120
                 }, 
                 {
                  "gid":7,
@@ -143,7 +68,80 @@
                 {
                  "gid":17,
                  "height":16,
-                 "id":7,
+                 "id":29,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"BringItems",
+                         "propertytype":"BringItems",
+                         "type":"string",
+                         "value":"Chilipepper1"
+                        }, 
+                        {
+                         "name":"Direction",
+                         "propertytype":"Direction",
+                         "type":"string",
+                         "value":"Left"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":48,
+                 "y":56
+                }, 
+                {
+                 "gid":5,
+                 "height":16,
+                 "id":31,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":112,
+                 "y":48
+                }, 
+                {
+                 "gid":5,
+                 "height":16,
+                 "id":32,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":112,
+                 "y":64
+                }, 
+                {
+                 "gid":5,
+                 "height":16,
+                 "id":33,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":112,
+                 "y":112
+                }, 
+                {
+                 "gid":5,
+                 "height":16,
+                 "id":34,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":112,
+                 "y":128
+                }, 
+                {
+                 "gid":17,
+                 "height":16,
+                 "id":35,
                  "name":"",
                  "properties":[
                         {
@@ -156,7 +154,7 @@
                          "name":"Direction",
                          "propertytype":"Direction",
                          "type":"string",
-                         "value":"None"
+                         "value":"Left"
                         }, 
                         {
                          "name":"SpawnTime",
@@ -167,67 +165,56 @@
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":112,
-                 "y":32
+                 "x":48,
+                 "y":120
                 }, 
                 {
-                 "gid":2,
+                 "gid":5,
                  "height":16,
-                 "id":12,
+                 "id":38,
                  "name":"",
-                 "properties":[
-                        {
-                         "name":"SecretRoute",
-                         "type":"bool",
-                         "value":true
-                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":96,
-                 "y":64
+                 "x":80,
+                 "y":112
                 }, 
                 {
-                 "gid":2,
+                 "gid":5,
                  "height":16,
-                 "id":13,
+                 "id":39,
                  "name":"",
-                 "properties":[
-                        {
-                         "name":"SecretRoute",
-                         "type":"bool",
-                         "value":true
-                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":112,
-                 "y":64
+                 "x":80,
+                 "y":128
                 }, 
                 {
-                 "gid":2,
+                 "gid":3,
                  "height":16,
-                 "id":14,
+                 "id":44,
                  "name":"",
                  "properties":[
                         {
-                         "name":"SecretRoute",
-                         "type":"bool",
-                         "value":true
+                         "name":"BringItems",
+                         "propertytype":"BringItems",
+                         "type":"string",
+                         "value":"Chilipepper1"
                         }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":16,
                  "x":128,
-                 "y":64
+                 "y":112
                 }, 
                 {
                  "gid":3,
                  "height":16,
-                 "id":15,
+                 "id":45,
                  "name":"",
                  "properties":[
                         {
@@ -240,27 +227,8 @@
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":176,
-                 "y":64
-                }, 
-                {
-                 "gid":3,
-                 "height":16,
-                 "id":16,
-                 "name":"",
-                 "properties":[
-                        {
-                         "name":"BringItems",
-                         "propertytype":"BringItems",
-                         "type":"string",
-                         "value":"Chilipepper1"
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":48,
-                 "y":64
+                 "x":128,
+                 "y":128
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -269,13 +237,13 @@
          "y":0
         }],
  "nextlayerid":3,
- "nextobjectid":18,
+ "nextobjectid":46,
  "orientation":"orthogonal",
  "properties":[
         {
          "name":"NextStageID",
          "type":"string",
-         "value":"5"
+         "value":"9"
         }],
  "renderorder":"right-down",
  "tiledversion":"1.11.0",

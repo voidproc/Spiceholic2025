@@ -103,6 +103,9 @@ namespace Spiceholic
 
 		// 爆発
 		explode_();
+
+		// SE
+		PlayAudioOneShot(U"Explosion2");
 	}
 
 	void Enemy::explode_()

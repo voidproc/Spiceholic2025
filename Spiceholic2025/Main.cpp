@@ -46,6 +46,7 @@ namespace
 		TextureAsset::Register(U"DragonGirl2", Resource(U"image/dragon_girl_2.png"));
 		TextureAsset::Register(U"Ground1", Resource(U"image/ground_1.png"));
 		TextureAsset::Register(U"Ground2", Resource(U"image/ground_2.png"));
+		TextureAsset::Register(U"Ground3", Resource(U"image/ground_3.png"));
 
 		//Load
 		//...

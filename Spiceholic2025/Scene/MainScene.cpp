@@ -635,10 +635,10 @@ namespace Spiceholic
 		{
 			timerSnow_.restart();
 
-			for (int i = 0; i < 6; ++i)
+			for (int i = 0; i < 8; ++i)
 			{
 				snow_.push_back(Snow{
-					Vec2{ i * SceneSize.x / 6 + Random(-24,24), Random(-16, 0) } + camRect.pos,
+					Vec2{ i * (SceneSize.x + 140) / 8 - 70 + Random(-32, 32), Random(-16, 0) } + camRect.pos,
 					time_.sF() + i + Random() * 8,
 					true
 					});
@@ -652,7 +652,7 @@ namespace Spiceholic
 			s.active = RandomBool(0.995);
 		}
 
-		const auto camRect2 = camRect.stretched(Arg::top = 32);
+		const auto camRect2 = camRect.stretched(32, 80, 0, 80);
 		snow_.remove_if([&](const auto& s) { return not camRect2.intersects(s.pos) || not s.active; });
 	}
 

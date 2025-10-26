@@ -142,7 +142,7 @@ namespace Spiceholic
 		{
 			// アイテム取得時点滅
 			const double t = (timerGetItem_.isRunning()) ? Periodic::Square0_1(0.06s, ClockTime()) : 1;
-			ScopedColorMul2D mul{ t, t, t, 1 };
+			ScopedColorMul2D mul{ t, 1 };
 			ScopedColorAdd2D add{ (1 - t) * 0.8, (1 - t) * 0.8, (1 - t) * 0, 0 };
 
 			TextureAsset(sprite.textureName)(sprite.pos + Vec2{ animFrame * sprite.size, 0 }, sprite.size, sprite.size)

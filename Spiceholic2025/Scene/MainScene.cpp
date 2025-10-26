@@ -698,7 +698,8 @@ namespace Spiceholic
 		// ステージ名
 		const ColorF textColor{ Palette::Seashell.lerp(Palette::Red, 0.1 * Periodic::Square0_1(0.25s, ClockTime())) };
 		const ColorF shadowColor{ Palette::Crimson.lerp(Palette::Silver, 0.3), 0.8 - 0.1 * Periodic::Square0_1(0.25s, ClockTime()) };
-		DrawText(U"px7812", U"ステージ {} {}"_fmt(getData().stageData->stageID, getData().appSetting->get().stageSubtitles[getData().stageData->stageID]), Arg::center = regionHudU.center(), textColor, shadowColor);
+		const String& text = U"ステージ {} {}"_fmt(getData().stageData->stageID, getData().appSetting->get().stageSubtitles[getData().stageData->stageID]);
+		DrawText(U"px7812", text, Arg::center = regionHudU.center(), textColor, shadowColor);
 
 		// ゲージ枠、ゲージ
 		getData().gauge->draw();

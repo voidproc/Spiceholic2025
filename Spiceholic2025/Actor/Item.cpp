@@ -99,9 +99,10 @@ namespace Spiceholic
 		const ColorF color{ 1 };
 
 		// 白点滅
+		const double alpha = timeJumpToPlayer_.isRunning() ? 0.4 + 0.6 * Periodic::Square0_1(0.07s) : 1;
 		const double t = 1.0 - EaseInOutCubic(Periodic::Triangle0_1(0.5s, time_.sF())) * Periodic::Square0_1(1.0s, time_.sF());
-		ScopedColorMul2D mul(t, t, t, 1);
-		ScopedColorAdd2D add(1 - t, 1 - t, 1 - t, 0);
+		ScopedColorMul2D mul(t, alpha);
+		ScopedColorAdd2D add(1 - t, 0);
 
 		if (type() == ActorType::ItemChilipepper)
 		{

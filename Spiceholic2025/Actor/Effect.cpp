@@ -186,7 +186,7 @@ namespace Spiceholic
 			time_.start();
 		}
 
-		if (time_ >= 0.4s)
+		if (time_ >= 0.35s)
 		{
 			setInactive();
 		}
@@ -199,10 +199,10 @@ namespace Spiceholic
 
 	void FxSmoke2::draw() const
 	{
-		if (time_.isRunning() && time_ < 0.4s)
+		if (time_.isRunning() && time_ < 0.35s)
 		{
 			Transformer2D scale{ Mat3x2::Scale(scale_, position().currentPos()) };
-			DrawSprite(*gameData_.appSetting, U"Smoke", 0.4s, mirror_, position().currentPos(), time_.sF());
+			DrawSprite(*gameData_.appSetting, U"Smoke", 0.35s, mirror_, position().currentPos(), time_.sF());
 		}
 	}
 

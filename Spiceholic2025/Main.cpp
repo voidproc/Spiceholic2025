@@ -48,6 +48,7 @@ namespace
 		TextureAsset::Register(U"Ground1", Resource(U"image/ground_1.png"));
 		TextureAsset::Register(U"Ground2", Resource(U"image/ground_2.png"));
 		TextureAsset::Register(U"Ground3", Resource(U"image/ground_3.png"));
+		TextureAsset::Register(U"Ground4", Resource(U"image/ground_4.png"));
 		TextureAsset::Register(U"Snow", Resource(U"image/snow.png"));
 		TextureAsset::Register(U"Head", Resource(U"image/head.png"));
 		TextureAsset::Register(U"Smoke", Resource(U"image/smoke.png"));
@@ -76,6 +77,7 @@ namespace
 		FontAsset::Register(U"px7812m", std::move(data_px7812m));
 		FontAsset::Register(U"k8x12L", std::move(data_k8x12L));
 		FontAsset::Register(U"NotJamSig21", 21, Resource(U"font/Not_Jam_Signature_21.ttf"), FontStyle::Bitmap);
+		FontAsset::Register(U"m3x6", 16, Resource(U"font/m3x6.ttf"), FontStyle::Bitmap);
 
 		//Load
 		//...
@@ -95,6 +97,7 @@ namespace
 		AudioAsset::Register(U"Damage1Loop", Audio::Stream, Resource(U"audio/damage1_loop.ogg"), Loop::Yes);
 		AudioAsset::Register(U"Decide1", Resource(U"audio/decide1.ogg"));
 		AudioAsset::Register(U"Pause1", Resource(U"audio/pause1.wav"));
+		AudioAsset::Register(U"Spawn", Resource(U"audio/spawn.wav"));
 		AudioAsset::Register(U"Area1", Audio::Stream, Resource(U"audio/area1.ogg"), Loop::Yes);
 		AudioAsset::Register(U"Area2", Audio::Stream, Resource(U"audio/area2.ogg"), Loop::Yes);
 		AudioAsset::Register(U"Area4", Audio::Stream, Resource(U"audio/area4.ogg"), Loop::Yes);

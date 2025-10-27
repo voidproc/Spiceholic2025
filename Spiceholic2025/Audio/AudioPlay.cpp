@@ -4,6 +4,15 @@ namespace Spiceholic
 {
 	constexpr int AudioVoiceCountMax = 32;
 
+	namespace
+	{
+		const Array<StringView> BgmList = {
+			U"Area1"_sv,
+			U"Area2"_sv,
+			U"Area4"_sv,
+		};
+	}
+
 	void PlayAudioOneShot(StringView assetName)
 	{
 		if (GlobalAudio::GetActiveVoiceCount() < AudioVoiceCountMax)
@@ -15,13 +24,17 @@ namespace Spiceholic
 
 	void StopAllBgm()
 	{
-		AudioAsset(U"Area1").stop();
-		AudioAsset(U"Area2").stop();
+		for (const auto& bgm : BgmList)
+		{
+			AudioAsset(bgm).stop();
+		}
 	}
 
 	void StopAllBgm(const Duration& fade)
 	{
-		AudioAsset(U"Area1").stop(fade);
-		AudioAsset(U"Area2").stop(fade);
+		for (const auto& bgm : BgmList)
+		{
+			AudioAsset(bgm).stop(fade);
+		}
 	}
 }

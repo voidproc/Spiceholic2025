@@ -94,7 +94,7 @@
                          "name":"Direction",
                          "propertytype":"Direction",
                          "type":"string",
-                         "value":"Left"
+                         "value":"Right"
                         }, 
                         {
                          "name":"SubType",
@@ -105,7 +105,7 @@
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":104,
+                 "x":112,
                  "y":272
                 }, 
                 {
@@ -210,7 +210,7 @@
                          "name":"Direction",
                          "propertytype":"Direction",
                          "type":"string",
-                         "value":"Right"
+                         "value":"Left"
                         }, 
                         {
                          "name":"SpawnTime",
@@ -226,7 +226,7 @@
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":120,
+                 "x":112,
                  "y":208
                 }, 
                 {

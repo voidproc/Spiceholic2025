@@ -106,6 +106,9 @@ namespace Spiceholic
 				if ((actor->tag() == ActorTag::Enemy || actor->tag() == ActorTag::Block) && spawn.time > 1e-3)
 				{
 					MakeSmokes(gameData, spawn.position);
+
+					// SE
+					PlayAudioOneShot(U"Spawn");
 				}
 			}
 		}
@@ -873,10 +876,30 @@ namespace Spiceholic
 		TextureAsset(U"Head")(0, (int)getData().stageData->stageGroup.group * 16, 50, 16).draw(1, 0);
 
 		// ステージ名
-		const ColorF textColor{ Palette::Seashell.lerp(Palette::Red, 0.1 * Periodic::Square0_1(0.25s, ClockTime())) };
-		const ColorF shadowColor{ Palette::Crimson.lerp(Palette::Silver, 0.3), 0.8 - 0.1 * Periodic::Square0_1(0.25s, ClockTime()) };
+		constexpr std::array<ColorF, 4> textColorList = {
+			Palette::Forestgreen,
+			Palette::Olive,
+			Palette::Dodgerblue,
+			Palette::Red,
+		};
+		constexpr std::array<ColorF, 4> shadowColorList = {
+			Palette::Green,
+			Palette::Darkolivegreen,
+			Palette::Steelblue.lerp(Palette::Black, 0.3),
+			Palette::Crimson,
+		};
+
+		const auto group = FromEnum(getData().stageData->stageGroup.group);
+		const ColorF textColor{ Palette::Whitesmoke.lerp(textColorList[group], 0.1 * Periodic::Square0_1(0.25s, ClockTime()))};
+		const ColorF shadowColor{ shadowColorList[group].lerp(Palette::Silver, 0.3), 0.8 - 0.1 * Periodic::Square0_1(0.25s, ClockTime())};
 		const String& text = U"ステージ {} {}"_fmt(getData().stageData->stageID, getData().stageData->stageGroup.subtitle);
 		DrawText(U"px7812", text, Arg::center = regionHudU.center(), textColor, shadowColor);
+
+		// 経過時間
+		const int32 timeSec = (timeDestroyAllEnemy_.isRunning() || timeGetKey_.isRunning() || timeStageClear_.isRunning()) ? static_cast<int32>(stageClearTime_) : time_.s();
+		const String textTime = U"{:02d}:{:02d}"_fmt(timeSec / 60, timeSec % 60);
+		DrawText(U"m3x6", textTime, Arg::rightCenter = regionHudU.rightCenter() - Vec2{ 4, 2 }, textColor, shadowColor);
+
 
 		// ゲージ枠、ゲージ
 		getData().gauge->draw();

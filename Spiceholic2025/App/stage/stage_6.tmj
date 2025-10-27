@@ -6,12 +6,12 @@
         {
          "data":[2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
             2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-            2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2,
-            2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2,
-            2, 2, 2, 0, 0, 0, 2, 2, 2, 0, 0, 0, 2, 2, 2,
-            2, 2, 2, 0, 0, 0, 2, 2, 2, 0, 0, 0, 2, 2, 2,
-            2, 2, 2, 0, 0, 0, 4, 0, 0, 0, 0, 0, 2, 2, 2,
-            2, 2, 2, 0, 0, 0, 4, 0, 0, 0, 0, 0, 2, 2, 2,
+            2, 2, 2, 0, 0, 5, 0, 5, 0, 0, 0, 0, 2, 2, 2,
+            2, 2, 2, 0, 0, 5, 0, 5, 0, 0, 0, 0, 2, 2, 2,
+            2, 2, 2, 0, 2, 5, 2, 5, 0, 0, 0, 0, 2, 2, 2,
+            2, 2, 2, 0, 2, 5, 2, 5, 0, 0, 0, 0, 2, 2, 2,
+            2, 2, 2, 0, 0, 5, 0, 5, 0, 0, 0, 0, 2, 2, 2,
+            2, 2, 2, 0, 0, 5, 0, 5, 0, 0, 0, 0, 2, 2, 2,
             2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
             2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
          "height":10,
@@ -38,8 +38,8 @@
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":64,
-                 "y":120
+                 "x":160,
+                 "y":88
                 }, 
                 {
                  "gid":7,
@@ -75,7 +75,7 @@
                          "name":"BringItems",
                          "propertytype":"BringItems",
                          "type":"string",
-                         "value":"Chilipepper2"
+                         "value":"Chilipepper1"
                         }, 
                         {
                          "name":"Direction",
@@ -87,56 +87,8 @@
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":168,
+                 "x":48,
                  "y":56
-                }, 
-                {
-                 "gid":5,
-                 "height":16,
-                 "id":31,
-                 "name":"",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":112,
-                 "y":48
-                }, 
-                {
-                 "gid":5,
-                 "height":16,
-                 "id":32,
-                 "name":"",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":112,
-                 "y":64
-                }, 
-                {
-                 "gid":5,
-                 "height":16,
-                 "id":33,
-                 "name":"",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":112,
-                 "y":112
-                }, 
-                {
-                 "gid":5,
-                 "height":16,
-                 "id":34,
-                 "name":"",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":112,
-                 "y":128
                 }, 
                 {
                  "gid":17,
@@ -148,7 +100,7 @@
                          "name":"BringItems",
                          "propertytype":"BringItems",
                          "type":"string",
-                         "value":"Chilipepper2"
+                         "value":"Chilipepper1"
                         }, 
                         {
                          "name":"Direction",
@@ -165,8 +117,58 @@
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":168,
+                 "x":48,
                  "y":120
+                }, 
+                {
+                 "gid":3,
+                 "height":16,
+                 "id":50,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"BringItems",
+                         "propertytype":"BringItems",
+                         "type":"string",
+                         "value":"Chilipepper1"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":128,
+                 "y":80
+                }, 
+                {
+                 "gid":3,
+                 "height":16,
+                 "id":54,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"BringItems",
+                         "propertytype":"BringItems",
+                         "type":"string",
+                         "value":"Chilipepper1"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":128,
+                 "y":96
+                }, 
+                {
+                 "gid":9,
+                 "height":16,
+                 "id":57,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":64,
+                 "y":56
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -175,7 +177,7 @@
          "y":0
         }],
  "nextlayerid":3,
- "nextobjectid":36,
+ "nextobjectid":58,
  "orientation":"orthogonal",
  "properties":[
         {

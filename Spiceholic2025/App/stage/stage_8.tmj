@@ -1,20 +1,25 @@
 { "class":"Map",
  "compressionlevel":-1,
- "height":10,
+ "height":15,
  "infinite":false,
  "layers":[
         {
          "data":[2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-            2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-            2, 2, 2, 0, 0, 5, 0, 5, 0, 0, 0, 0, 2, 2, 2,
-            2, 2, 2, 0, 0, 5, 0, 5, 0, 0, 0, 0, 2, 2, 2,
-            2, 2, 2, 0, 2, 5, 2, 5, 0, 0, 0, 0, 2, 2, 2,
-            2, 2, 2, 0, 2, 5, 2, 5, 0, 0, 0, 0, 2, 2, 2,
-            2, 2, 2, 0, 0, 5, 0, 5, 0, 0, 0, 0, 2, 2, 2,
-            2, 2, 2, 0, 0, 5, 0, 5, 0, 0, 0, 0, 2, 2, 2,
-            2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+            2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 2, 2, 2, 2,
+            2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 2, 2, 2, 2,
+            2, 2, 0, 0, 0, 5, 0, 0, 2, 2, 2, 2, 2, 2, 2,
+            2, 2, 0, 0, 0, 5, 0, 0, 2, 2, 2, 2, 2, 2, 2,
+            2, 2, 2, 2, 2, 2, 0, 0, 0, 5, 0, 0, 0, 2, 2,
+            2, 2, 2, 2, 2, 2, 2, 0, 0, 5, 0, 0, 0, 2, 2,
+            2, 2, 0, 0, 0, 5, 0, 0, 0, 2, 2, 2, 2, 2, 2,
+            2, 2, 0, 0, 0, 5, 0, 0, 2, 2, 2, 2, 2, 2, 2,
+            2, 2, 2, 2, 2, 2, 0, 0, 0, 5, 0, 0, 0, 2, 2,
+            2, 2, 2, 2, 2, 2, 2, 0, 0, 5, 0, 0, 0, 2, 2,
+            2, 2, 0, 0, 2, 2, 2, 0, 0, 2, 2, 2, 2, 2, 2,
+            2, 2, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2,
+            2, 2, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2,
             2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
-         "height":10,
+         "height":15,
          "id":1,
          "name":"\u30bf\u30a4\u30eb\u30ec\u30a4\u30e4\u30fc1",
          "opacity":1,
@@ -38,13 +43,25 @@
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":160,
-                 "y":88
+                 "x":136,
+                 "y":40
+                }, 
+                {
+                 "gid":8,
+                 "height":16,
+                 "id":28,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":224,
+                 "y":240
                 }, 
                 {
                  "gid":7,
                  "height":16,
-                 "id":5,
+                 "id":29,
                  "name":"",
                  "rotation":0,
                  "type":"",
@@ -54,21 +71,9 @@
                  "y":16
                 }, 
                 {
-                 "gid":8,
+                 "gid":18,
                  "height":16,
-                 "id":6,
-                 "name":"",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":224,
-                 "y":160
-                }, 
-                {
-                 "gid":17,
-                 "height":16,
-                 "id":29,
+                 "id":41,
                  "name":"",
                  "properties":[
                         {
@@ -81,19 +86,79 @@
                          "name":"Direction",
                          "propertytype":"Direction",
                          "type":"string",
-                         "value":"Left"
+                         "value":"Right"
                         }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":16,
                  "x":48,
-                 "y":56
+                 "y":72
                 }, 
                 {
-                 "gid":17,
+                 "gid":18,
                  "height":16,
-                 "id":35,
+                 "id":42,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"BringItems",
+                         "propertytype":"BringItems",
+                         "type":"string",
+                         "value":"Chilipepper2"
+                        }, 
+                        {
+                         "name":"Direction",
+                         "propertytype":"Direction",
+                         "type":"string",
+                         "value":"Left"
+                        }, 
+                        {
+                         "name":"SpawnTime",
+                         "type":"float",
+                         "value":6
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":176,
+                 "y":168
+                }, 
+                {
+                 "gid":18,
+                 "height":16,
+                 "id":43,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"BringItems",
+                         "propertytype":"BringItems",
+                         "type":"string",
+                         "value":"Chilipepper2"
+                        }, 
+                        {
+                         "name":"Direction",
+                         "propertytype":"Direction",
+                         "type":"string",
+                         "value":"Right"
+                        }, 
+                        {
+                         "name":"SpawnTime",
+                         "type":"float",
+                         "value":4
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":48,
+                 "y":136
+                }, 
+                {
+                 "gid":18,
+                 "height":16,
+                 "id":44,
                  "name":"",
                  "properties":[
                         {
@@ -111,64 +176,62 @@
                         {
                          "name":"SpawnTime",
                          "type":"float",
-                         "value":0
+                         "value":2
                         }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":48,
-                 "y":120
+                 "x":176,
+                 "y":104
                 }, 
                 {
-                 "gid":3,
+                 "gid":10,
                  "height":16,
-                 "id":50,
+                 "id":45,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":40,
+                 "y":208
+                }, 
+                {
+                 "gid":5,
+                 "height":16,
+                 "id":47,
                  "name":"",
                  "properties":[
                         {
-                         "name":"BringItems",
-                         "propertytype":"BringItems",
-                         "type":"string",
-                         "value":"Chilipepper1"
+                         "name":"SecretRoute",
+                         "type":"bool",
+                         "value":true
                         }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":128,
-                 "y":80
+                 "x":80,
+                 "y":208
                 }, 
                 {
-                 "gid":3,
+                 "gid":5,
                  "height":16,
-                 "id":54,
+                 "id":48,
                  "name":"",
                  "properties":[
                         {
-                         "name":"BringItems",
-                         "propertytype":"BringItems",
-                         "type":"string",
-                         "value":"Chilipepper1"
+                         "name":"SecretRoute",
+                         "type":"bool",
+                         "value":true
                         }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":128,
-                 "y":96
-                }, 
-                {
-                 "gid":9,
-                 "height":16,
-                 "id":57,
-                 "name":"",
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":16,
-                 "x":64,
-                 "y":56
+                 "x":80,
+                 "y":224
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -177,7 +240,7 @@
          "y":0
         }],
  "nextlayerid":3,
- "nextobjectid":58,
+ "nextobjectid":49,
  "orientation":"orthogonal",
  "properties":[
         {

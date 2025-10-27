@@ -49,6 +49,9 @@ namespace Spiceholic
 			time_.set(TimeEnableMenu);
 			randomCharaTexName_ = Random() < 0.8 ? U"DragonGirl" : U"DragonGirl2";
 		}
+
+		// BGM
+		StopAllBgm();
 	}
 
 	TitleScene::~TitleScene()

@@ -4,23 +4,23 @@
  "infinite":false,
  "layers":[
         {
-         "data":[2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-            2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2,
-            2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2,
-            2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2,
-            2, 2, 2, 0, 0, 2, 5, 5, 5, 2, 0, 0, 2, 2, 2,
-            2, 2, 2, 5, 5, 2, 4, 4, 4, 2, 5, 5, 2, 2, 2,
-            2, 2, 2, 0, 0, 2, 0, 0, 0, 2, 0, 0, 2, 2, 2,
-            2, 2, 2, 0, 0, 2, 0, 0, 0, 2, 0, 0, 2, 2, 2,
-            2, 2, 2, 0, 0, 2, 0, 0, 0, 2, 0, 0, 2, 2, 2,
-            2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
+         "data":[2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+            2, 2, 2, 5, 0, 2, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 2,
+            2, 2, 2, 5, 0, 5, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 2,
+            2, 2, 2, 5, 0, 2, 0, 5, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 0, 2, 2, 2, 2, 2, 2, 2, 0, 0, 2, 2,
+            2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 2, 2, 0, 0, 0, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 2,
+            2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 2,
+            2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 2,
+            2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2,
+            2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2,
+            2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2],
          "height":10,
          "id":1,
          "name":"\u30bf\u30a4\u30eb\u30ec\u30a4\u30e4\u30fc1",
          "opacity":1,
          "type":"tilelayer",
          "visible":true,
-         "width":15,
+         "width":30,
          "x":0,
          "y":0
         }, 
@@ -38,8 +38,8 @@
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":112,
-                 "y":40
+                 "x":32,
+                 "y":112
                 }, 
                 {
                  "gid":7,
@@ -62,58 +62,210 @@
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":224,
+                 "x":304,
                  "y":160
                 }, 
                 {
-                 "gid":10,
+                 "gid":17,
                  "height":16,
                  "id":46,
                  "name":"",
+                 "properties":[
+                        {
+                         "name":"BringItems",
+                         "propertytype":"BringItems",
+                         "type":"string",
+                         "value":"Chilipepper1"
+                        }, 
+                        {
+                         "name":"Direction",
+                         "propertytype":"Direction",
+                         "type":"string",
+                         "value":"None"
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":112,
-                 "y":128
+                 "x":64,
+                 "y":48
+                }, 
+                {
+                 "gid":9,
+                 "height":16,
+                 "id":52,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":64,
+                 "y":112
+                }, 
+                {
+                 "gid":9,
+                 "height":16,
+                 "id":53,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":96,
+                 "y":112
+                }, 
+                {
+                 "gid":9,
+                 "height":16,
+                 "id":54,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":128,
+                 "y":112
                 }, 
                 {
                  "gid":17,
                  "height":16,
-                 "id":47,
+                 "id":55,
                  "name":"",
                  "properties":[
                         {
                          "name":"BringItems",
                          "propertytype":"BringItems",
                          "type":"string",
-                         "value":"Chilipepper2"
+                         "value":"Chilipepper1"
+                        }, 
+                        {
+                         "name":"Direction",
+                         "propertytype":"Direction",
+                         "type":"string",
+                         "value":"None"
                         }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":168,
-                 "y":116
+                 "x":96,
+                 "y":48
                 }, 
                 {
                  "gid":17,
                  "height":16,
-                 "id":48,
+                 "id":56,
                  "name":"",
                  "properties":[
                         {
                          "name":"BringItems",
                          "propertytype":"BringItems",
                          "type":"string",
-                         "value":"Chilipepper2"
+                         "value":"Chilipepper1"
+                        }, 
+                        {
+                         "name":"Direction",
+                         "propertytype":"Direction",
+                         "type":"string",
+                         "value":"Left"
                         }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":16,
-                 "x":56,
-                 "y":116
+                 "x":192,
+                 "y":112
+                }, 
+                {
+                 "gid":5,
+                 "height":16,
+                 "id":57,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"SecretRoute",
+                         "type":"bool",
+                         "value":true
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":224,
+                 "y":32
+                }, 
+                {
+                 "gid":5,
+                 "height":16,
+                 "id":58,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"SecretRoute",
+                         "type":"bool",
+                         "value":true
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":224,
+                 "y":48
+                }, 
+                {
+                 "gid":5,
+                 "height":16,
+                 "id":62,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"SecretRoute",
+                         "type":"bool",
+                         "value":true
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":240,
+                 "y":32
+                }, 
+                {
+                 "gid":5,
+                 "height":16,
+                 "id":63,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"SecretRoute",
+                         "type":"bool",
+                         "value":true
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":240,
+                 "y":48
+                }, 
+                {
+                 "gid":3,
+                 "height":16,
+                 "id":65,
+                 "name":"",
+                 "properties":[
+                        {
+                         "name":"BringItems",
+                         "propertytype":"BringItems",
+                         "type":"string",
+                         "value":"Key"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
+                 "x":424,
+                 "y":40
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -122,7 +274,7 @@
          "y":0
         }],
  "nextlayerid":3,
- "nextobjectid":50,
+ "nextobjectid":66,
  "orientation":"orthogonal",
  "properties":[
         {
@@ -141,5 +293,5 @@
  "tilewidth":16,
  "type":"map",
  "version":"1.10",
- "width":15
+ "width":30
 }

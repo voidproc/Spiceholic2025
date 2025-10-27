@@ -2,7 +2,7 @@
   "Title": "Blazing Spiceholics",
   "Version": "1.0.0",
   "Debug":{
-    "StartStageID": "4"
+    "StartStageID": "9"
   },
   "Sprite":{
     "PlayerWalk": {
@@ -99,18 +99,25 @@
       "Subtitle": "雪降る山道",
       "Ground": "Ground3",
       "BGM": "Area2"
+    },
+    {
+      "Subtitle": "マグマ火口",
+      "Ground": "Ground4",
+      "BGM": "Area4"
     }
   ],
   "StageGroupMap":{
     "1": 0,
     "2": 0,
     "3": 0,
-    "4": 0,
+    "4": 1,
     "5": 1,
     "6": 1,
-    "7": 1,
-    "8": 1,
+    "7": 2,
+    "8": 2,
     "9": 2,
-    "10": 2
+    "10": 3,
+    "11": 3,
+    "12": 3
   }
 }

@@ -13,8 +13,15 @@ namespace Spiceholic
 		}
 	}
 
-	void StopAllBgm(const Duration& /*fade*/)
+	void StopAllBgm()
 	{
-		//...
+		AudioAsset(U"Area1").stop();
+		AudioAsset(U"Area2").stop();
+	}
+
+	void StopAllBgm(const Duration& fade)
+	{
+		AudioAsset(U"Area1").stop(fade);
+		AudioAsset(U"Area2").stop(fade);
 	}
 }

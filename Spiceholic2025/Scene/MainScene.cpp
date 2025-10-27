@@ -301,6 +301,11 @@ namespace Spiceholic
 
 			return keyCount;
 		}
+
+		auto CurrentBGM(const StageData& stageData)
+		{
+			return AudioAsset(stageData.stageGroup.bgm);
+		}
 	}
 
 	MainScene::MainScene(const InitData& init)
@@ -405,6 +410,13 @@ namespace Spiceholic
 		if (GlobalClock::IsPaused())
 		{
 			GlobalClock::Start();
+
+			// BGM
+			if (CurrentBGM(*getData().stageData).isPaused())
+			{
+				CurrentBGM(*getData().stageData).play(MixBus1, 0.05s);
+			}
+
 			return;
 		}
 
@@ -419,6 +431,9 @@ namespace Spiceholic
 
 		//SE
 		PlayAudioOneShot(U"Pause1");
+
+		// BGM
+		CurrentBGM(*getData().stageData).pause(0.05s);
 	}
 
 	void MainScene::updateStageStart_()
@@ -432,7 +447,7 @@ namespace Spiceholic
 			time_.start();
 
 			// BGM
-			AudioAsset(U"Area1").play(MixBus1, 0.7s);
+			CurrentBGM(*getData().stageData).play(MixBus1, 0.7s);
 		}
 	}
 
@@ -447,7 +462,7 @@ namespace Spiceholic
 			timeStageClear_.start();
 
 			// BGM
-			AudioAsset(U"Area1").stop(0.7s);
+			StopAllBgm(0.7s);
 		}
 
 		// ステージクリア時の入力待ち→メニュー表示
@@ -571,6 +586,10 @@ namespace Spiceholic
 				// このステージをやり直す
 				getData().score->set(getData().stageStartScore, true);
 				getData().nextStageID = getData().stageData->stageID;
+
+				// BGM
+				StopAllBgm();
+
 				changeScene(U"MainScene", 0);
 			}
 			else if (selected.type == MenuItemType::Title)
@@ -579,6 +598,9 @@ namespace Spiceholic
 
 				// 次のステージIDを初期化
 				getData().nextStageID = U"1";
+
+				// BGM
+				StopAllBgm();
 
 				changeScene(U"TitleScene", 0);
 			}

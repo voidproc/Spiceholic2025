@@ -412,6 +412,7 @@
     <ClInclude Include="Setting\UserSetting.h" />
     <ClInclude Include="Stage\ActorTypeFromTileID.h" />
     <ClInclude Include="Stage\Stage.h" />
+    <ClInclude Include="Stage\StageGroup.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>

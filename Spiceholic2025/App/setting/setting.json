@@ -2,7 +2,7 @@
   "Title": "Blazing Spiceholics",
   "Version": "1.0.0",
   "Debug":{
-    "StartStageID": "1"
+    "StartStageID": "4"
   },
   "Sprite":{
     "PlayerWalk": {
@@ -87,15 +87,18 @@
   "StageGroupInfo": [
     {
       "Subtitle": "草原の遺跡",
-      "Ground": "Ground1"
+      "Ground": "Ground1",
+      "BGM": "Area1"
     },
     {
       "Subtitle": "草原の遺跡 深部",
-      "Ground": "Ground2"
+      "Ground": "Ground2",
+      "BGM": "Area2"
     },
     {
       "Subtitle": "雪降る山道",
-      "Ground": "Ground3"
+      "Ground": "Ground3",
+      "BGM": "Area2"
     }
   ],
   "StageGroupMap":{

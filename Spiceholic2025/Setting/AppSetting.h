@@ -10,20 +10,7 @@ namespace Spiceholic
 		Point pos;
 	};
 
-	enum class StageGroupType : uint32
-	{
-		Grass,
-		Grass2,
-		Snow,
-		Magma,
-	};
-
-	struct StageGroupInfo
-	{
-		StageGroupType group;
-		String subtitle;
-		String groundTexture;
-	};
+	struct StageGroupInfo;
 
 	class AppSetting
 	{
@@ -34,8 +21,6 @@ namespace Spiceholic
 			String version;
 			HashTable<String, SpriteInfo> sprite;
 			HashTable<String, StageGroupInfo> stageGroupInfo;
-			//HashTable<String, String> stageSubtitle;
-			//HashTable<String, String> stageGroundTexture;
 
 			struct
 			{

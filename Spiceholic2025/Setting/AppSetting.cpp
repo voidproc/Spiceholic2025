@@ -1,5 +1,6 @@
 ﻿#include "AppSetting.h"
 #include "Config/GameConfig.h"
+#include "Stage/StageGroup.h"
 
 namespace Spiceholic
 {
@@ -37,6 +38,7 @@ namespace Spiceholic
 			info.group = ToEnum<StageGroupType>(stageGroups.size());
 			info.subtitle = object[U"Subtitle"].getString();
 			info.groundTexture = object[U"Ground"].getString();
+			info.bgm = object[U"BGM"].getString();
 			stageGroups.push_back(info);
 		}
 

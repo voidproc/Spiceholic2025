@@ -2,6 +2,7 @@
 
 #include "Actor/ActorType.h"
 #include "Actor/Direction.h"
+#include "Stage/StageGroup.h"
 
 namespace Spiceholic
 {
@@ -52,6 +53,8 @@ namespace Spiceholic
 		Array<ActorSpawnInfo> actorSpawns;
 
 		bool openedSecretRoute;
+
+		StageGroupInfo stageGroup;
 	};
 
 	// 指定されたステージ番号のステージデータを読み込む

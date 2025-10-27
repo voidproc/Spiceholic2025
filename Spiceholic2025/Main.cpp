@@ -94,6 +94,8 @@ namespace
 		AudioAsset::Register(U"Damage1Loop", Audio::Stream, Resource(U"audio/damage1_loop.ogg"), Loop::Yes);
 		AudioAsset::Register(U"Decide1", Resource(U"audio/decide1.ogg"));
 		AudioAsset::Register(U"Pause1", Resource(U"audio/pause1.wav"));
+		AudioAsset::Register(U"Area1", Audio::Stream, Resource(U"audio/area1.ogg"), Loop::Yes);
+		AudioAsset::Register(U"Area2", Audio::Stream, Resource(U"audio/area2.ogg"), Loop::Yes);
 
 		//Load
 		//...

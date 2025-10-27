@@ -1094,5 +1094,8 @@
     <ClInclude Include="Core\Menu.h">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="Stage\StageGroup.h">
+      <Filter>Stage</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -2,6 +2,8 @@
 #include "Config/GameConfig.h"
 #include "Core/Color.h"
 #include "Core/DrawSprite.h"
+#include "Core/Periodic.h"
+#include "Actor/Player.h"
 
 namespace Spiceholic
 {
@@ -202,5 +204,37 @@ namespace Spiceholic
 			Transformer2D scale{ Mat3x2::Scale(scale_, position().currentPos()) };
 			DrawSprite(*gameData_.appSetting, U"Smoke", 0.4s, mirror_, position().currentPos(), time_.sF());
 		}
+	}
+
+	FxPowerup::FxPowerup(GameData& gameData)
+		:
+		Fx{ gameData.player->position().currentPos() + Vec2{ 0, -18 }},
+		gameData_{ gameData },
+		time_{ StartImmediately::Yes, Clock() },
+		pos_{}
+	{
+		pos_ = position();
+	}
+
+	FxPowerup::~FxPowerup()
+	{
+	}
+
+	void FxPowerup::update()
+	{
+		if (time_ > 0.6s)
+		{
+			setInactive();
+		}
+
+		const double t = Saturate(time_.sF() / 1.0);
+		setCurrentPosition(pos_ - Vec2{ -20 * EaseOutSine(t), 0 });
+	}
+
+	void FxPowerup::draw() const
+	{
+		const double alpha = Saturate(1.0 - EaseInQuad(time_.sF() / 1.0));//(time_ > 0.4s) ? 0.5 * Periodic::Square0_1(0.08s) : 0.3 + 0.7 * Periodic::Square0_1(0.08s);
+
+		TextureAsset(U"Powerup")(PeriodicStair(0.08s, 0, 2, time_.sF()) * 48, 0, 48, 16).drawAt(position(), AlphaF(alpha));
 	}
 }

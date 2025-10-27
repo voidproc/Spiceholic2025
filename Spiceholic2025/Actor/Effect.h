@@ -121,6 +121,27 @@ namespace Spiceholic
 		bool mirror_;
 		Timer timerDelay_;
 		Stopwatch time_;
-
 	};
+
+	class FxPowerup : public Fx
+	{
+	public:
+		inline static constexpr ActorTag Tag = ActorTag::Effect;
+		inline static constexpr ActorType Type = ActorType::None;
+
+	public:
+		FxPowerup(GameData& gameData);
+
+		~FxPowerup() override;
+
+		void update() override;
+
+		void draw() const override;
+
+	private:
+		GameData& gameData_;
+		Stopwatch time_;
+		Vec2 pos_;
+	};
+
 }

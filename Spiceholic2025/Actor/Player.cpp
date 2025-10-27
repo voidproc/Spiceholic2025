@@ -196,6 +196,10 @@ namespace Spiceholic
 				// いまパワーアップした: SE
 				if (oldGauge < 50 && gaugeVal >= 50)
 				{
+					// "Powerup"バナー
+					gameData_.actors.push_back(std::make_unique<FxPowerup>(gameData_));
+
+					// SE
 					PlayAudioOneShot(U"Powerup1");
 				}
 

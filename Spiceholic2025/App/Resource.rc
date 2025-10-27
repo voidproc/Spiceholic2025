@@ -149,6 +149,7 @@ Resource(image/ground_3.png)
 Resource(image/snow.png)
 Resource(image/head.png)
 Resource(image/smoke.png)
+Resource(image/powerup.png)
 
 Resource(font/px7812.ttf)
 Resource(font/px7812m.ttf)

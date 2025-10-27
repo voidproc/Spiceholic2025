@@ -64,6 +64,13 @@ namespace Spiceholic
 				{
 					PlayAudioOneShot(U"Walk1");
 					timerWalk_.restart(gameData_.gauge->isPoweredUp() ? 0.5s/2 : 0.8s/2);
+
+					// 煙
+					if (RandomBool(0.8))
+					{
+						gameData_.actors.push_back(std::make_unique<FxSmoke2>(gameData_, position().currentPos() + Vec2{ 0, 8 } + RandomVec2(Random(0.0, 2.0)), 0.2));
+					}
+
 				}
 			}
 

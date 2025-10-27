@@ -1,6 +1,7 @@
 ﻿#include "Effect.h"
 #include "Config/GameConfig.h"
 #include "Core/Color.h"
+#include "Core/DrawSprite.h"
 
 namespace Spiceholic
 {
@@ -155,5 +156,51 @@ namespace Spiceholic
 			.scaled(EaseOutSine(t01))
 			.rotated(angle_ + t01 * 200_deg)
 			.draw(color);
+	}
+
+	FxSmoke2::FxSmoke2(GameData& gameData, const Vec2& pos, double scale, double vel, double delay)
+		:
+		Fx{ pos },
+		gameData_{ gameData },
+		scale_{ scale },
+		vel_{ vel },
+		mirror_{ RandomBool() },
+		timerDelay_{ Duration{ delay }, StartImmediately::Yes, Clock() },
+		time_{ StartImmediately::No, Clock() }
+	{
+	}
+
+	FxSmoke2::~FxSmoke2()
+	{
+	}
+
+	void FxSmoke2::update()
+	{
+		if (timerDelay_.reachedZero())
+		{
+			timerDelay_.set(999s);
+			timerDelay_.reset();
+
+			time_.start();
+		}
+
+		if (time_ >= 0.4s)
+		{
+			setInactive();
+		}
+
+		if (time_.isRunning())
+		{
+			setCurrentPosition(position().currentPos() + Vec2{ 0, vel_ } * Scene::DeltaTime());
+		}
+	}
+
+	void FxSmoke2::draw() const
+	{
+		if (time_.isRunning() && time_ < 0.4s)
+		{
+			Transformer2D scale{ Mat3x2::Scale(scale_, position().currentPos()) };
+			DrawSprite(*gameData_.appSetting, U"Smoke", 0.4s, mirror_, position().currentPos(), time_.sF());
+		}
 	}
 }

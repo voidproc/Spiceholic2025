@@ -96,14 +96,13 @@ namespace Spiceholic
 				{
 					actor->setLife(spawn.life);
 				}
-
+				
 				// 敵のスポーン時エフェクト
 				if (actor->tag() == ActorTag::Enemy && spawn.time > 1e-3)
 				{
-					MakeSmokeFxN(gameData.actors, spawn.position, 3, {4,7}, {-8,0}, {0.8,1.3}, 0.3, 0.08);
+					MakeSmokes(gameData, spawn.position);
 				}
 			}
-
 		}
 
 		// 指定した時刻で生成する必要のあるアクターを生成

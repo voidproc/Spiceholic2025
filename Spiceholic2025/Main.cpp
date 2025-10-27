@@ -50,6 +50,7 @@ namespace
 		TextureAsset::Register(U"Ground3", Resource(U"image/ground_3.png"));
 		TextureAsset::Register(U"Snow", Resource(U"image/snow.png"));
 		TextureAsset::Register(U"Head", Resource(U"image/head.png"));
+		TextureAsset::Register(U"Smoke", Resource(U"image/smoke.png"));
 
 		//Load
 		//...

@@ -24,6 +24,13 @@ namespace Spiceholic
 		}
 	}
 
+	void MakeSmokes(GameData& gameData, const Vec2& pos)
+	{
+		gameData.actors.push_back(std::make_unique<FxSmoke2>(gameData, pos, 1.0, 1.0, 0.0));
+		gameData.actors.push_back(std::make_unique<FxSmoke2>(gameData, pos + Vec2{ Random(-14, -8), Random(-8, 8) }, 0.4, 1.0, 0.15));
+		gameData.actors.push_back(std::make_unique<FxSmoke2>(gameData, pos + Vec2{ Random(8, 14), Random(-8, 8) }, 0.25, 1.0, 0.30));
+	}
+
 	void MakeItems(const String& items, GameData& gameData, const Vec2& pos)
 	{
 		if (items == U"Key")

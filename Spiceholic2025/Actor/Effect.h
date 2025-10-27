@@ -99,4 +99,28 @@ namespace Spiceholic
 		double angle_;
 	};
 
+	class FxSmoke2 : public Fx
+	{
+	public:
+		inline static constexpr ActorTag Tag = ActorTag::Effect;
+		inline static constexpr ActorType Type = ActorType::None;
+
+	public:
+		FxSmoke2(GameData& gameData, const Vec2& pos, double scale, double vel = 1.0, double delay = 0);
+
+		~FxSmoke2() override;
+
+		void update() override;
+
+		void draw() const override;
+
+	private:
+		GameData& gameData_;
+		double scale_;
+		double vel_;
+		bool mirror_;
+		Timer timerDelay_;
+		Stopwatch time_;
+
+	};
 }

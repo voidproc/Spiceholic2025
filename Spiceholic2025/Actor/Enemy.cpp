@@ -116,7 +116,7 @@ namespace Spiceholic
 
 	void Enemy::explode_()
 	{
-		MakeSmokeFxN(gameData_.actors, position().currentPos(), 3, { 6, 12 }, { -8, 0 }, { 0.9, 1.5 }, 0.3, 0.08);
+		MakeSmokes(gameData_, position());
 
 		gameData_.actors.push_back(std::make_unique<FxBlockBreak>(position().currentPos()));
 	}

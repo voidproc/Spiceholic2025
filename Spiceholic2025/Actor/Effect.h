@@ -144,4 +144,25 @@ namespace Spiceholic
 		Vec2 pos_;
 	};
 
+	class FxNotice : public Fx
+	{
+	public:
+		inline static constexpr ActorTag Tag = ActorTag::Effect;
+		inline static constexpr ActorType Type = ActorType::None;
+
+	public:
+		FxNotice(GameData& gameData, const Vec2& pos);
+
+		~FxNotice() override;
+
+		void update() override;
+
+		void draw() const override;
+
+	private:
+		GameData& gameData_;
+		Stopwatch time_;
+	};
+
+
 }

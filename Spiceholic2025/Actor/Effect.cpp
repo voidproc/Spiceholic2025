@@ -237,4 +237,32 @@ namespace Spiceholic
 
 		TextureAsset(U"Powerup")(PeriodicStair(0.08s, 0, 2, time_.sF()) * 48, 0, 48, 16).drawAt(position(), AlphaF(alpha));
 	}
+
+	FxNotice::FxNotice(GameData& gameData, const Vec2& pos)
+		:
+		Fx{ pos },
+		gameData_{ gameData },
+		time_{ StartImmediately::Yes, Clock() }
+	{
+	}
+
+	FxNotice::~FxNotice()
+	{
+	}
+
+	void FxNotice::update()
+	{
+		if (time_ > 1.2s)
+		{
+			setInactive();
+		}
+	}
+
+	void FxNotice::draw() const
+	{
+		{
+			ScopedColorMul2D mul{ 1, 0.5 + 0.5 * Periodic::Square0_1(0.1s, time_.sF()) };
+			DrawSprite(*gameData_.appSetting, U"Notice", 0.6s, false, position().currentPos(), time_.sF());
+		}
+	}
 }

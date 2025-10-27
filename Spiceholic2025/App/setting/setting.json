@@ -2,7 +2,7 @@
   "Title": "Blazing Spiceholics",
   "Version": "1.0.0",
   "Debug":{
-    "StartStageID": "9"
+    "StartStageID": "3"
   },
   "Sprite":{
     "PlayerWalk": {
@@ -81,6 +81,12 @@
       "Texture": "Smoke",
       "Count": 5,
       "Size": 48,
+      "Pos": [0, 0]
+    },
+    "Notice": {
+      "Texture": "Notice",
+      "Count": 6,
+      "Size": 16,
       "Pos": [0, 0]
     }
   },

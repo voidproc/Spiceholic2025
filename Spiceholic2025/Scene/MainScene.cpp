@@ -84,6 +84,11 @@ namespace Spiceholic
 				actor = gameData.actors.back().get();
 				break;
 
+			case ActorType::FxNotice:
+				gameData.actors.push_back(std::make_unique<FxNotice>(gameData, spawn.position));
+				actor = gameData.actors.back().get();
+				break;
+
 			default:
 				break;
 			}
@@ -98,7 +103,7 @@ namespace Spiceholic
 				}
 				
 				// 敵のスポーン時エフェクト
-				if (actor->tag() == ActorTag::Enemy && spawn.time > 1e-3)
+				if ((actor->tag() == ActorTag::Enemy || actor->tag() == ActorTag::Block) && spawn.time > 1e-3)
 				{
 					MakeSmokes(gameData, spawn.position);
 				}
@@ -335,6 +340,24 @@ namespace Spiceholic
 		LoadStage(getData().nextStageID, *getData().stageData);
 		// ステージグループ
 		getData().stageData->stageGroup = getData().appSetting->get().stageGroupInfo[getData().stageData->stageID];
+		// Notice
+		{
+			Array<std::pair<double, Vec2>> noticeList;
+			for (const auto& spawn : getData().stageData->actorSpawns)
+			{
+				if (spawn.time < 1.2) continue;
+
+				noticeList.push_back(std::make_pair(spawn.time - 1.2, spawn.position));
+			}
+			for (const auto& notice : noticeList)
+			{
+				ActorSpawnInfo info;
+				info.time = notice.first;
+				info.position = notice.second;
+				info.type = ActorType::FxNotice;
+				getData().stageData->actorSpawns.push_back(info);
+			}
+		}
 
 		// 次のステージIDを設定
 		getData().nextStageID = getData().stageData->nextStageID;

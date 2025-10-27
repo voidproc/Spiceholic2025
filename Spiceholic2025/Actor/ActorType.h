@@ -34,7 +34,7 @@ namespace Spiceholic
 		//...
 
 		// Effect:
-		//...
+		FxNotice,
 
 		// Other:
 		CameraTopLeft,

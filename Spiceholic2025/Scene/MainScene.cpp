@@ -732,6 +732,13 @@ namespace Spiceholic
 		// ステージ開始時
 		if (timeStageStart_.isRunning())
 		{
+			// シーン開始時フェードイン
+			if (timeStageStart_ < 0.3s)
+			{
+				const double t = Saturate(timeStageStart_.sF() / 0.3);
+				SceneRect.draw(ColorF{ Palette::Whitesmoke, 1 - EaseOutSine(t) });
+			}
+
 			drawStageStart_();
 		}
 

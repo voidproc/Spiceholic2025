@@ -36,6 +36,7 @@ namespace
 		TextureAsset::Register(U"GaugeFrame", Resource(U"image/gauge_frame.png"));
 		TextureAsset::Register(U"Item", Resource(U"image/item.png"));
 		TextureAsset::Register(U"ItemKey", Resource(U"image/item_key.png"));
+		TextureAsset::Register(U"ItemCurry", Resource(U"image/item_curry.png"));
 		TextureAsset::Register(U"BurningStart1", Resource(U"image/burning_start_1.png"));
 		TextureAsset::Register(U"BurningLoop1", Resource(U"image/burning_loop_1.png"));
 		TextureAsset::Register(U"BurningEnd1", Resource(U"image/burning_end_1.png"));

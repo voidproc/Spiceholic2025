@@ -112,6 +112,10 @@ namespace Spiceholic
 		{
 			DrawSprite(*gameData_.appSetting, U"ItemKey", 1s, false, pos);
 		}
+		else if (type() == ActorType::ItemCurry)
+		{
+			DrawSprite(*gameData_.appSetting, U"ItemCurry", 1s, false, pos);
+		}
 	}
 
 	void Item::onCollide(Actor* other)

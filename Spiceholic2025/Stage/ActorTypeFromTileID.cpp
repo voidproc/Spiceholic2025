@@ -21,7 +21,7 @@ namespace Spiceholic
 
 			ActorType::ItemChilipepper,
 			ActorType::ItemKey,
-			ActorType::None,
+			ActorType::ItemCurry,
 			ActorType::None,
 			ActorType::None,
 			ActorType::None,

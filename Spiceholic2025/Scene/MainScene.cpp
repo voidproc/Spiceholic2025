@@ -74,6 +74,7 @@ namespace Spiceholic
 
 			case ActorType::ItemChilipepper:
 			case ActorType::ItemKey:
+			case ActorType::ItemCurry:
 				gameData.actors.push_back(std::make_unique<Item>(spawn.position, spawn.type, gameData));
 				actor = gameData.actors.back().get();
 				break;

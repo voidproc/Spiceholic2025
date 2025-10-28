@@ -36,7 +36,7 @@ namespace Spiceholic
 		const double gaugeLength = 100 * displayValue() / 100;
 
 		{
-			const double t = (Abs(currentValue_ - displayValue_) < 1e-3) ? 1 : 0.6 * Periodic::Pulse0_1(0.06s, 0.8, ClockTime());
+			const double t = (Abs(currentValue_ - displayValue_) < 1e-3) ? 1 : 0.8 * Periodic::Pulse0_1(0.06s, 0.8, ClockTime());
 			ScopedColorMul2D mul{ t, 1 };
 			ScopedColorAdd2D add{ 1 - t, 0 };
 			TextureAsset(U"Gauge")(0, 0, gaugeLength, 6).draw(gaugePos + Vec2{ 21, 7 }, ColorF{ 1 - 0.08 * Periodic::Jump0_1(0.3s, ClockTime()) });
@@ -47,7 +47,7 @@ namespace Spiceholic
 		const double tMaxEffect = Saturate(timeMaxEffect_.sF() / 0.95);
 
 		// ゲージ枠
-		const ColorF gaugeFrameColor = onMaxEffect ? GaugeMaxEffectColor().lerp(Palette::White, tMaxEffect) : ((currentValue_ >= 50) ? ColorF{1}.lerp(Palette::Orange, 0.5 * Periodic::Pulse0_1(0.20s, 0.3)) : ColorF{ 1 - 0.08 * Periodic::Sine0_1(0.2s, ClockTime()) });
+		const ColorF gaugeFrameColor = onMaxEffect ? GaugeMaxEffectColor().lerp(Palette::White, tMaxEffect) : ((currentValue_ >= 50) ? ColorF{1,1,0.93}.lerp(Palette::Darkorange, 0.7 * Periodic::Pulse0_1(0.20s, 0.3)) : ColorF{ 1 - 0.08 * Periodic::Sine0_1(0.2s, ClockTime()) });
 		TextureAsset(U"GaugeFrame").draw(gaugePos, gaugeFrameColor);
 
 		// ゲージMAXエフェクト

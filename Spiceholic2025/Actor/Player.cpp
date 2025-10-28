@@ -144,7 +144,7 @@ namespace Spiceholic
 		const double alpha = (timerTr_.isRunning()) ? 0.2 + 0.7 * Periodic::Square0_1(0.08s, ClockTime()) : 1.0;
 
 		// ベースカラー: パワーアップ中に変化
-		const ColorF color = gameData_.gauge->isPoweredUp() ? Palette::White.lerp(Palette::Orange, 1.0 * Periodic::Jump0_1(0.4s, ClockTime())) : Palette::White;
+		const ColorF color = gameData_.gauge->isPoweredUp() ? Palette::White.lerp(Palette::Tomato, 0.7 * Periodic::Jump0_1(0.4s, ClockTime())) : Palette::White;
 
 		{
 			// アイテム取得時点滅

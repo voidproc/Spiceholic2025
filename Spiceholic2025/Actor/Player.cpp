@@ -213,6 +213,25 @@ namespace Spiceholic
 				// スコア加算
 				gameData_.score->add(other->score());
 			}
+			else if (other->type() == ActorType::ItemHabanero ||
+				other->type() == ActorType::ItemCurry ||
+				other->type() == ActorType::ItemMapo)
+			{
+				const auto oldGauge = gameData_.gauge->getValue();
+
+				// ゲージ回復
+				const auto gaugeVal = gameData_.gauge->add(50);
+
+				// いまパワーアップした: SE
+				if (oldGauge < 50 && gaugeVal >= 50)
+				{
+					// "Powerup"バナー
+					gameData_.actors.push_back(std::make_unique<FxPowerup>(gameData_));
+
+					// SE
+					PlayAudioOneShot(U"Powerup1");
+				}
+			}
 			else if (other->type() == ActorType::ItemKey)
 			{
 				// 鍵をとったので次のステージに向かう

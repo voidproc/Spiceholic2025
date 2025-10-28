@@ -19,6 +19,8 @@ namespace Spiceholic
 		ItemChilipepper,
 		ItemKey,
 		ItemCurry,
+		ItemHabanero,
+		ItemMapo,
 		//...
 
 		// Weapon:

@@ -2,7 +2,7 @@
   "Title": "Blazing Spiceholics",
   "Version": "1.0.0",
   "Debug":{
-    "StartStageID": "7"
+    "StartStageID": "3"
   },
   "Sprite":{
     "PlayerWalk": {
@@ -61,6 +61,18 @@
     },
     "ItemCurry": {
       "Texture": "ItemCurry",
+      "Count": 1,
+      "Size": 24,
+      "Pos": [0, 0]
+    },
+    "ItemHabanero": {
+      "Texture": "ItemHabanero",
+      "Count": 1,
+      "Size": 24,
+      "Pos": [0, 0]
+    },
+    "ItemMapo": {
+      "Texture": "ItemMapo",
       "Count": 1,
       "Size": 24,
       "Pos": [0, 0]

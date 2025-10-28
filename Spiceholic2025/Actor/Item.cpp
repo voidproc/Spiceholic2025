@@ -112,9 +112,22 @@ namespace Spiceholic
 		{
 			DrawSprite(*gameData_.appSetting, U"ItemKey", 1s, false, pos);
 		}
-		else if (type() == ActorType::ItemCurry)
+		else
 		{
-			DrawSprite(*gameData_.appSetting, U"ItemCurry", 1s, false, pos);
+			Circle{ position(), 24 + 2 * Periodic::Sine0_1(0.8, time_.sF()) }.drawFrame(1.0, HSV{ time_.sF() * 360 * 2.0, 1.0, 1.0 }.withAlpha(Periodic::Square0_1(0.09s, time_.sF())));
+
+			if (type() == ActorType::ItemCurry)
+			{
+				DrawSprite(*gameData_.appSetting, U"ItemCurry", 1s, false, pos);
+			}
+			else if (type() == ActorType::ItemHabanero)
+			{
+				DrawSprite(*gameData_.appSetting, U"ItemHabanero", 1s, false, pos);
+			}
+			else if (type() == ActorType::ItemMapo)
+			{
+				DrawSprite(*gameData_.appSetting, U"ItemMapo", 1s, false, pos);
+			}
 		}
 	}
 

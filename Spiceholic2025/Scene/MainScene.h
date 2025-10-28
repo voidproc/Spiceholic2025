@@ -7,6 +7,7 @@
 namespace Spiceholic
 {
 	struct CameraShakeEvent;
+	struct GetSpecialItemEvent;
 
 	class MainScene : public CustomScene
 	{
@@ -65,6 +66,9 @@ namespace Spiceholic
 		// 購読イベント
 		void onCameraShakeEvent_(const CameraShakeEvent& event);
 
+		// 購読イベント
+		void onGetSpecialItem_(const GetSpecialItemEvent& event);
+
 		// ステージプレイ時間
 		Stopwatch time_;
 		// クリアタイム
@@ -114,5 +118,10 @@ namespace Spiceholic
 		Array<Snow> snow_;
 		PerlinNoise noise_;
 		Timer timerSnow_;
+
+		// 特殊アイテム取得
+		Timer timerGetSpItem_;
+		ActorType gotSpItem_;
+
 	};
 }

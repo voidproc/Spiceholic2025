@@ -50,6 +50,9 @@ namespace Spiceholic
 			randomCharaTexName_ = Random() < 0.8 ? U"DragonGirl" : U"DragonGirl2";
 		}
 
+		// 特殊アイテム取得リストを初期化
+		getData().specialItems.clear();
+
 		// BGM
 		StopAllBgm();
 	}

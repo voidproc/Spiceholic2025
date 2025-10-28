@@ -210,6 +210,9 @@ namespace Spiceholic
 					PlayAudioOneShot(U"Powerup1");
 				}
 
+				//SE
+				PlayAudioOneShot(U"Pick1");
+
 				// スコア加算
 				gameData_.score->add(other->score());
 			}
@@ -217,6 +220,15 @@ namespace Spiceholic
 				other->type() == ActorType::ItemCurry ||
 				other->type() == ActorType::ItemMapo)
 			{
+				// 特殊アイテムを取得
+				if (not gameData_.specialItems.contains(other->type()))
+				{
+					gameData_.specialItems.push_back(other->type());
+				}
+
+				// イベント発行
+				GetDispatch().publish(GetSpecialItemEvent{ .type = other->type() });
+
 				const auto oldGauge = gameData_.gauge->getValue();
 
 				// ゲージ回復
@@ -231,6 +243,10 @@ namespace Spiceholic
 					// SE
 					PlayAudioOneShot(U"Powerup1");
 				}
+
+				//SE
+				PlayAudioOneShot(U"Pick1");
+				PlayAudioOneShot(U"Pick2");
 			}
 			else if (other->type() == ActorType::ItemKey)
 			{
@@ -241,10 +257,10 @@ namespace Spiceholic
 
 				// スコア加算
 				gameData_.score->add(other->score());
-			}
 
-			//SE
-			PlayAudioOneShot(U"Pick1");
+				//SE
+				PlayAudioOneShot(U"Pick1");
+			}
 		}
 	}
 

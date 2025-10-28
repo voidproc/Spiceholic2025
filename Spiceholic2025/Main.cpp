@@ -91,6 +91,7 @@ namespace
 		AudioAsset::Register(U"Select1", Resource(U"audio/select1.wav"));
 		AudioAsset::Register(U"Select2", Resource(U"audio/select2.wav"));
 		AudioAsset::Register(U"Pick1", Resource(U"audio/pick1.wav"));
+		AudioAsset::Register(U"Pick2", Resource(U"audio/pick2.ogg"));
 		AudioAsset::Register(U"Walk1", Resource(U"audio/walk1.wav"));
 		AudioAsset::Register(U"Explosion1", Resource(U"audio/explosion1.wav"));
 		AudioAsset::Register(U"Explosion2", Resource(U"audio/explosion2.wav"));

@@ -23,6 +23,8 @@ namespace Spiceholic
 {
 	namespace
 	{
+		// メニュー
+
 		enum class MenuItemType
 		{
 			Back,
@@ -48,6 +50,21 @@ namespace Spiceholic
 			{ MenuItemType::Next, U"To Next Stage"_sv, U"次のステージに進みます"_sv },
 			{ MenuItemType::Retry, U"Retry This Stage"_sv, U"このステージをやり直します"_sv },
 		} };
+
+
+		// 特殊アイテム関連
+		struct HUDSpItemInfo
+		{
+			Vec2 offset;
+			String textureName;
+			double num;
+		};
+
+		const HashTable<ActorType, HUDSpItemInfo> HUDSpItemInfoMap = {
+			{ ActorType::ItemHabanero, HUDSpItemInfo{.offset = Vec2{20 * 0.35, 0}, .textureName = U"ItemHabanero", .num = 1 } },
+			{ ActorType::ItemCurry, HUDSpItemInfo{.offset = Vec2{20 * 1.15, 0}, .textureName = U"ItemCurry", .num = 2 } },
+			{ ActorType::ItemMapo, HUDSpItemInfo{.offset = Vec2{20 * 2.1, 0}, .textureName = U"ItemMapo", .num = 3 } },
+		};
 
 
 		// だいたい a <= b かどうか
@@ -340,7 +357,9 @@ namespace Spiceholic
 		timerCameraShake_{ 0.08s, StartImmediately::No, Clock() },
 		snow_{ Arg::reserve = 256 },
 		noise_{},
-		timerSnow_{ 0.5s, StartImmediately::Yes, Clock() }
+		timerSnow_{ 0.5s, StartImmediately::Yes, Clock() },
+		timerGetSpItem_{ 0.4s, StartImmediately::No, Clock() },
+		gotSpItem_{ ActorType::None }
 	{
 		// ステージデータ読み込み
 		LoadStage(getData().nextStageID, *getData().stageData);
@@ -386,10 +405,17 @@ namespace Spiceholic
 		// カメラ位置
 		smoothCameraRect_ = CameraRect(getData());
 
+		// DEBUG: 特殊アイテム
+		//getData().specialItems.clear();
+		//getData().specialItems.push_back(ActorType::ItemHabanero);
+		//getData().specialItems.push_back(ActorType::ItemCurry);
+		//getData().specialItems.push_back(ActorType::ItemMapo);
+
 		// イベント購読
 		GetDispatch().subscribe<GetKeyEvent, &MainScene::onGetKey_>(this);
 		GetDispatch().subscribe<GaugeMaxEvent, &MainScene::onGaugeMax_>(this);
 		GetDispatch().subscribe<CameraShakeEvent, &MainScene::onCameraShakeEvent_>(this);
+		GetDispatch().subscribe<GetSpecialItemEvent, &MainScene::onGetSpecialItem_>(this);
 	}
 
 	MainScene::~MainScene()
@@ -397,6 +423,7 @@ namespace Spiceholic
 		GetDispatch().unsubscribe<GetKeyEvent>(this);
 		GetDispatch().unsubscribe<GaugeMaxEvent>(this);
 		GetDispatch().unsubscribe<CameraShakeEvent>(this);
+		GetDispatch().unsubscribe<GetSpecialItemEvent>(this);
 	}
 
 	void MainScene::update()
@@ -906,6 +933,25 @@ namespace Spiceholic
 
 		// ゲージ枠、ゲージ
 		getData().gauge->draw();
+
+		// 特殊アイテム
+		{
+			for (const auto& type : getData().specialItems)
+			{
+				const auto& info = HUDSpItemInfoMap.at(type);
+
+				ScopedColorMul2D mul{ 1, 0.75 + 0.1 * Periodic::Jump0_1(0.1s, ClockTime()) };
+				ScopedColorAdd2D add{ 0.1 * Periodic::Jump0_1(1 + info.num * 0.2, ClockTime()) + (type == gotSpItem_ && timerGetSpItem_.isRunning()) * 0.9 * Periodic::Square0_1(0.09s, ClockTime())};
+
+				DrawSprite(*getData().appSetting, info.textureName, 1s, false, regionHudD.leftCenter() + info.offset);
+			}
+
+			if (timerGetSpItem_.isRunning())
+			{
+				const auto& info = HUDSpItemInfoMap.at(gotSpItem_);
+				Circle{ regionHudD.leftCenter() + info.offset, 8 + 20 * EaseOutQuad(timerGetSpItem_.progress0_1()) }.drawFrame(2.0 - 1.5 * timerGetSpItem_.progress0_1(), ColorF{ 1, 0.5 + 0.5 * Periodic::Square0_1(0.8s, ClockTime())});
+			}
+		}
 	}
 
 	void MainScene::drawStageStart_() const
@@ -1053,5 +1099,11 @@ namespace Spiceholic
 	{
 		cameraShakeIntensity_ = event.intensity;
 		timerCameraShake_.restart(event.time);
+	}
+
+	void MainScene::onGetSpecialItem_(const GetSpecialItemEvent& event)
+	{
+		timerGetSpItem_.restart();
+		gotSpItem_ = event.type;
 	}
 }

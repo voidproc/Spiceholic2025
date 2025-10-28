@@ -11,6 +11,7 @@ namespace Spiceholic
 	struct StageData;
 	class Gauge;
 	class Score;
+	enum class ActorType;
 
 	struct GameData
 	{
@@ -46,6 +47,9 @@ namespace Spiceholic
 		Array<std::unique_ptr<Actor>> actors;
 
 		bool titleCharacterShown;
+
+		// 特殊アイテム
+		Array<ActorType> specialItems;
 
 		GameData();
 

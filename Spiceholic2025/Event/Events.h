@@ -15,4 +15,9 @@ namespace Spiceholic
 		double intensity = 1.0;
 		Duration time = 0.08s;
 	};
+
+	struct GetSpecialItemEvent
+	{
+		ActorType type;
+	};
 }

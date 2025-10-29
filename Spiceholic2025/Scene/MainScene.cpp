@@ -31,6 +31,7 @@ namespace Spiceholic
 			Retry,
 			Title,
 			Next,
+			Skip,
 		};
 
 		struct MenuItem
@@ -40,10 +41,11 @@ namespace Spiceholic
 			StringView desc;
 		};
 
-		constexpr std::array<MenuItem, 3> PauseMenuItemList = { {
+		constexpr std::array<MenuItem, 4> PauseMenuItemList = { {
 			{ MenuItemType::Back, U"Back to Game"_sv, U"ゲームに戻ります"_sv },
 			{ MenuItemType::Retry, U"Retry This Stage"_sv, U"このステージをやり直します"_sv },
 			{ MenuItemType::Title, U"Quit to Title"_sv, U"タイトル画面に戻ります"_sv },
+			{ MenuItemType::Next, U"Skip This Stage"_sv, U"このステージをとばして次へ（ゲームジャム仕様）"_sv },
 		} };
 
 		constexpr std::array<MenuItem, 2> ClearMenuItemList = { {
@@ -664,6 +666,18 @@ namespace Spiceholic
 
 				changeScene(U"TitleScene", 0);
 			}
+			else if (selected.type == MenuItemType::Next)
+			{
+				// このステージをスキップ（次のステージへ）
+
+				// 次のステージIDを初期化
+				getData().nextStageID = getData().stageData->nextStageID;
+
+				// BGM
+				StopAllBgm();
+
+				changeScene(U"MainScene", 0);
+			}
 
 			// ポーズ解除
 			togglePause_();
@@ -1025,7 +1039,7 @@ namespace Spiceholic
 		// 背景を暗くする
 		SceneRect.draw(ColorF{ 0, 0.9 });
 
-		constexpr int LineHeight = 22;
+		constexpr int LineHeight = 20;
 
 		{
 			const double t = Saturate(timePause_.sF() / 0.25);
@@ -1034,7 +1048,7 @@ namespace Spiceholic
 
 			for (const auto [index, item] : Indexed(PauseMenuItemList))
 			{
-				const Vec2 itemCenter = SceneCenter + Vec2{ 0, ((PauseMenuItemList.size() - 1) / -2.0 + index) * LineHeight };
+				const Vec2 itemCenter = SceneCenter + Vec2{ 0, ((PauseMenuItemList.size() - 1) / -2.0 + index) * LineHeight + ((index > 2) ? 8 : 0) };
 				const bool selected = (index == pauseMenu_.selectedIndex());
 
 				// 選択行

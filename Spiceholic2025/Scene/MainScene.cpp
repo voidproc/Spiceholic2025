@@ -91,6 +91,7 @@ namespace Spiceholic
 
 			case ActorType::ItemChilipepper:
 			case ActorType::ItemKey:
+			case ActorType::ItemKeyEnd:
 			case ActorType::ItemCurry:
 			case ActorType::ItemHabanero:
 			case ActorType::ItemMapo:
@@ -414,7 +415,7 @@ namespace Spiceholic
 		// イベント購読
 		GetDispatch().subscribe<GetKeyEvent, &MainScene::onGetKey_>(this);
 		GetDispatch().subscribe<GaugeMaxEvent, &MainScene::onGaugeMax_>(this);
-		GetDispatch().subscribe<CameraShakeEvent, &MainScene::onCameraShakeEvent_>(this);
+		GetDispatch().subscribe<CameraShakeEvent, &MainScene::onCameraShake_>(this);
 		GetDispatch().subscribe<GetSpecialItemEvent, &MainScene::onGetSpecialItem_>(this);
 	}
 
@@ -503,7 +504,10 @@ namespace Spiceholic
 			time_.start();
 
 			// BGM
-			CurrentBGM(*getData().stageData).play(MixBus1, 0.7s);
+			if (getData().stageData->stageGroup.bgm != U"")
+			{
+				CurrentBGM(*getData().stageData).play(MixBus1, 0.7s);
+			}
 		}
 	}
 
@@ -906,16 +910,18 @@ namespace Spiceholic
 		TextureAsset(U"Head")(0, (int)getData().stageData->stageGroup.group * 16, 50, 16).draw(1, 0);
 
 		// ステージ名
-		constexpr std::array<ColorF, 4> textColorList = {
+		constexpr std::array<ColorF, 5> textColorList = {
 			Palette::Forestgreen,
 			Palette::Olive,
 			Palette::Dodgerblue,
 			Palette::Red,
+			Palette::Red,
 		};
-		constexpr std::array<ColorF, 4> shadowColorList = {
+		constexpr std::array<ColorF, 5> shadowColorList = {
 			Palette::Green,
 			Palette::Darkolivegreen,
 			Palette::Steelblue.lerp(Palette::Black, 0.3),
+			Palette::Crimson,
 			Palette::Crimson,
 		};
 
@@ -1092,10 +1098,13 @@ namespace Spiceholic
 
 			// 時間差でブロック破壊
 			timerGaugeMax_.start();
+
+			// SE
+			PlayAudioOneShot(U"Unlock");
 		}
 	}
 
-	void MainScene::onCameraShakeEvent_(const CameraShakeEvent& event)
+	void MainScene::onCameraShake_(const CameraShakeEvent& event)
 	{
 		cameraShakeIntensity_ = event.intensity;
 		timerCameraShake_.restart(event.time);
@@ -1105,5 +1114,10 @@ namespace Spiceholic
 	{
 		timerGetSpItem_.restart();
 		gotSpItem_ = event.type;
+	}
+
+	void MainScene::onGetLastKey_()
+	{
+		//...
 	}
 }

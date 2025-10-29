@@ -20,4 +20,8 @@ namespace Spiceholic
 	{
 		ActorType type;
 	};
+
+	struct GetLastKeyEvent
+	{
+	};
 }

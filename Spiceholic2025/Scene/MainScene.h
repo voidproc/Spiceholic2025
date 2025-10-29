@@ -64,10 +64,13 @@ namespace Spiceholic
 		void onGaugeMax_();
 
 		// 購読イベント
-		void onCameraShakeEvent_(const CameraShakeEvent& event);
+		void onCameraShake_(const CameraShakeEvent& event);
 
 		// 購読イベント
 		void onGetSpecialItem_(const GetSpecialItemEvent& event);
+
+		// 購読イベント
+		void onGetLastKey_();
 
 		// ステージプレイ時間
 		Stopwatch time_;

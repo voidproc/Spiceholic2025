@@ -528,6 +528,12 @@
                  "height":16,
                  "id":123,
                  "name":"",
+                 "properties":[
+                        {
+                         "name":"SubType",
+                         "type":"int",
+                         "value":1
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,

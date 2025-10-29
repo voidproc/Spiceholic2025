@@ -24,7 +24,7 @@ namespace Spiceholic
 			ActorType::ItemCurry,
 			ActorType::ItemHabanero,
 			ActorType::ItemMapo,
-			ActorType::None,
+			ActorType::ItemKeyEnd,
 			ActorType::None,
 			ActorType::None,
 

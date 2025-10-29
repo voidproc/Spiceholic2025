@@ -18,6 +18,7 @@ namespace Spiceholic
 		// Item:
 		ItemChilipepper,
 		ItemKey,
+		ItemKeyEnd,
 		ItemCurry,
 		ItemHabanero,
 		ItemMapo,

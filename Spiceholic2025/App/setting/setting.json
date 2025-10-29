@@ -2,7 +2,7 @@
   "Title": "Blazing Spiceholics",
   "Version": "1.0.0",
   "Debug":{
-    "StartStageID": "3"
+    "StartStageID": "12"
   },
   "Sprite":{
     "PlayerWalk": {
@@ -128,6 +128,11 @@
       "Subtitle": "マグマ火口",
       "Ground": "Ground4",
       "BGM": "Area4"
+    },
+    {
+      "Subtitle": "マグマ火口",
+      "Ground": "Ground4",
+      "BGM": ""
     }
   ],
   "StageGroupMap":{
@@ -142,6 +147,6 @@
     "9": 2,
     "10": 3,
     "11": 3,
-    "12": 3
+    "12": 4
   }
 }

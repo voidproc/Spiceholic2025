@@ -102,6 +102,7 @@ namespace
 		AudioAsset::Register(U"Decide1", Resource(U"audio/decide1.ogg"));
 		AudioAsset::Register(U"Pause1", Resource(U"audio/pause1.wav"));
 		AudioAsset::Register(U"Spawn", Resource(U"audio/spawn.wav"));
+		AudioAsset::Register(U"Unlock", Resource(U"audio/unlock.ogg"));
 		AudioAsset::Register(U"Area1", Audio::Stream, Resource(U"audio/area1.ogg"), Loop::Yes);
 		AudioAsset::Register(U"Area2", Audio::Stream, Resource(U"audio/area2.ogg"), Loop::Yes);
 		AudioAsset::Register(U"Area4", Audio::Stream, Resource(U"audio/area4.ogg"), Loop::Yes);

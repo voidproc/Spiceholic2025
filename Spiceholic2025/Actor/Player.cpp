@@ -261,7 +261,18 @@ namespace Spiceholic
 				//SE
 				PlayAudioOneShot(U"Pick1");
 			}
-		}
+			else if (other->type() == ActorType::ItemKeyEnd)
+			{
+				// 鍵をとってエンディングへ
+
+				// 鍵をとったイベント発行
+				GetDispatch().publish(GetLastKeyEvent{});
+
+				//SE
+				PlayAudioOneShot(U"Pick1");
+				PlayAudioOneShot(U"Pick2");
+			}
+			}
 	}
 
 	const Vec2& Player::getCollisionPos() const

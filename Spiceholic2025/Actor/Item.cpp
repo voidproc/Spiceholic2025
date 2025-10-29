@@ -128,6 +128,10 @@ namespace Spiceholic
 			{
 				DrawSprite(*gameData_.appSetting, U"ItemMapo", 1s, false, pos);
 			}
+			else if (type() == ActorType::ItemKeyEnd)
+			{
+				DrawSprite(*gameData_.appSetting, U"ItemKey", 1s, false, pos);
+			}
 		}
 	}
 

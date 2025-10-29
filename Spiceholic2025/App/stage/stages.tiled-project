@@ -28,6 +28,11 @@
                     "value": "None"
                 },
                 {
+                    "name": "EndingRoute",
+                    "type": "bool",
+                    "value": false
+                },
+                {
                     "name": "Life",
                     "type": "float",
                     "value": 1

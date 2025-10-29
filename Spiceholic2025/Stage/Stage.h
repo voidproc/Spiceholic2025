@@ -21,11 +21,10 @@ namespace Spiceholic
 
 		// 所持アイテム
 		String bringItems;
-		// 鍵を持っている
-		//bool hasKey;
 
 		// シークレット
 		bool secretRoute;
+		bool endingRoute;
 	};
 
 	struct StageData

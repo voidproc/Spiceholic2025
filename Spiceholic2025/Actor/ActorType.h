@@ -22,6 +22,7 @@ namespace Spiceholic
 		ItemCurry,
 		ItemHabanero,
 		ItemMapo,
+		ItemWasabi,
 		//...
 
 		// Weapon:

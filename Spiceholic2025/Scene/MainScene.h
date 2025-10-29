@@ -27,6 +27,8 @@ namespace Spiceholic
 
 		void updateStageClear_();
 
+		void updateGameClear_();
+
 		void updatePaused_();
 
 		void updateMain_();
@@ -97,7 +99,10 @@ namespace Spiceholic
 		Stopwatch timeStageClear_;
 		// クリア表示メニュー
 		Menu clearMenu_;
-		//size_t selectedClearMenuIndex_;
+
+		// ラストステージクリア関係
+		Stopwatch timeGetLastKey_;
+		bool openedEndingRoute_;
 
 		// シークレット関連
 		Timer timerGaugeMax_;

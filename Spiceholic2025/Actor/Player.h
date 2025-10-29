@@ -34,7 +34,14 @@ namespace Spiceholic
 		// ICollidable
 		const Collision& getCollision() const override;
 
+		void move_(const Vec2& moveAmount, double speedScale = 1.0);
+
 		void updateSpriteState_();
+
+		void startEndingSequence();
+
+	private:
+		void updateEndingSequence_();
 
 	private:
 		GameData& gameData_;
@@ -63,5 +70,7 @@ namespace Spiceholic
 
 		// SE
 		Timer timerWalk_;
+
+		Stopwatch timeEnding_;
 	};
 }

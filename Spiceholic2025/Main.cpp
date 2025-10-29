@@ -57,6 +57,7 @@ namespace
 		TextureAsset::Register(U"Smoke", Resource(U"image/smoke.png"));
 		TextureAsset::Register(U"Powerup", Resource(U"image/powerup.png"));
 		TextureAsset::Register(U"Notice", Resource(U"image/notice.png"));
+		TextureAsset::Register(U"Wasabi", Resource(U"image/wasabi.png"));
 
 		//Load
 		//...

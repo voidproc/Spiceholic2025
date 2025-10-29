@@ -87,7 +87,7 @@ namespace Spiceholic
 			case ActorType::BlockCanBreakGray:
 			case ActorType::BlockSpike:
 			case ActorType::BlockGiftbox:
-				gameData.blocks.push_back(std::make_unique<Block>(spawn.position, spawn.type, gameData, spawn.bringItems, spawn.secretRoute));
+				gameData.blocks.push_back(std::make_unique<Block>(spawn.position, spawn.type, gameData, spawn.bringItems, spawn.secretRoute, spawn.endingRoute));
 				actor = gameData.blocks.back().get();
 				break;
 
@@ -97,6 +97,7 @@ namespace Spiceholic
 			case ActorType::ItemCurry:
 			case ActorType::ItemHabanero:
 			case ActorType::ItemMapo:
+			case ActorType::ItemWasabi:
 				gameData.actors.push_back(std::make_unique<Item>(spawn.position, spawn.type, gameData));
 				actor = gameData.actors.back().get();
 				break;
@@ -353,6 +354,8 @@ namespace Spiceholic
 		timeGetKey_{ StartImmediately::No, Clock() },
 		timeStageClear_{ StartImmediately::No, Clock() },
 		clearMenu_{ ClearMenuItemList.size() },
+		timeGetLastKey_{ StartImmediately::No, Clock() },
+		openedEndingRoute_{ false },
 		timerGaugeMax_{ 0.50s, StartImmediately::No, Clock() },
 		timePause_{ StartImmediately::No },
 		pauseMenu_{ PauseMenuItemList.size() },
@@ -408,17 +411,15 @@ namespace Spiceholic
 		// カメラ位置
 		smoothCameraRect_ = CameraRect(getData());
 
-		// DEBUG: 特殊アイテム
-		//getData().specialItems.clear();
-		//getData().specialItems.push_back(ActorType::ItemHabanero);
-		//getData().specialItems.push_back(ActorType::ItemCurry);
-		//getData().specialItems.push_back(ActorType::ItemMapo);
+		// ポーズメニュー
+		pauseMenu_ = Menu{ PauseMenuItemList.size() - ((getData().stageData->stageID == U"12") ? 1 : 0)};
 
 		// イベント購読
 		GetDispatch().subscribe<GetKeyEvent, &MainScene::onGetKey_>(this);
 		GetDispatch().subscribe<GaugeMaxEvent, &MainScene::onGaugeMax_>(this);
 		GetDispatch().subscribe<CameraShakeEvent, &MainScene::onCameraShake_>(this);
 		GetDispatch().subscribe<GetSpecialItemEvent, &MainScene::onGetSpecialItem_>(this);
+		GetDispatch().subscribe<GetLastKeyEvent, &MainScene::onGetLastKey_>(this);
 	}
 
 	MainScene::~MainScene()
@@ -427,6 +428,7 @@ namespace Spiceholic
 		GetDispatch().unsubscribe<GaugeMaxEvent>(this);
 		GetDispatch().unsubscribe<CameraShakeEvent>(this);
 		GetDispatch().unsubscribe<GetSpecialItemEvent>(this);
+		GetDispatch().unsubscribe<GetLastKeyEvent>(this);
 	}
 
 	void MainScene::update()
@@ -442,6 +444,11 @@ namespace Spiceholic
 			//    または
 			//    鍵取得～ステージクリア表示～シーン遷移
 			updateStageClear_();
+		}
+		else if (timeGetLastKey_.isRunning())
+		{
+			// ◆ 最終ステージの鍵を取得
+			updateGameClear_();
 		}
 		else
 		{
@@ -587,6 +594,66 @@ namespace Spiceholic
 		}
 
 		RemoveInactiveActors(getData().actors);
+	}
+
+	void MainScene::updateGameClear_()
+	{
+		// ◆ 最終ステージの鍵を取得
+
+		// カメラ位置
+		const auto camRect = CameraRect(getData());
+		smoothCameraRect_.pos += (camRect.pos - smoothCameraRect_.pos).limitLength(4.0 * 60 * Scene::DeltaTime());
+
+		if (timeGetLastKey_ > 1.5s)
+		{
+			if (not openedEndingRoute_)
+			{
+				// ブロックのうち EndingRoute プロパティが設定されているものを破壊
+				for (size_t i = 0; i < getData().blocks.size(); ++i)
+				{
+					getData().blocks[i]->setInactiveIfEndingRoute();
+				}
+
+				openedEndingRoute_ = true;
+			}
+		}
+
+		//if (timeGetLastKey_ > 13s)
+		//{
+		//	//changeScene(U"EndingScene", 0);
+		//	return;
+		//}
+
+		// プレイヤーを更新
+		auto& player = *getData().player;
+		player.update();
+
+		// ブロックを更新
+		auto& blocks = getData().blocks;
+		for (auto& block : blocks)
+		{
+			block->update();
+		}
+
+		// アクターのうちアイテム、エフェクトは更新
+		for (size_t i = 0; i < getData().actors.size(); ++i)
+		{
+			if (auto& actor = getData().actors[i];
+				actor->tag() == ActorTag::Effect ||
+				actor->tag() == ActorTag::Item)
+			{
+				actor->update();
+			}
+		}
+
+		// プレイヤーの位置を調整
+		UpdateActorPos(player, blocks);
+
+		RemoveInactiveActors(getData().actors);
+		RemoveInactiveActors(getData().blocks);
+
+		// 辛ゲージ更新
+		getData().gauge->update();
 	}
 
 	void MainScene::updatePaused_()
@@ -746,7 +813,7 @@ namespace Spiceholic
 			onDestroyAllEnemies_();
 		}
 
-		// 炎ゲージ更新
+		// 辛ゲージ更新
 		getData().gauge->update();
 
 		// ゲージマックス時ブロック破壊とスクロールロック解除
@@ -768,7 +835,7 @@ namespace Spiceholic
 		// ブロックのうち SecretRoute プロパティが設定されているものを破壊
 		for (size_t i = 0; i < getData().blocks.size(); ++i)
 		{
-			getData().blocks[i]->setInactiveIfSecret();
+			getData().blocks[i]->setInactiveIfSecretRoute();
 		}
 
 		// スクロールロック解除
@@ -856,6 +923,15 @@ namespace Spiceholic
 		if (GlobalClock::IsPaused())
 		{
 			drawPaused_();
+		}
+
+		// ゲームクリア時
+		if (timeGetLastKey_.isRunning())
+		{
+			if (timeGetLastKey_ > 9s)
+			{
+				SceneRect.draw(ColorF{ 0, 0.75 * EaseInOutSine(Saturate((timeGetLastKey_.sF() - 9.0)) / 1.8) });
+			}
 		}
 	}
 
@@ -946,7 +1022,7 @@ namespace Spiceholic
 		DrawText(U"px7812", text, Arg::center = regionHudU.center(), textColor, shadowColor);
 
 		// 経過時間
-		const int32 timeSec = (timeDestroyAllEnemy_.isRunning() || timeGetKey_.isRunning() || timeStageClear_.isRunning()) ? static_cast<int32>(stageClearTime_) : time_.s();
+		const int32 timeSec = (timeDestroyAllEnemy_.isRunning() || timeGetKey_.isRunning() || timeGetLastKey_.isRunning() || timeStageClear_.isRunning()) ? static_cast<int32>(stageClearTime_) : time_.s();
 		const String textTime = U"{:02d}:{:02d}"_fmt(timeSec / 60, timeSec % 60);
 		DrawText(U"m3x6", textTime, Arg::rightCenter = regionHudU.rightCenter() - Vec2{ 4, 2 }, textColor, shadowColor);
 
@@ -1048,6 +1124,8 @@ namespace Spiceholic
 
 			for (const auto [index, item] : Indexed(PauseMenuItemList))
 			{
+				if ((getData().stageData->stageID == U"12") && (index == 3)) continue;
+
 				const Vec2 itemCenter = SceneCenter + Vec2{ 0, ((PauseMenuItemList.size() - 1) / -2.0 + index) * LineHeight + ((index > 2) ? 8 : 0) };
 				const bool selected = (index == pauseMenu_.selectedIndex());
 
@@ -1132,6 +1210,13 @@ namespace Spiceholic
 
 	void MainScene::onGetLastKey_()
 	{
-		//...
+		if (not timeGetLastKey_.isRunning())
+		{
+			timeGetLastKey_.start();
+
+			getData().player->startEndingSequence();
+
+			stageClearTime_ = time_.sF();
+		}
 	}
 }

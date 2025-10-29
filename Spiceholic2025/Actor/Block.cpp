@@ -14,13 +14,14 @@ namespace Spiceholic
 	{
 	}
 
-	Block::Block(const Vec2& pos, ActorType type, GameData& gameData, const String& bringItems, bool secretRoute)
+	Block::Block(const Vec2& pos, ActorType type, GameData& gameData, const String& bringItems, bool secretRoute, bool endingRoute)
 		:
 		Actor{ pos },
 		type_{ type },
 		gameData_{ gameData },
 		bringItems_{ bringItems },
 		secretRoute_{ secretRoute },
+		endingRoute_{ endingRoute },
 		collision_{}
 	{
 		collision_.set(RectF{ Arg::center = Vec2{}, 16 - 2 });
@@ -110,7 +111,7 @@ namespace Spiceholic
 		gameData_.actors.push_back(std::make_unique<FxBlockBreak>(position().currentPos(), secretRoute_));
 	}
 
-	void Block::setInactiveIfSecret()
+	void Block::setInactiveIfSecretRoute()
 	{
 		if (secretRoute_)
 		{
@@ -124,7 +125,23 @@ namespace Spiceholic
 
 			// SE
 			PlayAudioOneShot(U"Explosion2");
+		}
+	}
 
+	void Block::setInactiveIfEndingRoute()
+	{
+		if (endingRoute_)
+		{
+			setInactive(false);
+
+			// 爆発
+			explode();
+
+			// 画面揺れ
+			GetDispatch().publish<CameraShakeEvent>({ 1.5, 0.12s });
+
+			// SE
+			PlayAudioOneShot(U"Explosion2");
 		}
 	}
 }

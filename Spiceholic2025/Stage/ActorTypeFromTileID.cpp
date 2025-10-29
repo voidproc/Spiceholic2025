@@ -25,7 +25,7 @@ namespace Spiceholic
 			ActorType::ItemHabanero,
 			ActorType::ItemMapo,
 			ActorType::ItemKeyEnd,
-			ActorType::None,
+			ActorType::ItemWasabi,
 			ActorType::None,
 
 			ActorType::EnemyChick,

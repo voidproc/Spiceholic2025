@@ -78,6 +78,10 @@ namespace Spiceholic
 						{
 							spawn.secretRoute = prop[U"value"].getOr<bool>(false);
 						}
+						else if (name == U"EndingRoute")
+						{
+							spawn.endingRoute = prop[U"value"].getOr<bool>(false);
+						}
 					}
 				}
 

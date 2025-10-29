@@ -34,7 +34,8 @@ namespace Spiceholic
 		spriteName_{ U"PlayerStand" },
 		spriteMirror_{ false },
 		drawOffset_{},
-		timerWalk_{ 0.4s, StartImmediately::Yes, Clock() }
+		timerWalk_{ 0.4s, StartImmediately::Yes, Clock() },
+		timeEnding_{ StartImmediately::No }
 	{
 		collision_.set(RectF{ Arg::center = Vec2{ 0, 4 }, SizeF{ 16 - 2, 16 - 2 } });
 	}
@@ -45,34 +46,18 @@ namespace Spiceholic
 
 	void Player::update()
 	{
-		if (not timerFire_.isRunning() && not timerKnockback_.isRunning())
+		if (not timerFire_.isRunning() &&
+			not timerKnockback_.isRunning() &&
+			not timeEnding_.isRunning())
 		{
-			// 硬直していない、かつノックバック中じゃない
+			// 硬直していない、ノックバック中じゃない、エンディング中じゃない
 
 			// 移動
-			{
-				const double MoveSpeed = DefaultMoveSpeed + (gameData_.gauge->isPoweredUp() ? PoweredupMoveAccel : 0);
-
-				const Vec2 playerMoveAmount{
-					(gameData_.actionInput->pressed(Action::MoveRight) - gameData_.actionInput->pressed(Action::MoveLeft)) * MoveSpeed,
-					(gameData_.actionInput->pressed(Action::MoveDown) - gameData_.actionInput->pressed(Action::MoveUp)) * MoveSpeed
-				};
-
-				setMoveAmount(playerMoveAmount.limitLength(MoveSpeed) * Scene::DeltaTime());
-
-				if (playerMoveAmount.length() > 0.1 && timerWalk_.reachedZero())
-				{
-					PlayAudioOneShot(U"Walk1");
-					timerWalk_.restart(gameData_.gauge->isPoweredUp() ? 0.5s/2 : 0.8s/2);
-
-					// 煙
-					if (RandomBool(0.8))
-					{
-						gameData_.actors.push_back(std::make_unique<FxSmoke2>(gameData_, position().currentPos() + Vec2{ 0, 8 } + RandomVec2(Random(0.0, 2.0)), 0.2));
-					}
-
-				}
-			}
+			const Vec2 moveAmount{
+				(gameData_.actionInput->pressed(Action::MoveRight) - gameData_.actionInput->pressed(Action::MoveLeft)),
+				(gameData_.actionInput->pressed(Action::MoveDown) - gameData_.actionInput->pressed(Action::MoveUp))
+			};
+			move_(moveAmount);
 
 			// 炎を吐く
 			if (gameData_.actionInput->pressed(Action::Attack) && gameData_.gauge->getValue() >= 10)
@@ -108,6 +93,10 @@ namespace Spiceholic
 					gameData_.actors.push_back(std::make_unique<FxSmoke>(position().currentPos() + smokeOffset + Vec2{ Random(-5.0, 5.0), Random(1.0, 2.0) }, this, 0.7, 0.5, 0.05));
 				}
 			}
+		}
+		else if (timeEnding_.isRunning())
+		{
+			updateEndingSequence_();
 		}
 		else if (timerFire_.isRunning())
 		{
@@ -285,6 +274,26 @@ namespace Spiceholic
 		return collision_;
 	}
 
+	void Player::move_(const Vec2& moveAmount, double speedScale)
+	{
+		const double MoveSpeed = DefaultMoveSpeed + (gameData_.gauge->isPoweredUp() ? PoweredupMoveAccel : 0);
+		const Vec2 playerMoveAmount = moveAmount * MoveSpeed;
+
+		setMoveAmount(playerMoveAmount.limitLength(MoveSpeed * speedScale) * Scene::DeltaTime());
+
+		if (playerMoveAmount.length() > 0.1 && timerWalk_.reachedZero())
+		{
+			PlayAudioOneShot(U"Walk1");
+			timerWalk_.restart(gameData_.gauge->isPoweredUp() ? 0.5s / 2 : 0.8s / 2);
+
+			// 煙
+			if (RandomBool(0.8))
+			{
+				gameData_.actors.push_back(std::make_unique<FxSmoke2>(gameData_, position().currentPos() + Vec2{ 0, 8 } + RandomVec2(Random(0.0, 2.0)), 0.2));
+			}
+		}
+	}
+
 	void Player::updateSpriteState_()
 	{
 		if (getMoveAmount().length() < 1e-6)
@@ -312,5 +321,42 @@ namespace Spiceholic
 		}
 
 		spriteName_ = U"PlayerWalk{}"_fmt(moveDirectionText_);
+	}
+
+	void Player::startEndingSequence()
+	{
+		timeEnding_.start();
+	}
+
+	void Player::updateEndingSequence_()
+	{
+		Vec2 moveAmount{};
+		double speedScale = 1.0;
+
+		// 1～2s (120,88)まで歩く
+		if (0.5s < timeEnding_ && timeEnding_ < 1.5s)
+		{
+			Vec2 dir = (Vec2{ 120, 88 } - position());
+			const double len = dir.length() < 1 ? 0 : dir.length();
+			moveAmount = dir.limitLength(len);
+			speedScale = 0.3;
+		}
+		else if (1.85s < timeEnding_ && timeEnding_ < 1.95s)
+		{
+			moveAmount = Vec2::Right();
+			speedScale = 0.7;
+		}
+		else if (2.9s < timeEnding_ && timeEnding_ < 5.95s)
+		{
+			moveAmount = Vec2::Right();
+			speedScale = 1.1;
+		}
+
+		move_(moveAmount, speedScale);
+
+		drawOffset_ = Vec2::Zero();
+
+		// 移動方向によりスプライト名を決定
+		updateSpriteState_();
 	}
 }

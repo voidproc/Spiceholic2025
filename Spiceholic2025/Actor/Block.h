@@ -11,7 +11,7 @@ namespace Spiceholic
 		static constexpr ActorTag Tag = ActorTag::Block;
 
 	public:
-		Block(const Vec2& pos, ActorType type, GameData& gameData, const String& bringItems, bool secretRoute = false);
+		Block(const Vec2& pos, ActorType type, GameData& gameData, const String& bringItems, bool secretRoute = false, bool endingRoute = false);
 
 		~Block() override;
 
@@ -36,13 +36,15 @@ namespace Spiceholic
 
 		void explode();
 
-		void setInactiveIfSecret();
+		void setInactiveIfSecretRoute();
+		void setInactiveIfEndingRoute();
 
 	private:
 		ActorType type_;
 		GameData& gameData_;
 		String bringItems_;
 		bool secretRoute_;
+		bool endingRoute_;
 		Collision collision_;
 	};
 }

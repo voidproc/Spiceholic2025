@@ -112,6 +112,12 @@ namespace Spiceholic
 		{
 			DrawSprite(*gameData_.appSetting, U"ItemKey", 1s, false, pos);
 		}
+		else if (type() == ActorType::ItemWasabi)
+		{
+			Circle{ position().currentPos() - Vec2{ 0, 6 }, 36 + 3 * Periodic::Sine0_1(0.8, time_.sF()) }.drawFrame(1.0, HSV{ 128 + 52 * Periodic::Sine1_1(0.3s, time_.sF()), 1.0, 1.0 }.withAlpha(Periodic::Square0_1(0.09s, time_.sF())));
+
+			DrawSprite(*gameData_.appSetting, U"Wasabi", 0.1s, false, pos);
+		}
 		else
 		{
 			Circle{ position(), 24 + 2 * Periodic::Sine0_1(0.8, time_.sF()) }.drawFrame(1.0, HSV{ time_.sF() * 360 * 2.0, 1.0, 1.0 }.withAlpha(Periodic::Square0_1(0.09s, time_.sF())));
@@ -142,9 +148,12 @@ namespace Spiceholic
 			// 破棄待ちの状態へ
 			setInactive();
 		}
-		else if (other->tag() == ActorTag::Weapon &&
-			not timeJumpToPlayer_.isRunning() &&
-			time_ > 1s)
+		else if (
+			(type() != ActorType::ItemKeyEnd) &&
+			(other->tag() == ActorTag::Weapon) &&
+			(not timeJumpToPlayer_.isRunning()) &&
+			(time_ > 1s)
+			)
 		{
 			// プレイヤーに吸収
 			timeJumpToPlayer_.start();

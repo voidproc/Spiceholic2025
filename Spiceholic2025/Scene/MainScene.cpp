@@ -604,7 +604,30 @@ namespace Spiceholic
 		const auto camRect = CameraRect(getData());
 		smoothCameraRect_.pos += (camRect.pos - smoothCameraRect_.pos).limitLength(4.0 * 60 * Scene::DeltaTime());
 
-		if (timeGetLastKey_ > 1.5s)
+		if (timeGetLastKey_ > 11s + 21s + 3s)
+		{
+			if (getData().actionInput->down(Action::Decide))
+			{
+				// 次のステージを初期化
+				getData().nextStageID = U"1";
+
+				// 暫定
+				changeScene(U"TitleScene", 0s);
+				return;
+			}
+		}
+		else if (timeGetLastKey_ > 11s + 21s)
+		{
+			AudioAsset(U"Area1").stop(3s);
+		}
+		else if (timeGetLastKey_ > 11s)
+		{
+			if (not AudioAsset(U"Area1").isPlaying())
+			{
+				AudioAsset(U"Area1").play(3s, MixBus1);
+			}
+		}
+		else if (timeGetLastKey_ > 1.5s)
 		{
 			if (not openedEndingRoute_)
 			{
@@ -617,12 +640,6 @@ namespace Spiceholic
 				openedEndingRoute_ = true;
 			}
 		}
-
-		//if (timeGetLastKey_ > 13s)
-		//{
-		//	//changeScene(U"EndingScene", 0);
-		//	return;
-		//}
 
 		// プレイヤーを更新
 		auto& player = *getData().player;
@@ -930,8 +947,47 @@ namespace Spiceholic
 		{
 			if (timeGetLastKey_ > 9s)
 			{
-				SceneRect.draw(ColorF{ 0, 0.75 * EaseInOutSine(Saturate((timeGetLastKey_.sF() - 9.0)) / 1.8) });
+				SceneRect.draw(ColorF{ 0, 0.85 * EaseInOutSine(Saturate((timeGetLastKey_.sF() - 9.0)) / 1.8) });
 			}
+
+			const Array<Array<String>> textList = {
+				{
+					U"Siv3D ゲームジャム 2025 投稿作品",
+					U"Blazing Spiceholic",
+				},
+				{
+					U"制作",
+					U"",
+					U"voidProc",
+				},
+				{
+					U"出演",
+					U"",
+					U"ドラゴ子",
+					U"ダークひよこ",
+					U"フライングダークひよこ",
+				},
+				{
+					U"Thank you for playing!",
+				}
+			};
+
+			if (const double t = timeGetLastKey_.sF() - 12.0;
+				t > 0)
+			{
+				const auto page = Min(static_cast<size_t>(t / 7), textList.size() - 1);
+				constexpr double LineHeight = 18;
+
+				ColorF color = LightYellow;
+
+				for (const auto [index, text] : Indexed(textList[page]))
+				{
+					if (page > 0 && index > 0) color = Palette::Whitesmoke;
+
+					DrawText(U"px7812", text, Arg::center = SceneCenter + Vec2{ 0, LineHeight * index - LineHeight * (textList[page].size() - 1) / 2.0 }, color);
+				}
+			}
+			
 		}
 	}
 

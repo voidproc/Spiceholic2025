@@ -605,7 +605,7 @@ namespace Spiceholic
 		const auto camRect = CameraRect(getData());
 		smoothCameraRect_.pos += (camRect.pos - smoothCameraRect_.pos).limitLength(4.0 * 60 * Scene::DeltaTime());
 
-		if (timeGetLastKey_ > 11s + 21s + 3s)
+		if (timeGetLastKey_ > 11s + 28s + 3s)
 		{
 			if (getData().actionInput->down(Action::Decide))
 			{
@@ -617,7 +617,7 @@ namespace Spiceholic
 				return;
 			}
 		}
-		else if (timeGetLastKey_ > 11s + 21s)
+		else if (timeGetLastKey_ > 11s + 28s)
 		{
 			AudioAsset(U"Area1").stop(3s);
 		}
@@ -951,7 +951,7 @@ namespace Spiceholic
 				SceneRect.draw(ColorF{ 0, 0.85 * EaseInOutSine(Saturate((timeGetLastKey_.sF() - 9.0)) / 1.8) });
 			}
 
-			const Array<Array<String>> textList = {
+			Array<Array<String>> textList = {
 				{
 					U"Siv3D ゲームジャム 2025 投稿作品",
 					U"Blazing Spiceholic",
@@ -969,9 +969,19 @@ namespace Spiceholic
 					U"フライングダークひよこ",
 				},
 				{
+					U"ドラゴ子がみつけた辛いもの",
+					U"",
+					U"とうがらし",
+				},
+				{
 					U"Thank you for playing!",
 				}
 			};
+
+			textList[3].push_back(getData().specialItems.contains(ActorType::ItemHabanero) ? U"ハバネロ" : U"???");
+			textList[3].push_back(getData().specialItems.contains(ActorType::ItemCurry) ? U"カレーライス" : U"???");
+			textList[3].push_back(getData().specialItems.contains(ActorType::ItemMapo) ? U"麻婆豆腐" : U"???");
+			textList[3].push_back(U"わさび");
 
 			if (const double t = timeGetLastKey_.sF() - 12.0;
 				t > 0)
@@ -988,7 +998,12 @@ namespace Spiceholic
 					DrawText(U"px7812", text, Arg::center = SceneCenter + Vec2{ 0, LineHeight * index - LineHeight * (textList[page].size() - 1) / 2.0 }, color);
 				}
 			}
-			
+
+			// 入力待ち
+			if (timeGetLastKey_ > 11s + 28s + 3s)
+			{
+				DrawSprite(*getData().appSetting, U"WhiteArrowDown", 0.5s, false, SceneRect.br() - Vec2{ 16, 16 + Periodic::Square0_1(0.5s) });
+			}
 		}
 	}
 
@@ -1281,9 +1296,12 @@ namespace Spiceholic
 		stageClearTime_ = time_.sF();
 
 		const auto stageID = getData().stageData->stageID;
-		getData().currentRecords[stageID] = StageRecord{ stageClearTime_ };
 
-		// TODO: 新記録？
-		//...
+		// レコードが存在しない場合、または新記録の場合に保存する
+		if (not getData().currentRecords.contains(stageID) ||
+			getData().currentRecords.at(stageID).timeSec > stageClearTime_)
+		{
+			getData().currentRecords[stageID] = StageRecord{ stageClearTime_ };
+		}
 	}
 }

@@ -2,7 +2,7 @@
   "Title": "Blazing Spiceholics",
   "Version": "1.0.0",
   "Debug":{
-    "StartStageID": "1"
+    "StartStageID": "12"
   },
   "Sprite":{
     "PlayerWalk": {

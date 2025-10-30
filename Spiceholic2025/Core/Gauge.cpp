@@ -1,5 +1,6 @@
 ﻿#include "Gauge.h"
 #include "Core/Color.h"
+#include "Core/Periodic.h"
 
 namespace Spiceholic
 {
@@ -47,8 +48,24 @@ namespace Spiceholic
 		const double tMaxEffect = Saturate(timeMaxEffect_.sF() / 0.95);
 
 		// ゲージ枠
-		const ColorF gaugeFrameColor = onMaxEffect ? GaugeMaxEffectColor().lerp(Palette::White, tMaxEffect) : ((currentValue_ >= 50) ? ColorF{1,1,0.93}.lerp(Palette::Darkorange, 0.7 * Periodic::Pulse0_1(0.20s, 0.3)) : ColorF{ 1 - 0.08 * Periodic::Sine0_1(0.2s, ClockTime()) });
+		const ColorF gaugeFrameColor{ 1 - 0.08 * Periodic::Sine0_1(0.2s, ClockTime()) };
 		TextureAsset(U"GaugeFrame").draw(gaugePos, gaugeFrameColor);
+
+		// 辛マーク
+		{
+			ColorF markColor{ 1 };
+			int frame = 0;
+			int frameCount = 1;
+			if (currentValue_ < 10)
+			{
+				frame = 3;
+			}
+			else if (currentValue_ >= 50)
+			{
+				frameCount = 3;
+			}
+			TextureAsset(U"GaugeKara")(24 * PeriodicStair(0.3s, frame, frame + frameCount - 1, ClockTime()), 0, 24, 16).draw(gaugePos);
+		}
 
 		// ゲージMAXエフェクト
 		if (onMaxEffect)

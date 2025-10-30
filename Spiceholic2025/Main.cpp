@@ -34,6 +34,7 @@ namespace
 		TextureAsset::Register(U"Chara", Resource(U"image/chara.png"));
 		TextureAsset::Register(U"Gauge", Resource(U"image/gauge.png"));
 		TextureAsset::Register(U"GaugeFrame", Resource(U"image/gauge_frame.png"));
+		TextureAsset::Register(U"GaugeKara"	, Resource(U"image/gauge_kara.png"));
 		TextureAsset::Register(U"Item", Resource(U"image/item.png"));
 		TextureAsset::Register(U"ItemKey", Resource(U"image/item_key.png"));
 		TextureAsset::Register(U"ItemCurry", Resource(U"image/item_curry.png"));

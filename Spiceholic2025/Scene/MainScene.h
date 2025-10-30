@@ -35,6 +35,7 @@ namespace Spiceholic
 		void onTimerGaugeMax_();
 
 		void updateSnow_();
+		void updateSparks_();
 
 		void makeCharacterShadows_();
 

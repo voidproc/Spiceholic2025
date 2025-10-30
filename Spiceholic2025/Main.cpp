@@ -54,6 +54,7 @@ namespace
 		TextureAsset::Register(U"Ground3", Resource(U"image/ground_3.png"));
 		TextureAsset::Register(U"Ground4", Resource(U"image/ground_4.png"));
 		TextureAsset::Register(U"Snow", Resource(U"image/snow.png"));
+		TextureAsset::Register(U"Sparks", Resource(U"image/sparks.png"));
 		TextureAsset::Register(U"Head", Resource(U"image/head.png"));
 		TextureAsset::Register(U"Smoke", Resource(U"image/smoke.png"));
 		TextureAsset::Register(U"Powerup", Resource(U"image/powerup.png"));

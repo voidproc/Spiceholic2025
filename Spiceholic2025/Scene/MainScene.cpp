@@ -846,6 +846,12 @@ namespace Spiceholic
 		{
 			updateSnow_();
 		}
+
+		// 火の粉とか
+		if (getData().stageData->stageGroup.group == StageGroupType::Magma)
+		{
+			updateSparks_();
+		}
 	}
 
 	void MainScene::onTimerGaugeMax_()
@@ -883,6 +889,37 @@ namespace Spiceholic
 			s.pos.x += noise_.noise1D(time_.sF() * 2.0 + s.noisePos) * 0.5;
 			s.pos.y += 1.0 * 60 * (0.6 + 0.1 * Periodic::Sine0_1(1.5s, ClockTime())) * Scene::DeltaTime();
 			s.active = RandomBool(0.995);
+		}
+
+		const auto camRect2 = camRect.stretched(32, 80, 0, 80);
+		snow_.remove_if([&](const auto& s) { return not camRect2.intersects(s.pos) || not s.active; });
+	}
+
+	void MainScene::updateSparks_()
+	{ 
+		// 面倒なのでSnowを流用する
+
+		const auto camRect = CameraRect(getData());
+
+		if (timerSnow_.reachedZero())
+		{
+			timerSnow_.restart();
+
+			for (int i = 0; i < 8; ++i)
+			{
+				snow_.push_back(Snow{
+					Vec2{ i * (SceneSize.x + 140) / 8 - 70 + Random(-32, 32), Random(-16, 0) } + camRect.pos,
+					time_.sF() + i + Random() * 8,
+					true
+					});
+			}
+		}
+
+		for (auto& s : snow_)
+		{
+			s.pos.x += noise_.noise1D(time_.sF() * 5.0 + s.noisePos) * 0.5 - Abs(noise_.noise1D(time_.sF() * 2.0 + 2*s.noisePos)) * 1.8;
+			s.pos.y += 1.5 * 60 * (0.6 + 0.1 * Periodic::Sine0_1(1.5s, ClockTime())) * Scene::DeltaTime();
+			s.active = RandomBool(0.985);
 		}
 
 		const auto camRect2 = camRect.stretched(32, 80, 0, 80);
@@ -1047,12 +1084,18 @@ namespace Spiceholic
 		getData().player->draw();
 
 		// 雪
-		for (const Snow& s : snow_)
+		if (not timeGetLastKey_.isRunning())
 		{
-			const Vec2 pos = s.pos - CameraRect(getData()).pos;
-			const double alpha = (EaseInQuad(Saturate(time_.sF() / 4.0))) * (1 - Saturate((pos.y - (ActorsFieldViewportSize.y - 48)) / 48.0));
-			ScopedColorMul2D mul{ 1, alpha * (0.5 + 0.3 * Periodic::Sine0_1(0.09s, ClockTime() + s.noisePos)) };
-			DrawSprite(*getData().appSetting, U"Snow", 0.7s, false, s.pos, s.noisePos + time_.sF());
+			const bool isSnow = getData().stageData->stageGroup.group == StageGroupType::Snow;
+			StringView tex = isSnow ? U"Snow"_sv : U"Sparks"_sv;
+			const Duration animDuration = isSnow ? 0.7s : 0.3s;
+			for (const Snow& s : snow_)
+			{
+				const Vec2 pos = s.pos - CameraRect(getData()).pos;
+				const double alpha = (EaseInQuad(Saturate(time_.sF() / 4.0))) * (1 - Saturate((pos.y - (ActorsFieldViewportSize.y - 48)) / 48.0));
+				ScopedColorMul2D mul{ 1, alpha * (0.5 + 0.3 * Periodic::Sine0_1(0.09s, ClockTime() + s.noisePos)) };
+				DrawSprite(*getData().appSetting, tex, animDuration, false, s.pos, s.noisePos + time_.sF());
+			}
 		}
 	}
 

@@ -101,6 +101,12 @@
       "Size": 8,
       "Pos": [0, 0]
     },
+    "Sparks": {
+      "Texture": "Sparks",
+      "Count": 8,
+      "Size": 8,
+      "Pos": [0, 0]
+    },
     "Smoke": {
       "Texture": "Smoke",
       "Count": 5,

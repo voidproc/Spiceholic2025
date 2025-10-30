@@ -36,6 +36,7 @@ namespace Spiceholic
 		{
 			StageGroupInfo info;
 			info.group = ToEnum<StageGroupType>(stageGroups.size());
+			if (FromEnum(info.group) == 4) info.group = StageGroupType::Magma;
 			info.subtitle = object[U"Subtitle"].getString();
 			info.groundTexture = object[U"Ground"].getString();
 			info.bgm = object[U"BGM"].getString();

@@ -148,7 +148,7 @@ void Main()
 
 	// シーン初期化
 	App app{ gameData };
-	RegisterScenes<TitleScene, OptionScene, InputSettingScene, MainScene>(app);
+	RegisterScenes<TitleScene, OptionScene, InputSettingScene, MainScene, RecordsScene>(app);
 	app.setFadeColor(DefaultBgColor);
 	app.init(TitleScene::Name, 0s);
 

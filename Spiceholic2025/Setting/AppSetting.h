@@ -21,6 +21,7 @@ namespace Spiceholic
 			String version;
 			HashTable<String, SpriteInfo> sprite;
 			HashTable<String, StageGroupInfo> stageGroupInfo;
+			Array<String> stageList;
 
 			struct
 			{

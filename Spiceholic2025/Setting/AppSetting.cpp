@@ -46,6 +46,11 @@ namespace Spiceholic
 		{
 			settings_.stageGroupInfo[object.key] = stageGroups[object.value.get<int>()];
 		}
+
+		for (int i = 0; i < json[U"StageList"].size(); ++i)
+		{
+			settings_.stageList.push_back(json[U"StageList"][i].getString());
+		}
 	}
 
 	const AppSetting::Settings& AppSetting::get() const

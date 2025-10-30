@@ -4,6 +4,7 @@
 #include "Actor/Player.h"
 #include "Core/Gauge.h"
 #include "Core/Score.h"
+#include "Core/StageRecord.h"
 #include "Input/ActionInput.h"
 #include "Setting/AppSetting.h"
 #include "Setting/UserSetting.h"
@@ -24,7 +25,8 @@ namespace Spiceholic
 		player{},
 		blocks{ Arg::reserve = 128 },
 		actors{ Arg::reserve = 128 },
-		titleCharacterShown{ false }
+		titleCharacterShown{ false },
+		currentRecords{}
 	{
 	}
 

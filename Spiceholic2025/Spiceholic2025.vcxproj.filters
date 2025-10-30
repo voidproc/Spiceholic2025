@@ -291,6 +291,9 @@
     <ClCompile Include="Core\Menu.cpp">
       <Filter>Core</Filter>
     </ClCompile>
+    <ClCompile Include="Scene\RecordsScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">
@@ -1096,6 +1099,12 @@
     </ClInclude>
     <ClInclude Include="Stage\StageGroup.h">
       <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\RecordsScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Core\StageRecord.h">
+      <Filter>Core</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

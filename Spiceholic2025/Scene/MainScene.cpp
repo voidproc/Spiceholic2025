@@ -13,6 +13,7 @@
 #include "Core/DrawSprite.h"
 #include "Core/Gauge.h"
 #include "Core/Score.h"
+#include "Core/StageRecord.h"
 #include "Event/Dispatch.h"
 #include "Event/Events.h"
 #include "Input/ActionInput.h"
@@ -1218,9 +1219,8 @@ namespace Spiceholic
 		{
 			timeDestroyAllEnemy_.start();
 
-			// TODO: クリアタイム
-			//...
-			stageClearTime_ = time_.sF();
+			// クリアタイム更新
+			ApplyStageClearRecord_();
 		}
 	}
 
@@ -1230,9 +1230,8 @@ namespace Spiceholic
 		// ゲームクリア表示へ...
 		timeGetKey_.start();
 
-		// TODO: クリアタイム
-		//...
-		stageClearTime_ = time_.sF();
+		// クリアタイム更新
+		ApplyStageClearRecord_();
 	}
 
 	void MainScene::onGaugeMax_()
@@ -1272,7 +1271,19 @@ namespace Spiceholic
 
 			getData().player->startEndingSequence();
 
-			stageClearTime_ = time_.sF();
+			// クリアタイム更新
+			ApplyStageClearRecord_();
 		}
+	}
+
+	void MainScene::ApplyStageClearRecord_()
+	{
+		stageClearTime_ = time_.sF();
+
+		const auto stageID = getData().stageData->stageID;
+		getData().currentRecords[stageID] = StageRecord{ stageClearTime_ };
+
+		// TODO: 新記録？
+		//...
 	}
 }

@@ -12,6 +12,7 @@ namespace Spiceholic
 	class Gauge;
 	class Score;
 	enum class ActorType;
+	struct StageRecord;
 
 	struct GameData
 	{
@@ -50,6 +51,9 @@ namespace Spiceholic
 
 		// 特殊アイテム
 		Array<ActorType> specialItems;
+
+		// クリアデータ
+		HashTable<String, StageRecord> currentRecords;
 
 		GameData();
 

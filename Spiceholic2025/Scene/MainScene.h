@@ -74,6 +74,9 @@ namespace Spiceholic
 		// 購読イベント
 		void onGetLastKey_();
 
+		//
+		void ApplyStageClearRecord_();
+
 		// ステージプレイ時間
 		Stopwatch time_;
 		// クリアタイム

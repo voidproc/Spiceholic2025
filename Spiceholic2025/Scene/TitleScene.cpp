@@ -14,6 +14,7 @@ namespace Spiceholic
 		enum class TitleMenuItemType
 		{
 			Start,
+			Records,
 			Option,
 			InputSetting,
 			Quit,
@@ -26,8 +27,9 @@ namespace Spiceholic
 			StringView desc;
 		};
 
-		constexpr std::array<TitleMenuItem, 4> TitleMenuItemList = { {
+		constexpr std::array<TitleMenuItem, 5> TitleMenuItemList = { {
 			{ TitleMenuItemType::Start, U"Game Start"_sv, U"ゲームをはじめます"_sv },
+			{ TitleMenuItemType::Records, U"Records"_sv, U"クリアデータを閲覧します"_sv },
 			{ TitleMenuItemType::Option, U"Option"_sv, U"画面や音量などの設定をします"_sv  },
 			{ TitleMenuItemType::InputSetting, U"Input Setting"_sv, U"キーボード・ゲームコントローラの設定をします"_sv  },
 			{ TitleMenuItemType::Quit, U"Quit"_sv, U"ゲームを終了します"_sv  },
@@ -120,6 +122,10 @@ namespace Spiceholic
 			{
 				// メインシーンへ
 				changeScene(U"MainScene", 0);
+			}
+			else if (selected.type == TitleMenuItemType::Records)
+			{
+				changeScene(U"RecordsScene", 0);
 			}
 			else if (selected.type == TitleMenuItemType::Option)
 			{

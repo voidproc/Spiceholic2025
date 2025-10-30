@@ -151,6 +151,7 @@
     <ClCompile Include="Scene\InputSettingScene.cpp" />
     <ClCompile Include="Scene\MainScene.cpp" />
     <ClCompile Include="Scene\OptionScene.cpp" />
+    <ClCompile Include="Scene\RecordsScene.cpp" />
     <ClCompile Include="Scene\TitleScene.cpp" />
     <ClCompile Include="Setting\AppSetting.cpp" />
     <ClCompile Include="Setting\InputSetting.cpp" />
@@ -395,6 +396,7 @@
     <ClInclude Include="Core\Periodic.h" />
     <ClInclude Include="Core\Position.h" />
     <ClInclude Include="Core\Score.h" />
+    <ClInclude Include="Core\StageRecord.h" />
     <ClInclude Include="Event\Dispatch.h" />
     <ClInclude Include="Event\Events.h" />
     <ClInclude Include="GameContext\GameData.h" />
@@ -405,6 +407,7 @@
     <ClInclude Include="Scene\InputSettingScene.h" />
     <ClInclude Include="Scene\MainScene.h" />
     <ClInclude Include="Scene\OptionScene.h" />
+    <ClInclude Include="Scene\RecordsScene.h" />
     <ClInclude Include="Scene\Scenes.h" />
     <ClInclude Include="Scene\TitleScene.h" />
     <ClInclude Include="Setting\AppSetting.h" />

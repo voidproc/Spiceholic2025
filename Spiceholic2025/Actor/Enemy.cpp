@@ -165,6 +165,7 @@ namespace Spiceholic
 				if (IntersectsAnyBlock(*this, nextPos, gameData_.blocks))
 				{
 					dir_.x = -dir_.x;
+					currentSpeed_ *= 0.7;
 				}
 			}
 

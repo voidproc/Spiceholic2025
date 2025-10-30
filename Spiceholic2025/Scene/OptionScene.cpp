@@ -33,10 +33,11 @@ namespace Spiceholic
 			UserSettingField field;
 		};
 
-		constexpr std::array<SettingField, 4> SettingFieldList = { {
+		constexpr std::array<SettingField, 5> SettingFieldList = { {
 			{ UserSettingField::WindowScale },
 			{ UserSettingField::SEVolume },
 			{ UserSettingField::BGMVolume },
+			{ UserSettingField::UseEffect },
 			{ UserSettingField::Back },
 		} };
 
@@ -54,6 +55,10 @@ namespace Spiceholic
 
 			case UserSettingField::BGMVolume:
 				setting.get().bgmVolume = Clamp(setting.get().bgmVolume + valueDiff1_1 * 5, 0, 100);
+				break;
+
+			case UserSettingField::UseEffect:
+				setting.get().useEffect = not setting.get().useEffect;
 				break;
 			}
 		}
@@ -76,6 +81,8 @@ namespace Spiceholic
 
 			case UserSettingField::SEVolume: valueText = Format(setting.get().seVolume, U"％"); break;
 			case UserSettingField::BGMVolume: valueText = Format(setting.get().bgmVolume, U"％"); break;
+
+			case UserSettingField::UseEffect: valueText = setting.get().useEffect ? U"On" : U"Off"; break;
 			}
 
 			DrawText(U"px7812", valueText, Arg::leftCenter = Vec2{ Layout::ValueColumnLeftCenterX + valueShiftX, fieldCenterY }, valueColor);

@@ -8,6 +8,7 @@ namespace Spiceholic
 		WindowScale,
 		SEVolume,
 		BGMVolume,
+		UseEffect,
 		Back,
 
 		None,
@@ -25,6 +26,7 @@ namespace Spiceholic
 			int32 windowScale;
 			int32 seVolume;
 			int32 bgmVolume;
+			bool useEffect;
 		};
 
 		UserSetting();

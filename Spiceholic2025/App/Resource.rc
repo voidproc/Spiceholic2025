@@ -195,3 +195,5 @@ Resource(audio/unlock.ogg)
 Resource(audio/area1.ogg)
 Resource(audio/area2.ogg)
 Resource(audio/area4.ogg)
+
+Resource(shader/scanline.hlsl)

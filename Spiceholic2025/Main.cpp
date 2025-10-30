@@ -155,6 +155,13 @@ void Main()
 	// ウィンドウスケール設定変更を監視
 	int32 previousScale = gameData->userSetting->get().windowScale;
 
+	// シェーダ（スキャンライン、RGBシフト）
+	const PixelShader ps = HLSL{ Resource(U"shader/scanline.hlsl"), U"PS_Texture" };
+	if (not ps)
+	{
+		Logger << U"PixelShaderの作成に失敗";
+	}
+
 	while (System::Update())
 	{
 		if (not app.updateScene())
@@ -167,7 +174,11 @@ void Main()
 			app.drawScene();
 		}
 
-		lowres.draw();
+		{
+			const bool useEffect = gameData->userSetting->get().useEffect && gameData->userSetting->get().windowScale >= 2;
+			const ScopedCustomShader2D shader = useEffect ? ScopedCustomShader2D{ ps } : ScopedCustomShader2D{};
+			lowres.draw();
+		}
 
 		// ウィンドウスケール設定変更時に反映
 		if (const auto newScale = gameData->userSetting->get().windowScale;

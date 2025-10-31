@@ -222,9 +222,6 @@
     <ClCompile Include="Actor\Weapon.cpp">
       <Filter>Actor</Filter>
     </ClCompile>
-    <ClCompile Include="Actor\Direction.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Actor\Effect.cpp">
       <Filter>Actor</Filter>
     </ClCompile>
@@ -276,17 +273,11 @@
     <ClCompile Include="Core\Score.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="Core\Color.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Actor\MakeActor.cpp">
       <Filter>Actor</Filter>
     </ClCompile>
     <ClCompile Include="Audio\AudioPlay.cpp">
       <Filter>Audio</Filter>
-    </ClCompile>
-    <ClCompile Include="Core\Camera.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Core\Menu.cpp">
       <Filter>Core</Filter>
@@ -296,6 +287,15 @@
     </ClCompile>
     <ClCompile Include="Scene\LogoScene.cpp">
       <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Camera.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Core\Color.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Actor\Direction.cpp">
+      <Filter>Actor</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

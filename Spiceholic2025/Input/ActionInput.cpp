@@ -79,7 +79,6 @@ namespace Spiceholic
 		inputSetting_.setInputs(Action::MoveUp, KeyUp | DefaultMoveUpButtons(playerIndex));
 		inputSetting_.setInputs(Action::MoveDown, KeyDown | DefaultMoveDownButtons(playerIndex));
 		inputSetting_.setInputs(Action::Attack, KeyZ | Input{ InputDeviceType::Gamepad, (uint8)0, playerIndex });
-		inputSetting_.setInputs(Action::Cancel, KeyX | Input{ InputDeviceType::Gamepad, (uint8)1, playerIndex });
 		inputSetting_.setInputs(Action::Pause, KeyEscape | Input{ InputDeviceType::Gamepad, (uint8)2, playerIndex });
 	}
 

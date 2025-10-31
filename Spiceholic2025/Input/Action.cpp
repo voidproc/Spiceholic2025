@@ -10,8 +10,7 @@ namespace Spiceholic
 		case Action::MoveDown: return U"MoveDown"_sv;
 		case Action::MoveLeft: return U"MoveLeft"_sv;
 		case Action::MoveRight: return U"MoveRight"_sv;
-		case Action::Attack: return U"Attack / Decide"_sv;
-		case Action::Cancel: return U"Cancel"_sv;
+		case Action::Attack: return U"Attack"_sv;
 		case Action::Pause: return U"Pause"_sv;
 		}
 

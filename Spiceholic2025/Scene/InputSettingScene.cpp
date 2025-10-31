@@ -45,15 +45,14 @@ namespace Spiceholic
 			Action action;
 		};
 
-		constexpr std::array<InputSettingField, 9> SettingFieldList = { {
+		constexpr std::array<InputSettingField, 8> SettingFieldList = { {
 			{ InputSettingField::Type::Controller, U"Controller ID"_sv, Action::Invalid },
-			{ InputSettingField::Type::Binding, U"MoveUp"_sv, Action::MoveUp },
-			{ InputSettingField::Type::Binding, U"MoveDown"_sv, Action::MoveDown },
-			{ InputSettingField::Type::Binding, U"MoveLeft"_sv, Action::MoveLeft },
-			{ InputSettingField::Type::Binding, U"MoveRight"_sv, Action::MoveRight },
-			{ InputSettingField::Type::Binding, U"Attack"_sv, Action::Attack },
-			{ InputSettingField::Type::Binding, U"Cancel"_sv, Action::Cancel },
-			{ InputSettingField::Type::Binding, U"Pause"_sv, Action::Pause },
+			{ InputSettingField::Type::Binding, U"Move Up"_sv, Action::MoveUp },
+			{ InputSettingField::Type::Binding, U"Move Down"_sv, Action::MoveDown },
+			{ InputSettingField::Type::Binding, U"Move Left"_sv, Action::MoveLeft },
+			{ InputSettingField::Type::Binding, U"Move Right"_sv, Action::MoveRight },
+			{ InputSettingField::Type::Binding, U"Attack / Decide"_sv, Action::Attack },
+			{ InputSettingField::Type::Binding, U"Pause Menu"_sv, Action::Pause },
 			{ InputSettingField::Type::Back, U"<< Back"_sv, Action::Invalid },
 		} };
 
@@ -373,7 +372,6 @@ namespace Spiceholic
 		getData().actionInput->setInputs(Action::MoveLeft, tempKeyBindings_[Action::MoveLeft] | DefaultMoveLeftButtons(playerIndex));
 		getData().actionInput->setInputs(Action::MoveRight, tempKeyBindings_[Action::MoveRight] | DefaultMoveRightButtons(playerIndex));
 		getData().actionInput->setInputs(Action::Attack, tempKeyBindings_[Action::Attack] | tempButtonBindings_[Action::Attack]);
-		getData().actionInput->setInputs(Action::Cancel, tempKeyBindings_[Action::Cancel] | tempButtonBindings_[Action::Cancel]);
 		getData().actionInput->setInputs(Action::Pause, tempKeyBindings_[Action::Pause] | tempButtonBindings_[Action::Pause]);
 
 		getData().actionInput->save(InputSettingFilePath);

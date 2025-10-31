@@ -11,7 +11,6 @@ namespace Spiceholic
 		MoveLeft,
 		MoveRight,
 		Attack,
-		Cancel,
 		Pause,
 
 		Decide = Attack,
@@ -25,7 +24,6 @@ namespace Spiceholic
 		Action::MoveLeft,
 		Action::MoveRight,
 		Action::Attack,
-		Action::Cancel,
 		Action::Pause,
 	} };
 

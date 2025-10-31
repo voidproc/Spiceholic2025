@@ -33,17 +33,17 @@ namespace Spiceholic
 
 	void Block::update()
 	{
-		if (timerDamagedSE_.isRunning())
-		{
-			if (not AudioAsset(U"Damage1Loop").isPlaying())
-			{
-				AudioAsset(U"Damage1Loop").play();
-			}
-		}
-		else
-		{
-			AudioAsset(U"Damage1Loop").stop();
-		}
+		//if (timerDamagedSE_.isRunning())
+		//{
+		//	if (not AudioAsset(U"Damage1Loop").isPlaying())
+		//	{
+		//		AudioAsset(U"Damage1Loop").play();
+		//	}
+		//}
+		//else
+		//{
+		//	AudioAsset(U"Damage1Loop").stop();
+		//}
 	}
 
 	void Block::draw() const

@@ -52,17 +52,17 @@ namespace Spiceholic
 
 	void Enemy::update()
 	{
-		if (timerDamagedSE_.isRunning())
-		{
-			if (not AudioAsset(U"Damage1Loop").isPlaying())
-			{
-				AudioAsset(U"Damage1Loop").play();
-			}
-		}
-		else
-		{
-			AudioAsset(U"Damage1Loop").stop();
-		}
+		//if (timerDamagedSE_.isRunning())
+		//{
+		//	if (not AudioAsset(U"Damage1Loop").isPlaying())
+		//	{
+		//		AudioAsset(U"Damage1Loop").play();
+		//	}
+		//}
+		//else
+		//{
+		//	AudioAsset(U"Damage1Loop").stop();
+		//}
 	}
 
 	void Enemy::draw() const

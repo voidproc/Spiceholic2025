@@ -4,14 +4,14 @@
 
 namespace Spiceholic
 {
-	class RecordsScene : public CustomScene
+	class LogoScene : public CustomScene
 	{
 	public:
-		inline static const String Name = U"RecordsScene";
+		inline static const String Name = U"LogoScene";
 
-		RecordsScene(const InitData& init);
+		LogoScene(const InitData& init);
 
-		~RecordsScene() override;
+		~LogoScene() override;
 
 		void update() override;
 

@@ -294,6 +294,9 @@
     <ClCompile Include="Scene\RecordsScene.cpp">
       <Filter>Scene</Filter>
     </ClCompile>
+    <ClCompile Include="Scene\LogoScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">
@@ -1105,6 +1108,9 @@
     </ClInclude>
     <ClInclude Include="Core\StageRecord.h">
       <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene\LogoScene.h">
+      <Filter>Scene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include "Scene/LogoScene.h"
 #include "Scene/TitleScene.h"
 #include "Scene/MainScene.h"
 #include "Scene/OptionScene.h"

@@ -149,6 +149,7 @@
     <ClCompile Include="Input\Input.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Scene\InputSettingScene.cpp" />
+    <ClCompile Include="Scene\LogoScene.cpp" />
     <ClCompile Include="Scene\MainScene.cpp" />
     <ClCompile Include="Scene\OptionScene.cpp" />
     <ClCompile Include="Scene\RecordsScene.cpp" />
@@ -405,6 +406,7 @@
     <ClInclude Include="Input\Input.h" />
     <ClInclude Include="Scene\CustomScene.h" />
     <ClInclude Include="Scene\InputSettingScene.h" />
+    <ClInclude Include="Scene\LogoScene.h" />
     <ClInclude Include="Scene\MainScene.h" />
     <ClInclude Include="Scene\OptionScene.h" />
     <ClInclude Include="Scene\RecordsScene.h" />

@@ -149,9 +149,9 @@ void Main()
 
 	// シーン初期化
 	App app{ gameData };
-	RegisterScenes<TitleScene, OptionScene, InputSettingScene, MainScene, RecordsScene>(app);
+	RegisterScenes<LogoScene, TitleScene, OptionScene, InputSettingScene, MainScene, RecordsScene>(app);
 	app.setFadeColor(DefaultBgColor);
-	app.init(TitleScene::Name, 0s);
+	app.init(LogoScene::Name, 0s);
 
 	// ウィンドウスケール設定変更を監視
 	int32 previousScale = gameData->userSetting->get().windowScale;

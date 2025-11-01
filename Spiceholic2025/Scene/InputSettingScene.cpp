@@ -2,6 +2,7 @@
 #include "Audio/AudioPlay.h"
 #include "Config/GameConfig.h"
 #include "Core/DrawText.h"
+#include "Core/DrawSprite.h"
 #include "Input/ActionInput.h"
 #include "Input/Input.h"
 
@@ -193,6 +194,27 @@ namespace Spiceholic
 
 		// BG
 		SceneRect.draw(Theme::BgColor);
+
+		// 背景にキャラを走らせる
+		{
+			ScopedColorMul2D mul{ 0.0, 0.3 };
+			ScopedColorAdd2D add{ 0, 0 };
+
+			const int NX = 6;
+			const int NY = 6;
+			for (int iY = -1; iY <= NY; ++iY)
+			{
+				for (int iX = -1; iX <= NX; ++iX)
+				{
+					const bool evenRow = (iY % 2 == 0);
+					const bool evenCol = (iX % 2 == 0);
+					const Vec2 charaPos{
+						SceneSize.x / NX * (iX + Periodic::Sawtooth0_1(1s) * (evenRow ? 1 : -1)),
+						SceneSize.y / NY * (iY + 0.5) };
+					DrawSprite(*getData().appSetting, U"PlayerWalkR", 0.5s, not evenRow, charaPos);
+				}
+			}
+		}
 
 		// シーンタイトル
 		DrawText(U"px7812", U"Input Setting", Arg::center = SceneRect.center().withY(Layout::LineHeight * 1), Theme::TitleTextColor);

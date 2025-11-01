@@ -3,6 +3,7 @@
 #include "Config/GameConfig.h"
 #include "Core/Color.h"
 #include "Core/DrawText.h"
+#include "Core/DrawSprite.h"
 #include "Core/StageRecord.h"
 #include "Input/ActionInput.h"
 #include "Setting/AppSetting.h"
@@ -50,6 +51,27 @@ namespace Spiceholic
 		SceneRect.draw(BgColor);
 
 		constexpr double LineHeight = 14;
+
+		// 背景にキャラを走らせる
+		{
+			ScopedColorMul2D mul{ 0.5, 0.5 };
+			ScopedColorAdd2D add{ 0.5, 0.1, 0.1, 0 };
+
+			const int NX = 6;
+			const int NY = 6;
+			for (int iY = -1; iY <= NY; ++iY)
+			{
+				for (int iX = -1; iX <= NX; ++iX)
+				{
+					const bool evenRow = (iY % 2 == 0);
+					const bool evenCol = (iX % 2 == 0);
+					const Vec2 charaPos{
+						SceneSize.x / NX * (iX + Periodic::Sawtooth0_1(1s) * (evenRow ? 1 : -1)),
+						SceneSize.y / NY * (iY + 0.5) };
+					DrawSprite(*getData().appSetting, U"EnemyChick", 0.3s, not evenRow, charaPos);
+				}
+			}
+		}
 
 		// シーンタイトル
 		DrawText(U"px7812", U"Records", Arg::center = SceneRect.center().withY(LineHeight * 0.5 + 1), TitleTextColor);

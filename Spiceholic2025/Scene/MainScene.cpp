@@ -1179,6 +1179,14 @@ namespace Spiceholic
 				Circle{ regionHudD.leftCenter() + info.offset, 8 + 20 * EaseOutQuad(timerGetSpItem_.progress0_1()) }.drawFrame(2.0 - 1.5 * timerGetSpItem_.progress0_1(), ColorF{ 1, 0.5 + 0.5 * Periodic::Square0_1(0.8s, ClockTime())});
 			}
 		}
+
+		// エンディング時の帯
+		if (timeGetLastKey_.isRunning())
+		{
+			const double height = (TileSize * 2) * EaseOutSine(Saturate((timeGetLastKey_.sF() - 0.5) / 0.8));
+			RectF{ Arg::topLeft = SceneRect.tl(), SizeF{ SceneSize.x, height } }.draw(bgColor);
+			RectF{ Arg::bottomRight = SceneRect.br(), SizeF{ SceneSize.x, height } }.draw(bgColor);
+		}
 	}
 
 	void MainScene::drawStageStart_() const

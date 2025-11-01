@@ -7,9 +7,9 @@ namespace Spiceholic
 	namespace
 	{
 		const Array<StringView> BgmList = {
-			U"Area1"_sv,
-			U"Area2"_sv,
-			U"Area4"_sv,
+			U"BgmGrass"_sv,
+			U"BgmSnow"_sv,
+			U"BgmMagma"_sv,
 		};
 	}
 

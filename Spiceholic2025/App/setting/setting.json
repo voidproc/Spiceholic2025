@@ -139,22 +139,22 @@
     {
       "Subtitle": "草原の遺跡",
       "Ground": "Ground1",
-      "BGM": "Area1"
+      "BGM": "BgmGrass"
     },
     {
       "Subtitle": "草原の遺跡 深部",
       "Ground": "Ground2",
-      "BGM": "Area1"
+      "BGM": "BgmGrass"
     },
     {
       "Subtitle": "雪降る山道",
       "Ground": "Ground3",
-      "BGM": "Area2"
+      "BGM": "BgmSnow"
     },
     {
       "Subtitle": "山頂部 火口地帯",
       "Ground": "Ground4",
-      "BGM": "Area4"
+      "BGM": "BgmMagma"
     },
     {
       "Subtitle": "山頂部 火口地帯",

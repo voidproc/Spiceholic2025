@@ -20,7 +20,7 @@ https://github.com/voidproc/Spiceholic2025
 - (ダウンロードリンク)
 
 ## 操作
-移動と攻撃のみのシンプル操作です。キーボードまたはゲームコントローラで操作することができます。
+移動と攻撃のみのシンプル操作です。キーボードまたはゲームコントローラで操作できます。
 
 ### キー・ボタン割り当て（初期設定）
 |アクション|キーボード|ゲームコントローラ|
@@ -36,7 +36,13 @@ https://github.com/voidproc/Spiceholic2025
 
 ## スクリーンショット
 ![タイトル](Doc/ss_title.png)
+
+![ゲーム画面](Doc/ss_stage2.png)
+
+![ゲーム画面](Doc/ss_stage4.png)
+
 ![オプション](Doc/ss_option.png)
+
 ![入力設定](Doc/ss_input.png)
 
 ## 使用しているアセット

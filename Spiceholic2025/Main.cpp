@@ -63,8 +63,11 @@ namespace
 		TextureAsset::Register(U"Wasabi", Resource(U"image/wasabi.png"));
 		TextureAsset::Register(U"ChilipepperBig", Resource(U"image/chilipepper_big.png"));
 
-		//Load
-		//...
+		// 事前ロード
+		for (auto&& asset : TextureAsset::Enumerate())
+		{
+			TextureAsset::Load(asset.first);
+		}
 	}
 
 	void LoadFont()
@@ -87,8 +90,15 @@ namespace
 		FontAsset::Register(U"NotJamSig21", 21, Resource(U"font/Not_Jam_Signature_21.ttf"), FontStyle::Bitmap);
 		FontAsset::Register(U"m3x6", 16, Resource(U"font/m3x6.ttf"), FontStyle::Bitmap);
 
-		//Load
-		//...
+		// 事前ロード
+		constexpr StringView PreloadTextAlNum = U"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!\"#$%&'()=-~^|@`[{]};+:*,<.>/?_"_sv;
+		constexpr StringView PreloadTextJa = U"ぁあぃいぅうぇえぉおかがきぎくぐけげこごさざしじすずせぜそぞただちぢっつづてでとどなにぬねのはばぱひびぴふぶぷへべぺほぼぽまみむめもゃやゅゆょよらりるれろわをんァアィイゥウェエォオカガキギクグケゲコゴサザシジスズセゼソゾタダチヂッツヅテデトドナニヌネノハバパヒビピフブプヘベペホボポマミムメモャヤュユョヨラリルレロワンヴ一戻直画面次進投稿作品制作出演子辛麻婆豆腐草原遺跡深部雪降山道山頂部火口地帯使用変更左右切替上下左右移動入力割当攻撃決定押効果音量閲覧設定終了"_sv;
+		FontAsset::Load(U"px7812", PreloadTextAlNum);
+		FontAsset::Load(U"px7812m", PreloadTextAlNum);
+		FontAsset::Load(U"k8x12L", PreloadTextAlNum);
+		FontAsset::Load(U"k8x12L", PreloadTextJa);
+		FontAsset::Load(U"NotJamSig21", PreloadTextAlNum);
+		FontAsset::Load(U"m3x6", PreloadTextAlNum);
 	}
 
 	void LoadAudio()
@@ -106,12 +116,15 @@ namespace
 		AudioAsset::Register(U"Pause1", Resource(U"audio/pause1.ogg"));
 		AudioAsset::Register(U"Spawn", Resource(U"audio/spawn.ogg"));
 		AudioAsset::Register(U"Unlock", Resource(U"audio/unlock.ogg"));
-		AudioAsset::Register(U"Area1", Audio::Stream, Resource(U"audio/area1.ogg"), Loop::Yes);
-		AudioAsset::Register(U"Area2", Audio::Stream, Resource(U"audio/area2.ogg"), Loop::Yes);
-		AudioAsset::Register(U"Area4", Audio::Stream, Resource(U"audio/area4.ogg"), Loop::Yes);
+		AudioAsset::Register(U"BgmGrass", Audio::Stream, Resource(U"audio/bgm_grass.ogg"), Loop::Yes);
+		AudioAsset::Register(U"BgmSnow", Audio::Stream, Resource(U"audio/bgm_snow.ogg"), Loop::Yes);
+		AudioAsset::Register(U"BgmMagma", Audio::Stream, Resource(U"audio/bgm_magma.ogg"), Loop::Yes);
 
-		//Load
-		//...
+		// 事前ロード
+		for (auto&& asset : AudioAsset::Enumerate())
+		{
+			AudioAsset::Load(asset.first);
+		}
 	}
 }
 

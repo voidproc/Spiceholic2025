@@ -635,13 +635,13 @@ namespace Spiceholic
 		}
 		else if (timeGetLastKey_ > 11s + 28s)
 		{
-			AudioAsset(U"Area1").stop(3s);
+			AudioAsset(U"BgmGrass").stop(3s);
 		}
 		else if (timeGetLastKey_ > 11s)
 		{
-			if (not AudioAsset(U"Area1").isPlaying())
+			if (not AudioAsset(U"BgmGrass").isPlaying())
 			{
-				AudioAsset(U"Area1").play(3s, MixBus1);
+				AudioAsset(U"BgmGrass").play(3s, MixBus1);
 			}
 		}
 		else if (timeGetLastKey_ > 1.5s)

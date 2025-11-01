@@ -199,7 +199,7 @@ namespace Spiceholic
 
 				for (const auto& obj : bgObj_)
 				{
-					TextureAsset(U"ChilipepperBig").scaled(obj.scale).rotated(obj.angle).drawAt(obj.pos);
+					TextureAsset(U"ChilipepperBig").scaled(obj.scale).rotated(obj.angle + (2_deg + 5_deg * obj.scale) * Periodic::Sine1_1(SecondsF{ 1 - 0.2 * obj.scale })).drawAt(obj.pos);
 				}
 			}
 

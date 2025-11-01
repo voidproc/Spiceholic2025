@@ -2,7 +2,7 @@
 
 https://github.com/voidproc/Spiceholic2025
 
-(スクリーンショット)
+![ゲーム画面](Doc/ss_game.png)
 
 (YouTube 動画)
 
@@ -31,7 +31,9 @@ https://github.com/voidproc/Spiceholic2025
 - ステージ内の敵を全滅させるか、「カギ」を取ると次のステージへ進みます。
 
 ## スクリーンショット
-- (スクリーンショット)
+![タイトル](Doc/ss_title.png)
+![オプション](Doc/ss_option.png)
+![入力設定](Doc/ss_input.png)
 
 ## 使用しているアセット
 次のフォントを使用しています。

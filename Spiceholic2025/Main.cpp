@@ -93,20 +93,18 @@ namespace
 
 	void LoadAudio()
 	{
-		AudioAsset::Register(U"Select1", Resource(U"audio/select1.wav"));
-		AudioAsset::Register(U"Select2", Resource(U"audio/select2.wav"));
-		AudioAsset::Register(U"Pick1", Resource(U"audio/pick1.wav"));
+		AudioAsset::Register(U"Select1", Resource(U"audio/select1.ogg"));
+		AudioAsset::Register(U"Select2", Resource(U"audio/select2.ogg"));
+		AudioAsset::Register(U"Pick1", Resource(U"audio/pick1.ogg"));
 		AudioAsset::Register(U"Pick2", Resource(U"audio/pick2.ogg"));
-		AudioAsset::Register(U"Walk1", Resource(U"audio/walk1.wav"));
-		AudioAsset::Register(U"Explosion1", Resource(U"audio/explosion1.wav"));
-		AudioAsset::Register(U"Explosion2", Resource(U"audio/explosion2.wav"));
-		AudioAsset::Register(U"Fire1", Resource(U"audio/fire1.wav"));
+		AudioAsset::Register(U"Walk1", Resource(U"audio/walk1.ogg"));
+		AudioAsset::Register(U"Explosion1", Resource(U"audio/explosion1.ogg"));
+		AudioAsset::Register(U"Explosion2", Resource(U"audio/explosion2.ogg"));
+		AudioAsset::Register(U"Fire1", Resource(U"audio/fire1.ogg"));
 		AudioAsset::Register(U"Powerup1", Resource(U"audio/powerup.ogg"));
-		//AudioAsset::Register(U"Damage1", Resource(U"audio/damage1.wav"));
-		//AudioAsset::Register(U"Damage1Loop", Audio::Stream, Resource(U"audio/damage1_loop.ogg"), Loop::Yes);
 		AudioAsset::Register(U"Decide1", Resource(U"audio/decide1.ogg"));
-		AudioAsset::Register(U"Pause1", Resource(U"audio/pause1.wav"));
-		AudioAsset::Register(U"Spawn", Resource(U"audio/spawn.wav"));
+		AudioAsset::Register(U"Pause1", Resource(U"audio/pause1.ogg"));
+		AudioAsset::Register(U"Spawn", Resource(U"audio/spawn.ogg"));
 		AudioAsset::Register(U"Unlock", Resource(U"audio/unlock.ogg"));
 		AudioAsset::Register(U"Area1", Audio::Stream, Resource(U"audio/area1.ogg"), Loop::Yes);
 		AudioAsset::Register(U"Area2", Audio::Stream, Resource(U"audio/area2.ogg"), Loop::Yes);
@@ -156,7 +154,7 @@ void Main()
 	App app{ gameData };
 	RegisterScenes<LogoScene, TitleScene, OptionScene, InputSettingScene, MainScene, RecordsScene>(app);
 	app.setFadeColor(DefaultBgColor);
-	app.init(InputSettingScene::Name, 0s);
+	app.init(LogoScene::Name, 0s);
 
 	// ウィンドウスケール設定変更を監視
 	int32 previousScale = gameData->userSetting->get().windowScale;

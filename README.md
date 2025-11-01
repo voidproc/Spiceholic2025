@@ -4,13 +4,17 @@ https://github.com/voidproc/Spiceholic2025
 
 ![ゲーム画面](Doc/ss_game.png)
 
-(YouTube 動画)
+[![Video_YouTube](https://img.youtube.com/vi/5MIgp1mInlw/0.jpg)](https://www.youtube.com/watch?v=5MIgp1mInlw)
+
 
 「辛味（からみ）」に取り憑かれ、新たな辛さを求めてさまよう一人の少女がいた。
 
 低解像度でレトロチックな 2D 見下ろし型アクションパズルゲームです。
 
 このゲームは [バンダイナムコスタジオ杯 | Siv3D ゲームジャム 2025](https://bandainamcostudios.connpass.com/event/364446/) 参加作品です。
+
+## ゲームジャム 作品紹介ページ
+- https://scrapbox.io/bnscup2025/Blazing_Spiceholics
 
 ## ダウンロード
 - (ダウンロードリンク)

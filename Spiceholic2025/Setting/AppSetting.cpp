@@ -18,6 +18,7 @@ namespace Spiceholic
 
 #ifdef DEBUG_MODE
 		settings_.debug.startStageID = json[U"Debug"][U"StartStageID"].getString();
+		settings_.debug.wait = json[U"Debug"][U"Wait"].get<int>();
 #endif
 
 		for (const auto& s : json[U"Sprite"])
@@ -35,7 +36,7 @@ namespace Spiceholic
 		for (auto&& [index, object] : json[U"StageGroupInfo"])
 		{
 			StageGroupInfo info;
-			info.group = ToEnum<StageGroupType>(stageGroups.size());
+			info.group = ToEnum<StageGroupType>(static_cast<uint32>(stageGroups.size()));
 			if (FromEnum(info.group) == 4) info.group = StageGroupType::Magma;
 			info.subtitle = object[U"Subtitle"].getString();
 			info.groundTexture = object[U"Ground"].getString();

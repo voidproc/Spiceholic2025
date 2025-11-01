@@ -406,6 +406,7 @@ MigrationBackup/
 
 **/App/setting.ini
 **/App/input.ini
+**/App/records.dat
 
 # Stage
 

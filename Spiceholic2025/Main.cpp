@@ -154,7 +154,7 @@ void Main()
 	App app{ gameData };
 	RegisterScenes<LogoScene, TitleScene, OptionScene, InputSettingScene, MainScene, RecordsScene>(app);
 	app.setFadeColor(DefaultBgColor);
-	app.init(InputSettingScene::Name, 0s);
+	app.init(LogoScene::Name, 0s);
 
 	// ウィンドウスケール設定変更を監視
 	int32 previousScale = gameData->userSetting->get().windowScale;
@@ -165,6 +165,19 @@ void Main()
 	{
 		Logger << U"PixelShaderの作成に失敗";
 	}
+
+#ifdef DEBUG_MODE
+	if (gameData->appSetting->get().debug.wait == 1)
+	{
+		while (System::Update())
+		{
+			if (KeyEnter.down())
+			{
+				break;
+			}
+		}
+	}
+#endif
 
 	while (System::Update())
 	{

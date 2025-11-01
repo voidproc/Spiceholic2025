@@ -208,7 +208,7 @@ namespace Spiceholic
 				for (int iX = -1; iX <= NX; ++iX)
 				{
 					const bool evenRow = (iY % 2 == 0);
-					const bool evenCol = (iX % 2 == 0);
+					//const bool evenCol = (iX % 2 == 0);
 					const Vec2 charaPos{
 						SceneSize.x / NX * (iX + Periodic::Sawtooth0_1(1s) * (evenRow ? 1 : -1)),
 						SceneSize.y / NY * (iY + 0.5) };

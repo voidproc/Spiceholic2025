@@ -26,6 +26,7 @@ namespace Spiceholic
 			struct
 			{
 				String startStageID;
+				int wait;
 			}
 			debug;
 		};

@@ -14,4 +14,4 @@ namespace Spiceholic
 	inline constexpr FilePathView RecordsFilePath = U"records.dat";
 }
 
-#define DEBUG_MODE
+//#define DEBUG_MODE

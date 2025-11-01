@@ -32,14 +32,15 @@ namespace Spiceholic
 		struct SettingField
 		{
 			UserSettingField field;
+			StringView desc;
 		};
 
 		constexpr std::array<SettingField, 5> SettingFieldList = { {
-			{ UserSettingField::WindowScale },
-			{ UserSettingField::SEVolume },
-			{ UserSettingField::BGMVolume },
-			{ UserSettingField::UseEffect },
-			{ UserSettingField::Back },
+			{ UserSettingField::WindowScale, U"画面サイズを変更します（左右キーで切替）"_sv },
+			{ UserSettingField::SEVolume, U"効果音の音量を変更します（左右キーで切替）"_sv  },
+			{ UserSettingField::BGMVolume, U"BGMの音量を変更します（左右キーで切替）"_sv  },
+			{ UserSettingField::UseEffect, U"画面のエフェクト使用を切り替えます（左右キーで切替）"_sv  },
+			{ UserSettingField::Back, U"タイトルに戻ります"_sv  },
 		} };
 
 		void ChangeSettingValue(UserSetting& setting, const SettingField& targetField, int32 valueDiff1_1)
@@ -182,7 +183,7 @@ namespace Spiceholic
 				for (int iX = -1; iX <= NX; ++iX)
 				{
 					const bool evenRow = (iY % 2 == 0);
-					const bool evenCol = (iX % 2 == 0);
+					//const bool evenCol = (iX % 2 == 0);
 					const Vec2 charaPos{
 						SceneSize.x / NX * (iX + Periodic::Sawtooth0_1(1s) * (evenRow ? 1 : -1)),
 						SceneSize.y / NY * (iY + 0.5) };
@@ -213,6 +214,14 @@ namespace Spiceholic
 			const double valueShiftX = valueChanged ? 2 * Periodic::Sine1_1(0.01s) : 0;
 			const ColorF valueColor = valueChanged ? Theme::ValueColor.lerp(Palette::Black, 0.5).lerp(Theme::ValueChangeColor, Periodic::Square0_1(0.034s)) : (selected ? Theme::SelectedColor : Theme::ValueColor);
 			DrawSettingField(*getData().userSetting, field, fieldCenterY, labelShiftX, valueShiftX, labelColor, valueColor);
+
+			// 説明
+			if (selected)
+			{
+				const Vec2 descCenter = SceneRect.center().withY(SceneSize.y - Layout::LineHeight * 1);
+				RectF{ Arg::center = descCenter, SizeF{ SceneSize.x, 16 } }.draw(ColorF{ Palette::Black, 0.5 });
+				DrawText(U"px7812", field.desc, Arg::center = descCenter, Palette::Silver);
+			}
 		}
 	}
 }

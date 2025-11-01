@@ -44,17 +44,18 @@ namespace Spiceholic
 			Type type;
 			StringView text;
 			Action action;
+			StringView desc;
 		};
 
 		constexpr std::array<InputSettingField, 8> SettingFieldList = { {
-			{ InputSettingField::Type::Controller, U"Controller ID"_sv, Action::Invalid },
-			{ InputSettingField::Type::Binding, U"Move Up"_sv, Action::MoveUp },
-			{ InputSettingField::Type::Binding, U"Move Down"_sv, Action::MoveDown },
-			{ InputSettingField::Type::Binding, U"Move Left"_sv, Action::MoveLeft },
-			{ InputSettingField::Type::Binding, U"Move Right"_sv, Action::MoveRight },
-			{ InputSettingField::Type::Binding, U"Attack / Decide"_sv, Action::Attack },
-			{ InputSettingField::Type::Binding, U"Pause Menu"_sv, Action::Pause },
-			{ InputSettingField::Type::Back, U"<< Back"_sv, Action::Invalid },
+			{ InputSettingField::Type::Controller, U"Controller ID"_sv, Action::Invalid, U"使用するコントローラを変更します（左右キーで切替）"_sv },
+			{ InputSettingField::Type::Binding, U"Move Up"_sv, Action::MoveUp, U"上移動 入力割り当て（キー/ボタンを押してください）"_sv },
+			{ InputSettingField::Type::Binding, U"Move Down"_sv, Action::MoveDown, U"下移動 入力割り当て（キー/ボタンを押してください）"_sv },
+			{ InputSettingField::Type::Binding, U"Move Left"_sv, Action::MoveLeft, U"左移動 入力割り当て（キー/ボタンを押してください）"_sv },
+			{ InputSettingField::Type::Binding, U"Move Right"_sv, Action::MoveRight, U"右移動 入力割り当て（キー/ボタンを押してください）"_sv },
+			{ InputSettingField::Type::Binding, U"Attack / Decide"_sv, Action::Attack, U"攻撃/決定 入力割り当て（キー/ボタンを押してください）"_sv },
+			{ InputSettingField::Type::Binding, U"Pause Menu"_sv, Action::Pause, U"ポーズ 入力割り当て（キー/ボタンを押してください）"_sv },
+			{ InputSettingField::Type::Back, U"<< Back"_sv, Action::Invalid, U"タイトルに戻ります"_sv },
 		} };
 
 		void ChangeSettingValue(ActionInput& actionInput, const InputSettingField& targetField, int32 valueDiff1_1)
@@ -291,6 +292,14 @@ namespace Spiceholic
 
 				const String buttonName = IsMoveAction(item.action) ? U"-" : GetInputName(tempButtonBindings_.at(item.action));
 				DrawText(U"px7812", buttonName, Arg::center = Vec2{ Layout::ButtonColumnCenterX + vibrateX, posY }, buttonColor);
+			}
+
+			// 説明
+			if (selected)
+			{
+				const Vec2 descCenter = SceneRect.center().withY(SceneSize.y - Layout::LineHeight * 1);
+				RectF{ Arg::center = descCenter, SizeF{ SceneSize.x, 16 } }.draw(ColorF{ Palette::Black, 0.5 });
+				DrawText(U"px7812", item.desc, Arg::center = descCenter, Palette::Silver);
 			}
 		}
 	}

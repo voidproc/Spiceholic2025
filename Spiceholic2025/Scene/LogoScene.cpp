@@ -26,7 +26,7 @@ namespace Spiceholic
 	void LogoScene::update()
 	{
 		if (getData().actionInput->down(Action::Decide) ||
-			time_ > 4.5s)
+			time_ > 3s)
 		{
 			changeScene(U"TitleScene", 0s);
 		}
@@ -48,10 +48,10 @@ namespace Spiceholic
 			DrawText(U"px7812", U"Powered by Siv3D", Arg::center = SceneRect.center(), ColorF{ Palette::Whitesmoke, alpha });
 		}
 
-		// フェードアウト (3.0～4.0s)
-		if (time_ > 3.0s)
+		// フェードアウト (2.0～2.5s)
+		if (time_ > 2.0s)
 		{
-			const double alpha = EaseOutSine(Saturate((time_.sF() - 3.0) / 1.0));
+			const double alpha = EaseOutSine(Saturate((time_.sF() - 2.0) / 0.5));
 			SceneRect.draw(ColorF{ Palette::Whitesmoke, alpha });
 		}
 	}

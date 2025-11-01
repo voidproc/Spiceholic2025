@@ -34,5 +34,14 @@ namespace Spiceholic
 
 		// フェードイン
 		Timer timerFadeIn_;
+
+		struct BgObject
+		{
+			Vec2 pos;
+			double scale;
+			double angle;
+		};
+		Array<BgObject> bgObj_;
+		Timer timerBgObj_;
 	};
 }

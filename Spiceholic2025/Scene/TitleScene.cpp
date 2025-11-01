@@ -44,7 +44,9 @@ namespace Spiceholic
 		menu_{ TitleMenuItemList.size() },
 		randomCharaTexName_{ U"DragonGirl" },
 		timeDescText_{ StartImmediately::Yes },
-		timerFadeIn_{ 0.50s, StartImmediately::Yes }
+		timerFadeIn_{ 0.50s, StartImmediately::Yes },
+		bgObj_{ Arg::reserve = 128 },
+		timerBgObj_{ 0.9s, StartImmediately::Yes }
 	{
 		if (getData().titleCharacterShown)
 		{
@@ -65,6 +67,32 @@ namespace Spiceholic
 
 	void TitleScene::update()
 	{
+		// 背景オブジェ
+		{
+			if (timerBgObj_.reachedZero())
+			{
+				timerBgObj_.restart();
+
+				for (int i = 0; i < 4; ++i)
+				{
+					BgObject obj{};
+					obj.pos.set(SceneSize.x / 4 * (i + 0.5) + Random(-16, 16), -64 - Random(0, 32));
+					obj.scale = Sample({ 0.25, 0.5, 0.75, 1.0 });
+					obj.angle = Sample({ 0_deg, 90_deg, 180_deg, 270_deg });
+
+					bgObj_.push_back(obj);
+				}
+			}
+
+			for (auto& obj : bgObj_)
+			{
+				obj.pos.y += 2.0 * obj.scale * 60 * Scene::DeltaTime();
+			}
+
+			bgObj_.remove_if([](const BgObject& obj) { return obj.pos.y > SceneSize.y + 64; });
+		}
+
+		// ユーザ入力
 		if (time_ < TimeEnableMenu)
 		{
 			if (getData().actionInput->down(Action::Decide))
@@ -162,28 +190,44 @@ namespace Spiceholic
 			RectF{ Arg::bottomCenter = SceneRect.bottomCenter(), gradRectSize }.draw(Arg::top = bgGradA0, Arg::bottom = bgGradA1);
 		}
 
-		// キャラクター
 		{
-			// おまけのエフェクト（メニュー選択時の反応）
-			const double tMoveCursor = Saturate(1 - (timerMoveCursorLeft_.progress1_0() + timerMoveCursorRight_.progress1_0()));
-			const Vec2 jump{ 0, Periodic::Jump0_1(0.1s, tMoveCursor * 0.1) };
-			const Vec2 scale{ 1 + 0.03 * jump.y, 1 + 0.05 * jump.y };
-			// 縦揺れ (3.0s～)
-			const Vec2 wave{ 0, -5 * Periodic::Sine1_1(6.0s) * Saturate((time_.sF() - 3.0) / 1.0) };
-			// 横移動 (0.0～1.1s, 0.9～2.0s)
-			const double t1a = Saturate(time_.sF() / 1.1);
-			const double t1b = Saturate((time_.sF() - 0.9) / 1.1);
-			const Vec2 basePos = SceneRect.bottomCenter() + Vec2{ -40, -64 };
-			const Vec2 moveX{ 300 * (1 - (0.85 * EaseOutCubic(t1a) + 0.15 * EaseOutBack(t1b))), 0 };
-			const Vec2 pos = basePos + moveX + wave - jump * 4;
-			// 登場時拡大～縮小 (0.0～0.85s)
-			const Vec2 scale2 = Vec2::One() * 0.2 * (1 - EaseInOutQuad(Saturate(time_.sF() / 0.85)));
-			// アルファ (1.8～2.3s)
-			const double alphaMul = 1.0 - 0.65 * Saturate((time_.sF() - 1.8) / 0.5);
-			ScopedColorMul2D mul{ 1, alphaMul };
+			// 背景オブジェ
+			{
+				// アルファ (2.0～2.6s)
+				const double alphaMul = Saturate((time_.sF() - 2.0) / 0.6);
+				ScopedColorMul2D mul{ 1, alphaMul * 0.7 };
 
-			TextureAsset(randomCharaTexName_).scaled(scale + scale2).drawAt(pos + Vec2::One() * 4, ColorF{ Palette::Darkred, 0.3 });
-			TextureAsset(randomCharaTexName_).scaled(scale + scale2).drawAt(pos);
+				for (const auto& obj : bgObj_)
+				{
+					TextureAsset(U"ChilipepperBig").scaled(obj.scale).rotated(obj.angle).drawAt(obj.pos);
+				}
+			}
+
+			// キャラクター
+			{
+				// おまけのエフェクト（メニュー選択時の反応）
+				const double tMoveCursor = Saturate(1 - (timerMoveCursorLeft_.progress1_0() + timerMoveCursorRight_.progress1_0()));
+				const Vec2 jump{ 0, Periodic::Jump0_1(0.1s, tMoveCursor * 0.1) };
+				const Vec2 scale{ 1 + 0.03 * jump.y, 1 + 0.05 * jump.y };
+				// 縦揺れ (3.0s～)
+				const Vec2 wave{ 0, -5 * Periodic::Sine1_1(6.0s) * Saturate((time_.sF() - 3.0) / 1.0) };
+				// 横移動 (0.0～1.1s, 0.9～2.0s)
+				const double t1a = Saturate(time_.sF() / 1.1);
+				const double t1b = Saturate((time_.sF() - 0.9) / 1.1);
+				const Vec2 basePos = SceneRect.bottomCenter() + Vec2{ -40, -64 };
+				const Vec2 moveX{ 300 * (1 - (0.85 * EaseOutCubic(t1a) + 0.15 * EaseOutBack(t1b))), 0 };
+				const Vec2 pos = basePos + moveX + wave - jump * 4;
+				// 登場時拡大～縮小 (0.0～0.85s)
+				const Vec2 scale2 = Vec2::One() * 0.2 * (1 - EaseInOutQuad(Saturate(time_.sF() / 0.85)));
+
+				// アルファ (1.8～2.6s)
+				const double alphaMul = 1.0 - 0.65 * Saturate((time_.sF() - 1.8) / 0.8);
+				ScopedColorMul2D mul{ Palette::Indianred.lerp(Palette::Darkred, 0.3).lerp(Palette::White, alphaMul) };
+
+				TextureAsset(randomCharaTexName_).scaled(scale + scale2).drawAt(pos + Vec2::One() * 4, ColorF{ Palette::Darkred, 0.3 });
+				TextureAsset(randomCharaTexName_).scaled(scale + scale2).drawAt(pos);
+			}
+
 		}
 
 		// キャラ登場時 目線用の帯
@@ -192,7 +236,7 @@ namespace Spiceholic
 			const double barHeight = 22 * EaseOutCirc(Saturate(time_.sF() / 0.5));
 			// 白矩形アルファ 1.2～1.5s)
 			const double barAlpha = 1.0 - Saturate((time_.sF() - 1.2) / 0.3);
-			const ColorF barColor{ 1, barAlpha };
+			const ColorF barColor{ 0, barAlpha };
 			const double barCenterY = 127;
 			// 上下に開放 (0.95～1.75s)
 			const double t3 = Saturate((time_.sF() - 0.95) / 0.8);
@@ -217,7 +261,7 @@ namespace Spiceholic
 		// メニュー
 		if (time_ > TimeEnableMenu)
 		{
-			const Vec2 menuCenter = SceneRect.center() + Vec2{ 0, 16 };
+			const Vec2 menuCenter = SceneRect.center() + Vec2{ 0, 0 };
 			const double vibrateX_l = timerMoveCursorLeft_.isRunning() ? 2 * Periodic::Sine1_1(0.01s) : 0;
 			const double vibrateX_r = timerMoveCursorRight_.isRunning() ? 2 * Periodic::Sine1_1(0.01s) : 0;
 			RectF{ Arg::center = menuCenter, SizeF{ SceneSize.x, 20 } }.draw(ColorF{ Palette::Darkred, 0.5 });

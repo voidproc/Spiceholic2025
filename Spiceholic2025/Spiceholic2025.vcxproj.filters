@@ -298,7 +298,7 @@
       <Filter>Actor</Filter>
     </ClCompile>
     <ClCompile Include="Core\StageRecord.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

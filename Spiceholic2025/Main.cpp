@@ -3,6 +3,7 @@
 #include "Audio/AudioVolume.h"
 #include "Config/GameConfig.h"
 #include "Core/LowResolution.h"
+#include "Core/StageRecord.h"
 #include "Event/Dispatch.h"
 #include "Scene/Scenes.h"
 #include "Setting/AppSetting.h"
@@ -143,6 +144,9 @@ void Main()
 	LoadFont();
 	LoadAudio();
 
+	// クリア記録を読み込み
+	LoadRecords(RecordsFilePath, *gameData);
+
 	// 低解像度シーン
 	const double DefaultWindowScale = gameData->userSetting->get().windowScale;
 	LowResolution lowres{ SceneSize, DefaultWindowScale };
@@ -151,7 +155,7 @@ void Main()
 	App app{ gameData };
 	RegisterScenes<LogoScene, TitleScene, OptionScene, InputSettingScene, MainScene, RecordsScene>(app);
 	app.setFadeColor(DefaultBgColor);
-	app.init(LogoScene::Name, 0s);
+	app.init(OptionScene::Name, 0s);
 
 	// ウィンドウスケール設定変更を監視
 	int32 previousScale = gameData->userSetting->get().windowScale;

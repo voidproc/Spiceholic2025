@@ -297,6 +297,9 @@
     <ClCompile Include="Actor\Direction.cpp">
       <Filter>Actor</Filter>
     </ClCompile>
+    <ClCompile Include="Core\StageRecord.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="App\icon.ico">

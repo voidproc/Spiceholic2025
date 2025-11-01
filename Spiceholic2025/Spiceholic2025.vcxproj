@@ -142,6 +142,7 @@
     <ClCompile Include="Core\Periodic.cpp" />
     <ClCompile Include="Core\Position.cpp" />
     <ClCompile Include="Core\Score.cpp" />
+    <ClCompile Include="Core\StageRecord.cpp" />
     <ClCompile Include="Event\Dispatch.cpp" />
     <ClCompile Include="GameContext\GameData.cpp" />
     <ClCompile Include="Input\Action.cpp" />

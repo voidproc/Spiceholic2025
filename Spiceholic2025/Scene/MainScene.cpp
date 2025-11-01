@@ -366,7 +366,8 @@ namespace Spiceholic
 		noise_{},
 		timerSnow_{ 0.5s, StartImmediately::Yes, Clock() },
 		timerGetSpItem_{ 0.4s, StartImmediately::No, Clock() },
-		gotSpItem_{ ActorType::None }
+		gotSpItem_{ ActorType::None },
+		existsSpItem_{ false }
 	{
 		// ステージデータ読み込み
 		LoadStage(getData().nextStageID, *getData().stageData);
@@ -388,6 +389,21 @@ namespace Spiceholic
 				info.position = notice.second;
 				info.type = ActorType::FxNotice;
 				getData().stageData->actorSpawns.push_back(info);
+			}
+		}
+		// ステージの配置に特殊アイテムがあるか
+		{
+			for (const auto& spawn : getData().stageData->actorSpawns)
+			{
+				switch (spawn.type)
+				{
+				case ActorType::ItemCurry:
+				case ActorType::ItemHabanero:
+				case ActorType::ItemMapo:
+					existsSpItem_ = true;
+				}
+
+				if (existsSpItem_) break;
 			}
 		}
 
@@ -1006,7 +1022,7 @@ namespace Spiceholic
 					U"フライングダークひよこ",
 				},
 				{
-					U"ドラゴ子がみつけた辛いもの",
+					U"みつけた辛いもの",
 					U"",
 					U"とうがらし",
 				},
@@ -1336,15 +1352,36 @@ namespace Spiceholic
 
 	void MainScene::ApplyStageClearRecord_()
 	{
+		// クリアタイム
 		stageClearTime_ = time_.sF();
 
-		const auto stageID = getData().stageData->stageID;
-
-		// レコードが存在しない場合、または新記録の場合に保存する
-		if (not getData().currentRecords.contains(stageID) ||
-			getData().currentRecords.at(stageID).timeSec > stageClearTime_)
+		// 特殊アイテムがある場合は、取得しているか？
+		ClearType clearType = (not existsSpItem_ || gotSpItem_ != ActorType::None) ? ClearType::Cleared : ClearType::Partial;
+		
+		// レコードがあり、クリアタイムが短縮、またはクリアタイプが良くなった場合は保存する
+		// レコードが存在しない場合は保存する
+		if (const auto& stageID = getData().stageData->stageID;
+			getData().currentRecords.contains(stageID))
 		{
-			getData().currentRecords[stageID] = StageRecord{ stageClearTime_ };
+			StageRecord rec = getData().currentRecords.at(stageID);
+
+			if (stageClearTime_ < rec.timeSec)
+			{
+				rec.timeSec = stageClearTime_;
+			}
+
+			if (clearType != rec.clearType)
+			{
+				rec.clearType = clearType;
+			}
+
+			getData().currentRecords[stageID] = rec;
 		}
+		else
+		{
+			getData().currentRecords[stageID] = StageRecord{ stageClearTime_, clearType };
+		}
+
+		SaveRecords(RecordsFilePath, getData());
 	}
 }

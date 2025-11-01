@@ -11,6 +11,7 @@ namespace Spiceholic
 	inline constexpr FilePathView AppSettingJsonPath = U"setting/setting.json";
 	inline constexpr FilePathView UserSettingFilePath = U"setting.ini";
 	inline constexpr FilePathView InputSettingFilePath = U"input.ini";
+	inline constexpr FilePathView RecordsFilePath = U"records.dat";
 }
 
 #define DEBUG_MODE

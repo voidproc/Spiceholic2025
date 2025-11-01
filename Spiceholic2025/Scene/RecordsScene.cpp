@@ -13,8 +13,9 @@ namespace Spiceholic
 	{
 		constexpr ColorF BgColor = Palette::Indianred.lerp(Palette::Darkred, 0.5);
 		constexpr ColorF TitleTextColor = Palette::Whitesmoke;
-		constexpr ColorF LabelColor = Palette::Lightcoral.lerp(Palette::Yellow, 0.3);
-		constexpr ColorF ValueColor = Palette::Lightcoral.lerp(Palette::White, 0.3);
+		constexpr ColorF ClearColor = Palette::Lightcoral.lerp(Palette::Yellow, 0.5);
+		constexpr ColorF LabelColor = Palette::Lightcoral.lerp(Palette::White, 0.3);
+		constexpr ColorF PartialClearColor = Palette::Cyan.lerp(Palette::Gray, 0.6);
 		//constexpr ColorF ValueChangeColor = Palette::Yellow;
 		//constexpr ColorF SelectedLabelColor = Palette::Yellow.lerp(Palette::White, 0.5);
 		//constexpr ColorF SelectedColor = Palette::Whitesmoke;
@@ -51,25 +52,29 @@ namespace Spiceholic
 		constexpr double LineHeight = 14;
 
 		// シーンタイトル
-		DrawText(U"px7812", U"Records", Arg::center = SceneRect.center().withY(LineHeight * 0.5), TitleTextColor);
+		DrawText(U"px7812", U"Records", Arg::center = SceneRect.center().withY(LineHeight * 0.5 + 1), TitleTextColor);
 
 		for (const auto [index, stage] : Indexed(getData().appSetting->get().stageList))
 		{
+			const double posY = LineHeight * (2 + index) - 2;
+
 			// ラベル
-			const Vec2 labelCenter{ SceneCenter.x - 64 - 24, LineHeight * (2 + index) };
-			DrawText(U"px7812m", U"Stage{}"_fmt(stage), Arg::leftCenter = labelCenter, ValueColor);
+			const Vec2 labelPos{ SceneCenter.x - 64 - 24, posY };
+			DrawText(U"px7812m", U"Stage{}"_fmt(stage), Arg::leftCenter = labelPos, LabelColor);
 
 			// レコード
-			const Vec2 valueCenter{ SceneCenter.x + 64, LineHeight * (2 + index) };
-			Optional<int> s;
+			const Vec2 valuePos{ SceneCenter.x - 26, posY };
 			if (getData().currentRecords.contains(stage))
 			{
-				s = static_cast<int>(Math::Floor(getData().currentRecords[stage].timeSec));
-				DrawText(U"px7812m", U"{:-2d}:{:02d}"_fmt(*s / 60, *s % 60), Arg::center = valueCenter, LabelColor);
+				const auto& rec = getData().currentRecords[stage];
+				int sec = static_cast<int>(Math::Floor(rec.timeSec));
+				DrawText(U"px7812m", U"{:-3d}:{:02d}   {}"_fmt(sec / 60, sec % 60, GetClearTypeName(rec.clearType)), Arg::leftCenter = valuePos, rec.clearType == ClearType::Cleared ? ClearColor : PartialClearColor);
 			}
 			else
 			{
-				DrawText(U"px7812m", U"(no data)", Arg::center = valueCenter, LabelColor);
+				{
+					DrawText(U"px7812m", U" --:--   No data", Arg::leftCenter = valuePos, Palette::Indianred);
+				}
 			}
 
 		}

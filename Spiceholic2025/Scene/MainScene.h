@@ -134,6 +134,7 @@ namespace Spiceholic
 		// 特殊アイテム取得
 		Timer timerGetSpItem_;
 		ActorType gotSpItem_;
+		bool existsSpItem_;  //ステージの配置に特殊アイテムがあるか
 
 	};
 }

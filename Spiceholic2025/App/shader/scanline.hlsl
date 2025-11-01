@@ -77,7 +77,7 @@ float4 PS_Texture(s3d::PSInput input) : SV_TARGET
 
 	// Scanline
     const float4 ColorWhite = float4(1, 1, 1, 1);
-    const float4 ColorLine = float4(1, 1, 1, 0.85);
+    const float4 ColorLine = float4(0.90, 0.90, 0.90, 1);
     const float4 scanline = fmod(input.uv.y, PH) < PH * 0.4 ? ColorWhite : ColorLine;
 	
 	// RGB shift

@@ -47,7 +47,7 @@ https://github.com/voidproc/Spiceholic2025
 
 ## 使用しているアセット
 次のフォントを使用しています。
-- [6×8ドット日本語フォント「k6x8」](https://littlelimit.net/k6x8.htm)
+- [8×12ドット日本語フォント「k8x12」](https://littlelimit.net/k8x12.htm)
 - [Not Jam Signature 17 by Not Jam](https://not-jam.itch.io/not-jam-signature-17)
 - [m3x6 by Daniel Linssen](https://managore.itch.io/m3x6)
 

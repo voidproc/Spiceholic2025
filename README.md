@@ -17,7 +17,7 @@ https://github.com/voidproc/Spiceholic2025
 - https://scrapbox.io/bnscup2025/Blazing_Spiceholics
 
 ## ダウンロード
-- [BlazingSpiceholics_v1.0.0.zip](https://github.com/voidproc/Spiceholic2025/releases/download/v1.0.0/BlazingSpiceholics_v1.0.0.zip)
+- [BlazingSpiceholics_v1.0.1.zip](https://github.com/voidproc/Spiceholic2025/releases/download/v1.0.1/BlazingSpiceholics_v1.0.1.zip)
 
 ## 操作
 移動と攻撃のみのシンプル操作です。キーボードまたはゲームコントローラで操作できます。

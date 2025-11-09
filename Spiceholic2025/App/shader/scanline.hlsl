@@ -77,13 +77,15 @@ float4 PS_Texture(s3d::PSInput input) : SV_TARGET
 
 	// Scanline
     const float4 ColorWhite = float4(1, 1, 1, 1);
-    const float4 ColorLine = float4(0.90, 0.90, 0.90, 1);
-    const float4 scanline = fmod(input.uv.y, PH) < PH * 0.4 ? ColorWhite : ColorLine;
+    const float4 ColorLine = float4(1, 1, 1, 0) * 0.2;
+    const float uvY01 = fmod(input.uv.y, PH) / PH;
+    const float uvYTh = 0.4;
+    const float4 scanline = uvY01 < uvYTh ? ColorWhite : (ColorWhite - ColorLine * (uvY01 - uvYTh) / (1 - uvYTh));
 	
 	// RGB shift
-    const float2 ra = g_texture0.Sample(g_sampler0, input.uv + float2(-PW/1.5, 0.0)).ra;
+    const float2 ra = g_texture0.Sample(g_sampler0, input.uv + float2(-PW / 1.5, 0.0)).ra;
     const float2 ga = g_texture0.Sample(g_sampler0, input.uv).ga;
-    const float2 ba = g_texture0.Sample(g_sampler0, input.uv + float2(PH/1.5, 0.0)).ba;
+    const float2 ba = g_texture0.Sample(g_sampler0, input.uv + float2(PW / 1.5, 0.0)).ba;
     const float a = (ra.y + ga.y + ba.y) / 3;
 	
     const float4 texColor = g_texture0.Sample(g_sampler0, input.uv) * 0.7 + float4(ra.x, ga.x, ba.x, a) * 0.3;
